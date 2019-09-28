@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
 // Components
 import Main from "./components/main";
@@ -7,6 +7,7 @@ import LogIn from "./components/logIn";
 import Register from './components/register';
 import Reschedule from './components/reschedule';
 import LeaveApplication from "./components/leaveApplication";
+import Admin from './components/admin/admin';
 
 
 class App extends Component {
@@ -25,6 +26,8 @@ class App extends Component {
                         path="/leave-application"
                         component={LeaveApplication}
                     />
+
+                    <Route path='/admin' component={Admin} />
                 </BrowserRouter>
             </div>
         );
