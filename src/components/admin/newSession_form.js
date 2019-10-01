@@ -10,12 +10,30 @@ class NewSessionForm extends Component {
         end: {
             month: '',
             year: ''
-        }
+        }, 
+        validPeriod: true
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(e);
+        // check if the input date is valid
+        const sMonth = typeof this.state.start.month === 'number' ? this.state.start.month : null;
+        const eMonth = typeof this.state.end.month === 'number' ? this.state.end.month : null;
+        const sYear = typeof this.state.start.year === 'number' ? this.state.start.year : null;
+        const eYear = typeof this.state.end.year === 'number' ? this.state.end.year : null;
+        const validYear = eYear >= sYear ? true : false;
+        const validPeriod = validYear && eMonth >= sMonth ? true : false;
+        
+        // excute setSessionPeriod from props passed from newSession.js 
+        if (validPeriod) {
+            this.props.setSessionPeriod(this.state.start, this.state.end)
+        } else {
+            this.setState({
+                ...this.state,
+                validPeriod: false
+            })
+        }
+        
     }
 
     handleChange = (e) => {
@@ -28,13 +46,13 @@ class NewSessionForm extends Component {
             ...this.state,
             [point]: {
                 ...this.state[point],
-                [name]: value
+                [name]: parseInt(value, 10)
             }
         })
     }
 
     render() {
-        console.log(this.state);
+        
         const yearOptionList = (point) => {
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
@@ -82,6 +100,9 @@ class NewSessionForm extends Component {
                 { yearOptionList('end') }
                 { monthOptionList('end') }
                 <button>確認</button>
+                { this.state.validPeriod ? null : (
+                    <div>時間設定有誤</div>
+                ) }
             </form>
         )
     }

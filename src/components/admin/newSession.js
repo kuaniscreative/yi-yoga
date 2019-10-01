@@ -43,6 +43,7 @@ class NewSession extends Component {
     }
 
     render() {
+        console.log(this.state);
         return (
             <div>
                 <NewSessionForm setSessionPeriod={this.setSessionPeriod} />
