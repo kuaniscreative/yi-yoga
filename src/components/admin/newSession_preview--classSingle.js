@@ -17,11 +17,12 @@ class ClassSingle extends Component {
         const eHr = endTime.getHours();
         const eMin = endTime.getMinutes();
         const fullTime = `${yyyy}/${mm}/${dd} ${hr}:${min} - ${eHr}:${eMin}`;
+        const deleteClass = this.props.deleteClassWhenPreview;
 
         return (
             <div>
                 { fullTime }
-                <button>移除</button>
+                <button onClick={ () => {deleteClass(singleClass.id)} } >移除</button>
             </div>
         )
     }

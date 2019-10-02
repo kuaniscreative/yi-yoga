@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 import NewSessionForm from './newSession_form';
 import NewSessionPreview from './newSession_preview';
 
+// functions
+import { uidGenerator } from '../../functions/uid';
+
 class NewSession extends Component {
 
 
@@ -22,13 +25,7 @@ class NewSession extends Component {
         const startDate = new Date(start.year, start.month - 1, 1);
         const endDate = new Date(end.year, end.month, 0);
         const regularSession = this.state.regularSession;
-        const targets = {
-            mon: [],
-            tue: [],
-            wed: [],
-            thu: [],
-            fri: []
-        };
+        const targets = []
         while(startDate.valueOf() !== endDate.valueOf()) {
             switch (startDate.getDay()) {
                 case 1: 
@@ -38,7 +35,8 @@ class NewSession extends Component {
                         });
                         t.forEach((item) => {
                             const d = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), item.hour, item.minute);
-                            targets.mon.push(d);
+                            d.id = uidGenerator();
+                            targets.push(d);
                         });
                     })();
                     break
@@ -49,7 +47,8 @@ class NewSession extends Component {
                         });
                         t.forEach((item) => {
                             const d = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), item.hour, item.minute);
-                            targets.tue.push(d);
+                            d.id = uidGenerator();
+                            targets.push(d);
                         });
                     })();
                     break
@@ -60,7 +59,8 @@ class NewSession extends Component {
                         });
                         t.forEach((item) => {
                             const d = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), item.hour, item.minute);
-                            targets.thu.push(d);
+                            d.id = uidGenerator();
+                            targets.push(d);
                         });
                     })();
                     break
@@ -71,7 +71,8 @@ class NewSession extends Component {
                         });
                         t.forEach((item) => {
                             const d = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), item.hour, item.minute);
-                            targets.fri.push(d);
+                            d.id = uidGenerator();
+                            targets.push(d);
                         });
                     })();
                     break
@@ -84,8 +85,17 @@ class NewSession extends Component {
     }
 
     setSessionPeriod = (start, end) => {
-
         const classes = this.getSession(start, end);
+        this.setState({
+            ...this.state,
+            classes: classes
+        })
+    }
+
+    deleteClassWhenPreview = (id) => {
+        const classes = this.state.classes.filter((classSingle) => {
+            return classSingle.id !== id
+        })
         this.setState({
             ...this.state,
             classes: classes
@@ -94,12 +104,11 @@ class NewSession extends Component {
 
 
     render() {
-        console.log(this.state);
         return (
             <div>
                 {
                     this.state.classes ? 
-                    <NewSessionPreview classes={this.state.classes}/> :
+                    <NewSessionPreview classes={this.state.classes} deleteClassWhenPreview={this.deleteClassWhenPreview} /> :
                     <NewSessionForm setSessionPeriod={this.setSessionPeriod} /> 
                 }
                 

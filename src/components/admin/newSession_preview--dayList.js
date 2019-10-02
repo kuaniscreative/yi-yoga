@@ -6,8 +6,9 @@ import ClassSingle from './newSession_preview--classSingle';
 class DayList extends Component {
     render() {
         const classes = this.props.classes;
-        const title = () => {
-            switch(classes[0].getDay()) {
+        const day = this.props.day;
+        const title = (day) => {
+            switch(day) {
                 case 0 :
                     return '星期日'
                 case 1 :
@@ -26,13 +27,13 @@ class DayList extends Component {
         }
         return (
             <div>
-                <h3>{ title() }</h3>
+                <h3>{ title(day) }</h3>
                 {
-                    classes.map((date, i) => {
+                    classes.length ? classes.map((date, i) => {
                         return (
-                            <ClassSingle class={date} key={i} />
+                            <ClassSingle class={date} deleteClassWhenPreview={this.props.deleteClassWhenPreview} key={i} />
                         )
-                    })
+                    }) : null
                 }
             </div>
         )
