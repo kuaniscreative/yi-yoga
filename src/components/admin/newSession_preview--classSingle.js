@@ -27,4 +27,5 @@ class ClassSingle extends Component {
     }
 }
 
+
 export default ClassSingle;
