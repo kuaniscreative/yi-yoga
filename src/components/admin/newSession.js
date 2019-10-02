@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 // components 
 import NewSessionForm from './newSession_form';
+import NewSessionPreview from './newSession_preview';
 
 class NewSession extends Component {
 
 
     state = {
-        classes: {},
         regularSession: [
             {day: 1, hour: 19, minute: 20},
             {day: 1, hour: 20, minute: 30},
@@ -97,7 +97,12 @@ class NewSession extends Component {
         console.log(this.state);
         return (
             <div>
-                <NewSessionForm setSessionPeriod={this.setSessionPeriod} />
+                {
+                    this.state.classes ? 
+                    <NewSessionPreview classes={this.state.classes}/> :
+                    <NewSessionForm setSessionPeriod={this.setSessionPeriod} /> 
+                }
+                
                 <button onClick={() => {console.log('depricated')}}>New Session</button>
             </div>
         )
