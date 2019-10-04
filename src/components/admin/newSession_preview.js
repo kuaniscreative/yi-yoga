@@ -32,6 +32,7 @@ class NewSessionPreview extends Component {
                 { dayList(classesTue, 2) }
                 { dayList(classesThu, 4) }
                 { dayList(classesFri, 5) }
+                <button onClick={this.props.addSession}>送出</button>
             </div>
         )
     }

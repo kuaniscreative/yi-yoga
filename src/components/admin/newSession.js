@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 // components 
 import NewSessionForm from './newSession_form';
 import NewSessionPreview from './newSession_preview';
+
+// actions
+import { registerSession } from '../../actions/admin';
 
 // functions
 import { uidGenerator } from '../../functions/uid';
@@ -101,21 +105,31 @@ class NewSession extends Component {
             classes: classes
         })
     }
-
+    
+    addSession = () => {
+        this.props.registerSession(this.state.classes)
+    }
 
     render() {
         return (
             <div>
                 {
                     this.state.classes ? 
-                    <NewSessionPreview classes={this.state.classes} deleteClassWhenPreview={this.deleteClassWhenPreview} /> :
+                    <NewSessionPreview classes={this.state.classes} deleteClassWhenPreview={this.deleteClassWhenPreview} addSession={this.addSession} /> :
                     <NewSessionForm setSessionPeriod={this.setSessionPeriod} /> 
                 }
                 
-                <button onClick={() => {console.log('depricated')}}>New Session</button>
             </div>
         )
     }
 }
 
-export default NewSession
+const mapDispatchToProps = (dispatch) => {
+    return {
+        registerSession: (classes) => {
+            dispatch(registerSession(classes))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(NewSession)

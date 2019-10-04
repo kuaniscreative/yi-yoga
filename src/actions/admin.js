@@ -1,4 +1,4 @@
-export const addSession = (classes) => {
+export const registerSession = (classes) => {
     return (dispatch, getState, {getFirestore, getFirebase}) => {
       const firestore = getFirestore();
       firestore.collection('sessions').add({
