@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+// components
+import UserPanel from './users/userPanel';
+
 class Main extends Component {
     state = {
         loggedIn: false
@@ -15,17 +18,9 @@ class Main extends Component {
         </div>
     )
 
-    userPanel = (
-        <div>
-            <div>歡迎xxx</div>
-            <Link to='/leave-application'>請假</Link>
-            <Link to='/reschedule'>補課</Link>
-        </div>
-    )
-
     render() {
         return (
-            this.props.user ? this.userPanel : this.guestPanel
+            this.props.user ? <UserPanel /> : this.guestPanel
         )
     }
 }
