@@ -15,6 +15,8 @@ class NewSession extends Component {
 
 
     state = {
+        period: [],
+        classes: [],
         regularSession: [
             {day: 1, hour: 19, minute: 20},
             {day: 1, hour: 20, minute: 30},
@@ -91,7 +93,7 @@ class NewSession extends Component {
     setSessionPeriod = (start, end) => {
         const classes = this.getSession(start, end);
         this.setState({
-            ...this.state,
+            period: [start, end],
             classes: classes
         })
     }
@@ -107,18 +109,22 @@ class NewSession extends Component {
     }
     
     addSession = () => {
-        this.props.registerSession(this.state.classes)
+        const sessionInfo = {
+            period: this.state.period,
+            classes: this.state.classes
+        }
+        this.props.registerSession(sessionInfo)
     }
 
     render() {
+        console.log(this.state)
         return (
             <div>
                 {
-                    this.state.classes ? 
+                    this.state.classes.length ? 
                     <NewSessionPreview classes={this.state.classes} deleteClassWhenPreview={this.deleteClassWhenPreview} addSession={this.addSession} /> :
                     <NewSessionForm setSessionPeriod={this.setSessionPeriod} /> 
-                }
-                
+                }              
             </div>
         )
     }
@@ -126,8 +132,8 @@ class NewSession extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        registerSession: (classes) => {
-            dispatch(registerSession(classes))
+        registerSession: (session) => {
+            dispatch(registerSession(session))
         }
     }
 }
