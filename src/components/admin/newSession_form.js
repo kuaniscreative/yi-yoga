@@ -52,7 +52,6 @@ class NewSessionForm extends Component {
     }
 
     render() {
-        
         const yearOptionList = (point) => {
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
@@ -92,18 +91,21 @@ class NewSessionForm extends Component {
         }
 
         return (
-            <form action="" onSubmit={this.handleSubmit}>
-                <label htmlFor="start">開始月份</label>
-                { yearOptionList('start') }
-                { monthOptionList('start') }
-                <label htmlFor="end">結束月份</label>
-                { yearOptionList('end') }
-                { monthOptionList('end') }
-                <button>確認</button>
-                { this.state.validPeriod ? null : (
-                    <div>時間設定有誤</div>
-                ) }
-            </form>
+            <div>
+                { this.props.validPeriod ? null : (<p>時間重複</p>) }
+                <form action="" onSubmit={this.handleSubmit}>
+                    <label htmlFor="start">開始月份</label>
+                    { yearOptionList('start') }
+                    { monthOptionList('start') }
+                    <label htmlFor="end">結束月份</label>
+                    { yearOptionList('end') }
+                    { monthOptionList('end') }
+                    <button>確認</button>
+                    { this.state.validPeriod ? null : (
+                        <div>時間設定有誤</div>
+                    ) }
+                </form>
+            </div>
         )
     }
 }
