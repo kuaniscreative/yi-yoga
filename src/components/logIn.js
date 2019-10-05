@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // actions
-import { signIn } from '../actions/auth';
+import { signIn } from '../actions/authActions';
 
 class LogIn extends Component {
 
@@ -25,7 +25,6 @@ class LogIn extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div>
                 登入

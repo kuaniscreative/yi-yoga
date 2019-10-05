@@ -8,7 +8,7 @@ import NewSessionForm from './newSession_form';
 import NewSessionPreview from './newSession_preview';
 
 // actions
-import { registerSession } from '../../actions/admin';
+import { registerSession } from '../../actions/adminActions';
 
 // functions
 import { uidGenerator } from '../../functions/uid';

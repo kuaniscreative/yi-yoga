@@ -6,6 +6,7 @@ class Main extends Component {
     state = {
         loggedIn: false
     }
+
     guestPanel = (
         <div>
             <p>最強瑜伽沒有之一</p>
@@ -13,6 +14,7 @@ class Main extends Component {
             <Link to='/register'>註冊</Link>
         </div>
     )
+
     userPanel = (
         <div>
             <div>歡迎xxx</div>
@@ -20,9 +22,10 @@ class Main extends Component {
             <Link to='/reschedule'>補課</Link>
         </div>
     )
+
     render() {
         return (
-            this.state.loggedIn ? this.userPanel : this.guestPanel
+            this.props.user ? this.userPanel : this.guestPanel
         )
     }
 }
@@ -30,7 +33,7 @@ class Main extends Component {
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-
+        user: state.firebase.auth
     }
 }
 
