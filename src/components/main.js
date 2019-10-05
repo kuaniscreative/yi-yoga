@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class Main extends Component {
     state = {
-        loggedIn: true
+        loggedIn: false
     }
     guestPanel = (
         <div>
@@ -26,4 +27,11 @@ class Main extends Component {
     }
 }
 
-export default Main
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps)(Main)
