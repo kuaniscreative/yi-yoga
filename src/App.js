@@ -3,8 +3,8 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 // Components
 import Main from "./components/main";
-import LogIn from "./components/logIn";
-import Register from './components/register';
+import LogIn from "./components/users/logIn";
+import Register from './components/users/register';
 import Reschedule from './components/reschedule';
 import LeaveApplication from "./components/leaveApplication";
 import Admin from './components/admin/admin';
