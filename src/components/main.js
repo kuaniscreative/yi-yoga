@@ -6,9 +6,7 @@ import { connect } from 'react-redux';
 import UserPanel from './users/userPanel';
 
 class Main extends Component {
-    state = {
-        loggedIn: false
-    }
+    
 
     guestPanel = (
         <div>
@@ -20,13 +18,12 @@ class Main extends Component {
 
     render() {
         return (
-            this.props.user ? <UserPanel /> : this.guestPanel
+            this.props.user.uid ? <UserPanel /> : this.guestPanel
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         user: state.firebase.auth
     }
