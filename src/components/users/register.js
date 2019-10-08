@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+
+// actions
+import { signUp } from '../../actions/authActions';
 
 class Register extends Component {
     state = {
@@ -11,11 +15,10 @@ class Register extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('registering Account and password');
+        this.props.signUp(this.state);
     }
 
     handleChange = (e) => {
-        console.log(e.target.name, e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -42,4 +45,10 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signUp: (userInfo) => { dispatch(signUp(userInfo)) }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Register);
