@@ -10,7 +10,7 @@ import { signOut } from '../../actions/authActions';
 class UserPanel extends Component {
     render() {
 
-        const registerClassProcessor = this.props.newSession ? <Link to='/register-session'>報名</Link> : null;
+        const registerClassProcessor = this.props.newSession ? <Link to='/register-classes'>報名</Link> : null;
 
         return (
             <div>
