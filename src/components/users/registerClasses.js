@@ -3,12 +3,17 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+// components
+import OptionList from './registerClasses_optionList';
+
 class RegisterClasses extends Component {
     render() {
         
+        const classes = this.props.session ? this.props.session[0].classes : null;
+
         return (
             <div>
-                報名課程
+                <OptionList classes={classes}/>
             </div>
         )
     }
