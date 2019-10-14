@@ -153,7 +153,7 @@ class NewSession extends Component {
         return (
             <div>
                 {
-                    this.props.newSessionIsAdded ? <p>新增成功</p> : newSessionProcesser
+                    newSessionProcesser
                 }              
             </div>
         )
