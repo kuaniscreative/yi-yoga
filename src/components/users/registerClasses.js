@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
-class registerClasses extends Component {
+class RegisterClasses extends Component {
     render() {
+        
         return (
             <div>
                 報名課程
@@ -10,4 +14,21 @@ class registerClasses extends Component {
     }
 }
 
-export default registerClasses
+const mapStateToProps = (state) => {
+    return {
+        session: state.firestore.ordered.newSession
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+    }
+}
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect([
+        {collection: 'newSession'}
+    ])
+)(RegisterClasses)

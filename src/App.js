@@ -7,6 +7,7 @@ import LogIn from "./components/users/logIn";
 import Register from './components/users/register';
 import Reschedule from './components/reschedule';
 import LeaveApplication from "./components/leaveApplication";
+import RegisterClasses from './components/users/registerClasses';
 import Admin from './components/admin/admin';
 
 
@@ -22,11 +23,12 @@ class App extends Component {
                     <Route path="/log-in" component={LogIn} />
                     <Route path="/register" component={Register} />
                     <Route path="/reschedule" component={Reschedule} />
+                    <Route path="/register-classes" component={RegisterClasses} />
                     <Route
                         path="/leave-application"
                         component={LeaveApplication}
                     />
-
+                    
                     <Route path='/admin' component={Admin} />
                 </BrowserRouter>
             </div>
