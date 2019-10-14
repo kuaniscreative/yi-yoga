@@ -1,13 +1,12 @@
 export const registerSession = (classes) => {
     return (dispatch, getState, {getFirestore, getFirebase}) => {
       const firestore = getFirestore();
-      firestore.collection('sessions').add({
-        ...classes
-      }).then(() => {
-        dispatch({type: 'ADD_SESSION', classes});
-      }).catch((err) => {
-        dispatch({type:'ERROR', err})
-      });
       
+      firestore.collection('newSession').doc('KZ6kC4qlTuG3Y4CG1uw6').set(classes)
+        .then(() => {
+          dispatch({type: 'ADDED_NEW_SESSION', classes});
+        }).catch((err) => {
+          dispatch({type:'ERROR', err})
+        });
     }
   }

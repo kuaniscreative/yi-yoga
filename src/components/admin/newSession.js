@@ -146,12 +146,14 @@ class NewSession extends Component {
     }
 
     render() {
+        const newSessionProcesser = this.state.classes.length ? 
+            <NewSessionPreview classes={this.state.classes} deleteClassWhenPreview={this.deleteClassWhenPreview} addSession={this.addSession} /> :
+            <NewSessionForm setSessionPeriod={this.setSessionPeriod} validPeriod={this.state.periodInputIsValid} />;
+        
         return (
             <div>
                 {
-                    this.state.classes.length ? 
-                    <NewSessionPreview classes={this.state.classes} deleteClassWhenPreview={this.deleteClassWhenPreview} addSession={this.addSession} /> :
-                    <NewSessionForm setSessionPeriod={this.setSessionPeriod} validPeriod={this.state.periodInputIsValid} /> 
+                    this.props.newSessionIsAdded ? <p>新增成功</p> : newSessionProcesser
                 }              
             </div>
         )
@@ -159,8 +161,11 @@ class NewSession extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    
     return {
-        sessions: state.firestore.ordered.sessions
+        sessions: state.firestore.ordered.newSession,
+        newSessionIsAdded: state.admin.newSessionIsAdded
+
     }
 }
 
@@ -175,6 +180,6 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-        {collection: 'sessions'}
+        {collection: 'newSession'}
     ])
     )(NewSession)
