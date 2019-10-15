@@ -4,12 +4,14 @@ import { firebaseReducer } from 'react-redux-firebase';
 
 // own reducers
 import adminReducer from './adminReducer';
+import userReducer from './userReducer';
 
 
 const rootReducer = combineReducers({
     firestore: firestoreReducer,
     firebase: firebaseReducer,
-    admin: adminReducer
+    admin: adminReducer,
+    user: userReducer
 })
 
 export default rootReducer

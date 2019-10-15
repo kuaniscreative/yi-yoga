@@ -4,7 +4,9 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 // components
-import OptionList from './registerClasses_optionList';
+
+// actions
+import { registerToCourse } from '../../actions/userActions';
 
 class RegisterClasses extends Component {
 
@@ -28,8 +30,21 @@ class RegisterClasses extends Component {
     }
 
     handleSubmit = (e) => {
+
         e.preventDefault();
-        console.log('submitted')
+
+        const matchCourses = [];
+        const session = this.props.session[0].sortedByCourse;
+        const selected = this.state.selected;
+
+        selected.forEach((selection) => {
+            session.forEach((course) => {
+                if (selection === course.name) {
+                    matchCourses.push(course);
+                }
+            })
+        })
+        this.props.registerToCourse(matchCourses, this.props.userId);
     }
 
     render() {
@@ -53,13 +68,14 @@ class RegisterClasses extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        userId: state.firebase.auth.uid,
         session: state.firestore.ordered.newSession
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        registerToCourse: (course, userId) => { dispatch(registerToCourse(course, userId)) }
     }
 }
 
