@@ -8,12 +8,19 @@ import OptionList from './registerClasses_optionList';
 
 class RegisterClasses extends Component {
     render() {
-        
-        const classes = this.props.session ? this.props.session[0].classes : null;
-
+        const session = this.props.session ? this.props.session[0].sortedByCourse : null;
         return (
             <div>
-                <OptionList classes={classes}/>
+                {
+                    session && session.map((item, i) => {
+                        return (
+                            <div key={i}>
+                                <p>{item.name}</p>
+                                <p>{`共${item.length}堂`}</p>
+                            </div>
+                        )
+                    })
+                }
             </div>
         )
     }
