@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+// components
+import AllClasses from './allClasses';
+
 class LeaveApplication extends Component {
     render() {
         return (
             <div id='leaveApplication'>
-               請假申請       
+               <AllClasses />    
                <Link to='/'>取消</Link>          
             </div>
         )
