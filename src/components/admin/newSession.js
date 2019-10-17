@@ -20,12 +20,12 @@ class NewSession extends Component {
         period: [],
         classes: [],
         regularSession: [
-            {day: 1, hour: 19, minute: 20},
-            {day: 1, hour: 20, minute: 30},
-            {day: 2, hour: 19, minute: 20},
-            {day: 2, hour: 20, minute: 30},
-            {day: 4, hour: 18, minute: 50},
-            {day: 5, hour: 19, minute: 20}
+            {day: 1, hour: 19, minute: 20, name: '星期一 19:20 - 20:20'},
+            {day: 1, hour: 20, minute: 30, name: '星期一 20:30 - 21:30'},
+            {day: 2, hour: 19, minute: 20, name: '星期二 19:10 - 20:10'},
+            {day: 2, hour: 20, minute: 30, name: '星期二 20:30 - 21:30'},
+            {day: 4, hour: 18, minute: 50, name: '星期四 18:50 - 19:50'},
+            {day: 5, hour: 19, minute: 30, name: '星期五 19:30 - 20:30'}
         ],
         periodInputIsValid: true
     }
@@ -136,11 +136,34 @@ class NewSession extends Component {
             classes: classes
         })
     }
+
+    sortClassesByCourse = (classesArr) => {
+        const regularSession = this.state.regularSession;
+        const result = [];
+        regularSession.forEach((regular) => {
+            const name = regular.name;
+            const match = [];
+            classesArr.forEach((classSingle) => {
+                if (regular.day === classSingle.getDay() && regular.hour === classSingle.getHours()) {
+                    match.push(classSingle);
+                }
+            }) 
+            result.push({
+                name: name,
+                classes: match,
+                length: match.length
+            })
+        })
+        return result
+    }
     
     addSession = () => {
+        
         const sessionInfo = {
             period: this.state.period,
-            classes: this.state.classes
+            classes: this.state.classes,
+            all: this.state.classes,
+            sortedByCourse: this.sortClassesByCourse(this.state.classes)
         }
         // this.props.registerSession(sessionInfo)
         this.props.addClassProfile(this.state.classes);
