@@ -165,7 +165,7 @@ class NewSession extends Component {
             all: this.state.classes,
             sortedByCourse: this.sortClassesByCourse(this.state.classes)
         }
-        // this.props.registerSession(sessionInfo)
+        this.props.registerSession(sessionInfo)
         this.props.addClassProfile(this.state.classes);
     }
 

@@ -6,7 +6,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 // components
 
 // actions
-import { registerToCourse } from '../../actions/userActions';
+import { registerToCourse, addStudentToClasses } from '../../actions/userActions';
 
 class RegisterClasses extends Component {
 
@@ -44,6 +44,7 @@ class RegisterClasses extends Component {
                 }
             })
         })
+        this.props.addStudentToClasses(matchCourses, this.props.userId)
         this.props.registerToCourse(matchCourses, this.props.userId);
     }
 
@@ -75,7 +76,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        registerToCourse: (course, userId) => { dispatch(registerToCourse(course, userId)) }
+        registerToCourse: (course, userId) => { dispatch(registerToCourse(course, userId)) },
+        addStudentToClasses: (course, userId) => { dispatch(addStudentToClasses(course, userId)) }
     }
 }
 
