@@ -8,7 +8,7 @@ import NewSessionForm from './newSession_form';
 import NewSessionPreview from './newSession_preview';
 
 // actions
-import { registerSession } from '../../actions/adminActions';
+import { registerSession, addClassProfile } from '../../actions/adminActions';
 
 // functions
 import { uidGenerator } from '../../functions/uid';
@@ -142,7 +142,8 @@ class NewSession extends Component {
             period: this.state.period,
             classes: this.state.classes
         }
-        this.props.registerSession(sessionInfo)
+        // this.props.registerSession(sessionInfo)
+        this.props.addClassProfile(this.state.classes);
     }
 
     render() {
@@ -161,10 +162,11 @@ class NewSession extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    
+    console.log(state);
     return {
         sessions: state.firestore.ordered.newSession,
-        newSessionIsAdded: state.admin.newSessionIsAdded
+        newSessionIsAdded: state.admin.newSessionIsAdded,
+        classProfile: state.firestore.ordered.classProfile
 
     }
 }
@@ -173,6 +175,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         registerSession: (session) => {
             dispatch(registerSession(session))
+        },
+        addClassProfile: (classes) => {
+            dispatch(addClassProfile(classes))
         }
     }
 }
@@ -180,6 +185,6 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-        {collection: 'newSession'}
+        {collection: 'newSession'}, {collection: 'classProfile'}
     ])
     )(NewSession)
