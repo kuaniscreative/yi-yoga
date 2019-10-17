@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect } from 'react-redux-firebase';
+
+// functions
+import { sortByMonth } from '../../functions/dateFunctions';
 
 class AllClasses extends Component {
 
@@ -9,6 +12,9 @@ class AllClasses extends Component {
 
     render() {
         
+        const test = sortByMonth(this.props.classes);
+
+
         return (
             <div>
                 <div>
