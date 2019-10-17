@@ -14,10 +14,17 @@ class DateSingle extends Component {
     }
 
     render() {
-        console.log(this.state);
+        const yyyy = this.props.classSingle.toDate().getFullYear();
+        const mm = this.props.classSingle.toDate().getMonth();
+        const dd = this.props.classSingle.toDate().getDate();
+        
         return (
             <div onClick={this.handleClick}>
-                <span>{`${this.props.classSingle.toDate().getDate()}日`}</span>
+                <span>{`${yyyy}年`}</span>
+                <span>{`${mm + 1}月`}</span>
+                <span>{`${dd}日`}</span>
+                <span></span>
+                {this.state.selected ? <span>已選取</span> : null}
             </div>
         )
     }
