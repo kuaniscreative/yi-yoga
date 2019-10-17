@@ -5,24 +5,20 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 // components
 import YearSection from './allClasses_year';
+import DateSingle from './allClasses_date';
 
 // functions
 import { sortByMonth } from '../../functions/dateFunctions';
 
 class AllClasses extends Component {
 
-    
-
     render() {
-        
-        const classes = this.props.classes.length ? sortByMonth(this.props.classes) : [];
-
-
+    
         return (
             <div>
                 {
-                    classes.map((year, i) => {
-                        return <YearSection classes={year} key={i} />
+                    this.props.classes.map((date, i) => {
+                        return <DateSingle classSingle={date} key={i} setLeaveDate={this.props.setLeaveDate} />
                     })
                 }
 

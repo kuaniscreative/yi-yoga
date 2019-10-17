@@ -33,3 +33,9 @@ export const registerToCourse = (course, userId) => {
         })
     }
 }
+
+export const leaveApplication = (date, userId) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+
+    }
+}
