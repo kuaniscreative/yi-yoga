@@ -60,7 +60,6 @@ export const addStudentToClasses = (course, userId) => {
                 return timestamp.toDate()
              })
 
-             console.log(ids, classProfile, classList, reconstruct);
              // select equal classes and register the students
              const classList_value = classList.map((date) => {
                 return date.valueOf()
