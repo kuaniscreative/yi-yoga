@@ -5,19 +5,29 @@ export const registerToCourse = (course, userId) => {
 
         firestore.collection('user').doc(userId).get().then((res) => {
             const userData = res.data();
-            const allClasses = userData.allClasses || []
+            const currentClasses = userData.allClasses || []
             // destruct courses and reconstruct to a new array of all classes
-            let newClasses = [];
+            let reconstruct = [];
             course.forEach((item) => {
-                newClasses = newClasses.concat(item.classes);
+                reconstruct = reconstruct.concat(item.classes);
+            })
+            // filter out the same value
+            let newClasses = [...currentClasses, ...reconstruct];
+            newClasses = newClasses.map((item) => {
+                return item.toDate().valueOf();
+            })
+            const filterOutUsingSet = new Set(newClasses);
+            newClasses = [...filterOutUsingSet].map((item) => {
+                return new Date(item)
             })
 
+
             firestore.collection('user').doc(userId).update({
-                allClasses: [...allClasses, ...newClasses],
+                allClasses: newClasses,
                 registeredCourse: course
             }).then(() => {
-                // alert('報名成功');
-                // document.location.href = '/';
+                alert('報名成功');
+                document.location.href = '/';
                 dispatch({type: 'REGISTERED_TO_COURSE', course});
             })
         })
