@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
+// components
+import YearSection from './allClasses_year';
+
 // functions
 import { sortByMonth } from '../../functions/dateFunctions';
 
@@ -12,22 +15,16 @@ class AllClasses extends Component {
 
     render() {
         
-        const test = sortByMonth(this.props.classes);
+        const classes = this.props.classes.length ? sortByMonth(this.props.classes) : [];
 
 
         return (
             <div>
-                <div>
-                    <div>title</div>
-                    <div>classes date</div>
-                    <div>classes date</div>
-                </div>
-
-                <div>
-                    <div>title</div>
-                    <div>classes date</div>
-                    <div>classes date</div>
-                </div>
+                {
+                    classes.map((year, i) => {
+                        return <YearSection classes={year} key={i} />
+                    })
+                }
 
             </div>
         )
