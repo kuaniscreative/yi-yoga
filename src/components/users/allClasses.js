@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase'
 
 class AllClasses extends Component {
 
     
 
     render() {
-
-        const tbc_data = {
-            classesSortedByMonth: [{
-                year: 2019,
-                month: 0,
-                classes: []
-            }, {}, {}]
-        }
-        
-        
         
         return (
             <div>
@@ -35,4 +28,19 @@ class AllClasses extends Component {
     }
 }
 
-export default AllClasses;
+const mapStateToProps = (state) => {
+    const uid = state.firebase.auth.isempty ? undefined : state.firebase.auth.uid;
+    const userData = uid && state.firestore.ordered.user ? state.firestore.ordered.user.find((user) => {
+        return user.id === uid
+    }) : {};
+    return {
+       classes: userData.allClasses || []
+    }
+}
+
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'user'}
+    ])
+)(AllClasses);
