@@ -125,7 +125,7 @@ export const leaveApplication = (selectedDate, userId) => {
                             userId
                         )
                     })
-                    
+
                 // 將請假的課堂從user.allClasses中移除
                 firestore
                     .collection("user")
@@ -141,18 +141,23 @@ export const leaveApplication = (selectedDate, userId) => {
                                 );
                             }
                         );
-                        console.log(userClasses, resultAfterLeave);
+                        const leaveRecord_year = selectedDate.toDate().getFullYear();
+                        const leaveRecord_month = selectedDate.toDate().getMonth();
+                        const record = `${leaveRecord_year }/${leaveRecord_month + 1}`;
 
                         firestore
                             .collection("user")
                             .doc(userId)
                             .update({
-                                allClasses: resultAfterLeave
+                                allClasses: resultAfterLeave,
+                                leaveRecord: firebase.firestore.FieldValue.arrayUnion(
+                                    record
+                                )
                             });
                     })
             }).then(() => {
-                alert('請假成功');
-                document.location.href = '/';
+                // alert('請假成功');
+                // document.location.href = '/';
             });
     };
 };

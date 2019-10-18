@@ -41,7 +41,7 @@ class LeaveApplication extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userId: state.firebase.auth.uid
+        userId: state.firebase.auth.uid,
     }
 }
 
