@@ -14,7 +14,6 @@ class DateSingle extends Component {
     }
 
     render() {
-        console.log(this.props.classSingle)
         const yyyy = this.props.classSingle.toDate().getFullYear();
         const mm = this.props.classSingle.toDate().getMonth();
         const dd = this.props.classSingle.toDate().getDate();

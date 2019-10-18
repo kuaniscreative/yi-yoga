@@ -97,11 +97,27 @@ export const leaveApplication = (selectedDate, userId) => {
             const matchPosition = classProfiles.indexOf(match);
             const matchId = snapshot.docs[matchPosition].id;
 
+            // 將學生id從classProfile.students中移除，並紀錄在classProfile.absence中
             firestore.collection('classProfile').doc(matchId).update({
-                students: firebase.firestore.FieldValue.arrayRemove(userId)
+                students: firebase.firestore.FieldValue.arrayRemove(userId),
+                absence: firebase.firestore.FieldValue.arrayUnion(userId)
             }).then(() => {
                 console.log('did it');
             }) 
+
+
+            // 將請假的課堂從user.allClasses中移除
+            firestore.collection('user').doc(userId).get().then((snapshot) => {
+                const userClasses = snapshot.data().allClasses;
+                const resultAfterLeave = userClasses.filter((classInfo) => {
+                    return classInfo.toDate().valueOf() !== selectedDate.toDate().valueOf()
+                })
+                console.log(userClasses, resultAfterLeave)
+
+                firestore.collection('user').doc(userId).update({
+                    allClasses: resultAfterLeave
+                })
+            })
             
         })
 
