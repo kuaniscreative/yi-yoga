@@ -7,6 +7,9 @@ import { firestoreConnect } from 'react-redux-firebase';
 // components
 import AllClasses from './allClasses';
 
+// actions
+import { leaveApplication } from '../../actions/userActions';
+
 class LeaveApplication extends Component {
 
     state = {
@@ -21,6 +24,7 @@ class LeaveApplication extends Component {
 
     submit = () => {
         console.log(this.state.leaveDate);
+        this.props.leaveApplication(this.state.leaveDate, this.props.userId);
     }
 
     render() {
@@ -35,8 +39,22 @@ class LeaveApplication extends Component {
     } 
 }
 
+const mapStateToProps = (state) => {
+    return {
+        userId: state.firebase.auth.uid
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        leaveApplication: (date, userId) => {
+            dispatch(leaveApplication(date, userId));
+        }
+    }
+}
+
 export default compose(
-    connect(),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: 'classProfile'}, { collection: 'user'}
     ])

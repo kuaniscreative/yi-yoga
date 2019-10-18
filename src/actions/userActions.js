@@ -81,14 +81,28 @@ export const addStudentToClasses = (course, userId) => {
     }
 }
 
-export const leaveApplication = (classId, userId) => {
+export const leaveApplication = (selectedDate, userId) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
 
         const firebase = getFirebase();
         const firestore = getFirestore();
 
-        firestore.collection('classProfile').doc(classId).update({
-            students: firebase.firestore.FieldValue.arrayRemove(userId)
+        firestore.collection('classProfile').get().then((snapshot) => {
+            const classProfiles = snapshot.docs.map((item) => {
+                return item.data()
+            });
+            const match = classProfiles.find((profile) => {
+                return profile.classDate.toDate().valueOf() === selectedDate.toDate().valueOf()
+            })
+            const matchPosition = classProfiles.indexOf(match);
+            const matchId = snapshot.docs[matchPosition].id;
+
+            firestore.collection('classProfile').doc(matchId).update({
+                students: firebase.firestore.FieldValue.arrayRemove(userId)
+            }).then(() => {
+                console.log('did it');
+            }) 
+            
         })
 
     }
