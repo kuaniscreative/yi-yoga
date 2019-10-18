@@ -22,13 +22,27 @@ class LeaveApplication extends Component {
         })
     }
 
+    checkLeaveRecord = (date) => {
+        const checker = `${date.getFullYear()}/${date.getMonth() + 1}`;
+        if (this.props.leaveRecord.indexOf(checker) > -1) {
+            return false
+        }
+        return true
+    }
+
     submit = () => {
-        console.log(this.state.leaveDate);
-        this.props.leaveApplication(this.state.leaveDate, this.props.userId);
+        const input = this.state.leaveDate;
+        const canApply = this.checkLeaveRecord(input.toDate())
+        if (canApply) {
+            this.props.leaveApplication(input, this.props.userId);
+        } else {
+            console.log('you have already leave this month')
+        }
+        
     }
 
     render() {
-        
+        console.log(this.props)
         return (
             <div id='leaveApplication'>
                <AllClasses setLeaveDate={this.setLeaveDate} /> 
@@ -40,8 +54,13 @@ class LeaveApplication extends Component {
 }
 
 const mapStateToProps = (state) => {
+    const user = state.firestore.ordered.user ? state.firestore.ordered.user.find((user) => {
+        return user.id === state.firebase.auth.uid 
+    }) : null;
+
     return {
         userId: state.firebase.auth.uid,
+        leaveRecord: user ? user.leaveRecord : null
     }
 }
 
