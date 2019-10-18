@@ -24,7 +24,7 @@ class LeaveApplication extends Component {
     }
 
     render() {
-        console.log(this.state)
+        
         return (
             <div id='leaveApplication'>
                <AllClasses setLeaveDate={this.setLeaveDate} /> 

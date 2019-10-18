@@ -81,8 +81,15 @@ export const addStudentToClasses = (course, userId) => {
     }
 }
 
-export const leaveApplication = (date, userId) => {
+export const leaveApplication = (classId, userId) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
+
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        firestore.collection('classProfile').doc(classId).update({
+            students: firebase.firestore.FieldValue.arrayRemove(userId)
+        })
 
     }
 }
