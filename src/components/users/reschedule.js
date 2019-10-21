@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
+// components
+import Preview from './reschedule_preview';
+
 class Reschedule extends Component {
 
     state = {
@@ -55,6 +58,7 @@ class Reschedule extends Component {
                             </div>
                         );
                     })}
+                    { this.state.timeTable.length ? <Preview /> : null}
                 <Link to="/">取消</Link>
             </div>
         );
