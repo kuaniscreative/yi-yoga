@@ -152,6 +152,9 @@ export const leaveApplication = (selectedDate, userId) => {
                                 allClasses: resultAfterLeave,
                                 leaveRecord: firebase.firestore.FieldValue.arrayUnion(
                                     record
+                                ),
+                                reschedulable: firebase.firestore.FieldValue.arrayUnion(
+                                    record
                                 )
                             });
                     })

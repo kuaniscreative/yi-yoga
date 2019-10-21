@@ -24,7 +24,7 @@ class LeaveApplication extends Component {
 
     checkLeaveRecord = (date) => {
         const checker = `${date.getFullYear()}/${date.getMonth() + 1}`;
-        if (this.props.leaveRecord.indexOf(checker) > -1) {
+        if (this.props.leaveRecord && this.props.leaveRecord.indexOf(checker) > -1) {
             return false
         }
         return true
