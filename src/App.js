@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Main from "./components/main";
 import LogIn from "./components/users/logIn";
 import Register from './components/users/register';
-import Reschedule from './components/reschedule';
+import Reschedule from './components/users/reschedule';
 import LeaveApplication from "./components/users/leaveApplication";
 import RegisterClasses from './components/users/registerClasses';
 import Admin from './components/admin/admin';
