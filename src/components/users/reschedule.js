@@ -5,13 +5,12 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
 // components
-import Preview from './reschedule_preview';
+import Preview from "./reschedule_preview";
 
 class Reschedule extends Component {
-
     state = {
         timeTable: []
-    }
+    };
 
     classFilter = classStamp => {
         const split = classStamp.split("/");
@@ -32,11 +31,36 @@ class Reschedule extends Component {
         });
     };
 
+    sortClassesByDay = (classes = []) => {
+        // map the timestamps to date objects
+        let dates = classes.map(classInfo => {
+            return {
+                ...classInfo,
+                classDate: classInfo.classDate.toDate()
+            };
+        });
+
+        // sort the dates by month
+        const sortedByDay = [];
+        dates.forEach(classInfo => {
+            const day = classInfo.classDate.getDay();
+            if (sortedByDay[day]) {
+                sortedByDay[day].push(classInfo);
+            } else {
+                sortedByDay[day] = []
+            }
+        });
+
+        return sortedByDay
+    };
+
     requestTimeTable = classStamp => {
+        const available = this.classFilter(classStamp);
+        const sorted = this.sortClassesByDay(available);
         this.setState({
             ...this.state,
-            timeTable: this.classFilter(classStamp)
-        })
+            timeTable: sorted
+        });
     };
 
     render() {
@@ -58,7 +82,9 @@ class Reschedule extends Component {
                             </div>
                         );
                     })}
-                    { this.state.timeTable.length ? <Preview classes={this.state.timeTable} /> : null}
+                {this.state.timeTable.length ? (
+                    <Preview classes={this.state.timeTable} />
+                ) : null}
                 <Link to="/">取消</Link>
             </div>
         );
