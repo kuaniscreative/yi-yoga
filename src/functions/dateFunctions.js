@@ -49,3 +49,20 @@ export const sortByMonth = (dateArr) => {
     //     ]
     // ]
 }
+
+
+export const dateOutput = (date) => {
+    const yyyy = date.getFullYear();
+    const mm = date.getMonth() + 1;
+    const dd = date.getDate();
+    const startAtHour = date.getHours();
+    const startAtMin = date.getMinutes();
+
+    return {
+        yyyy,
+        mm,
+        dd,
+        startAtHour,
+        startAtMin
+    }
+}

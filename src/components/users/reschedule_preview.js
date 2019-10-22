@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+// components
+import ListByDay from './reschedule_preview_classList';
+
 class Preview extends Component {
 
     handleClick = (e) => {
@@ -12,7 +15,15 @@ class Preview extends Component {
         console.log(this.props.classes)
         return (
             <div>
-                <p>2019/11/01 19:00-20:00 <button onClick={this.handleClick}>候補</button></p> 
+                {
+                    this.props.classes.map((dayArr, i) => {
+                        if (dayArr.length) {
+                            return <ListByDay key={i} classes={dayArr} />
+                        } else {
+                            return null
+                        }
+                    })
+                }
             </div>
         )
     }
