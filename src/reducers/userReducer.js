@@ -7,6 +7,11 @@ const userReducer = (state = initState, action) => {
         case 'REGISTERED_TO_COURSE':
             console.log('REGISTERED_TO_COURSE');
             return state 
+        case 'RESCHEDULE_STAMP_SELECTED': 
+            return {
+                ...state,
+                selectedRecheduleStamp: action.stamp
+            }
         default:
             return state
     }

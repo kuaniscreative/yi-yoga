@@ -13,7 +13,8 @@ class ClassSingle extends Component {
     handleClick = () => {
         const classId = this.props.classInfo.id;
         const userId = this.props.userId;
-        this.props.rescheduleApplication(classId, userId);
+        const stamp = this.props.stamp;
+        this.props.rescheduleApplication(classId, userId, stamp);
     };
 
     render() {
@@ -30,14 +31,15 @@ class ClassSingle extends Component {
 
 const mapStateToProps = state => {
     return {
-        userId: state.firebase.auth.uid
+        userId: state.firebase.auth.uid,
+        stamp: state.user.selectedRecheduleStamp
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        rescheduleApplication: (classId, userId) => {
-            dispatch(rescheduleApplication(classId, userId))
+        rescheduleApplication: (classId, userId, stamp) => {
+            dispatch(rescheduleApplication(classId, userId, stamp))
         }
     };
 };

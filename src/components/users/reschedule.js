@@ -54,7 +54,7 @@ class Reschedule extends Component {
         return sortedByDay
     };
 
-    requestTimeTable = classStamp => {
+    requestTimeTable = (classStamp) => {
         const available = this.classFilter(classStamp);
         const sorted = this.sortClassesByDay(available);
         this.setState({
@@ -62,6 +62,13 @@ class Reschedule extends Component {
             timeTable: sorted
         });
     };
+
+    handleClick = (e) => {
+        const stamp = e.target.dataset.stamp;
+        this.props.selectdRescheduleStamp(stamp);
+        this.requestTimeTable(stamp);
+        
+    }
 
     render() {
         return (
@@ -72,10 +79,9 @@ class Reschedule extends Component {
                         return (
                             <div key={i}>
                                 {classSingle}
-                                <button
-                                    onClick={() => {
-                                        this.requestTimeTable(classSingle);
-                                    }}
+                                <button 
+                                    data-stamp={classSingle}
+                                    onClick={this.handleClick}
                                 >
                                     補課
                                 </button>
@@ -83,7 +89,7 @@ class Reschedule extends Component {
                         );
                     })}
                 {this.state.timeTable.length ? (
-                    <Preview classes={this.state.timeTable} />
+                    <Preview classes={this.state.timeTable} leaveRecord={this.props.reschedulable}/>
                 ) : null}
                 <Link to="/">取消</Link>
             </div>
@@ -107,7 +113,13 @@ const mapStateToProps = state => {
     };
 };
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectdRescheduleStamp: (stamp) => {dispatch({type:"RESCHEDULE_STAMP_SELECTED", stamp: stamp})}
+    }
+}
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([{ collection: "user" }, { collection: "classProfile" }])
 )(Reschedule);

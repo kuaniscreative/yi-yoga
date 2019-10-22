@@ -165,14 +165,23 @@ export const leaveApplication = (selectedDate, userId) => {
     };
 };
 
-export const rescheduleApplication = (classId, userId) => {
+export const rescheduleApplication = (classId, userId, stamp) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
         firestore.collection('classProfile').doc(classId).update({
             pendingStudent: firebase.firestore.FieldValue.arrayUnion(userId)
+        }).then(() => {
+            alert('已候捕');
+            document.location.href = '/';
         })
+
+        firestore.collection('user').doc(userId).update({
+            reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
+            rescheduled: firebase.firestore.FieldValue.arrayUnion(stamp)
+        })
+ 
         
     }
 }
