@@ -177,9 +177,14 @@ export const rescheduleApplication = (classId, userId, stamp) => {
             document.location.href = '/';
         })
 
+        const rescheduleInfo = {
+            stamp: stamp,
+            pendingClass: classId,
+        }
+
         firestore.collection('user').doc(userId).update({
             reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
-            rescheduled: firebase.firestore.FieldValue.arrayUnion(stamp)
+            rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleInfo)
         })
  
         

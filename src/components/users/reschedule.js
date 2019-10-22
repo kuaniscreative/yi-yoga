@@ -88,6 +88,14 @@ class Reschedule extends Component {
                             </div>
                         );
                     })}
+                    {this.props.rescheduled &&
+                    this.props.rescheduled.map((info, i) => {
+                        return (
+                            <div key={i}>
+                                {info.stamp}以請假
+                            </div>
+                        );
+                    })}
                 {this.state.timeTable.length ? (
                     <Preview classes={this.state.timeTable} leaveRecord={this.props.reschedulable}/>
                 ) : null}
@@ -109,6 +117,7 @@ const mapStateToProps = state => {
             : {};
     return {
         reschedulable: userData.reschedulable,
+        rescheduled: userData.rescheduled,
         classProfile: state.firestore.ordered.classProfile
     };
 };
