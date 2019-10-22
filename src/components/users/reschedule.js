@@ -58,7 +58,7 @@ class Reschedule extends Component {
                             </div>
                         );
                     })}
-                    { this.state.timeTable.length ? <Preview /> : null}
+                    { this.state.timeTable.length ? <Preview classes={this.state.timeTable} /> : null}
                 <Link to="/">取消</Link>
             </div>
         );
