@@ -13,8 +13,8 @@ class UserPanel extends Component {
         const registerClassProcessor = this.props.newSession ? <Link to='/register-classes'>報名</Link> : null;
 
         return (
-            <div>
-                <div>歡迎xxx</div>
+            <div id='userPanel'>
+                <div className='welcomeMessage'>嗨，小明</div>
                 <Link to="/leave-application">請假</Link>
                 <Link to="/reschedule">補課</Link>
                 { registerClassProcessor }
