@@ -1,13 +1,23 @@
+/**
+ *
+ *  Using flex for composition
+ *  Usage: 1. add checkboxContainer to your label element
+ *         2. create a element with checkboxContainer_message class for your option text.
+ *         3. create a element with checkboxContainer_checkbox class for your checkbox.
+ *         4. create a element with checkmark class inside checkboxContainer_checkbox for styleing your checkmark 
+ * 
+ *
+ */
+
+
+
 /* Customize the label (the checkboxContainer) */
 .checkboxContainer {
-    display: block;
+    display: flex;
+    width: 100%;
     position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
+    margin-bottom: 2em;
     cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
   }
   
@@ -22,9 +32,8 @@
   
   /* Create a custom checkbox */
   .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: block;
+    position: relative;
     height: 24px;
     width: 24px;
     border: 1px solid $gray-5;
@@ -46,12 +55,12 @@
   .checkmark:after {
     content: "";
     position: absolute;
-    display: none;
+    visibility: hidden;
   }
   
   /* Show the checkmark when checked */
   .checkboxContainer input:checked ~ .checkmark:after {
-    display: block;
+    visibility: visible
   }
   
   /* Style the checkmark/indicator */
@@ -65,4 +74,16 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+  }
+
+  .checkboxContainer_message {
+    flex: 1;
+    padding-right: 24px
+  }
+  .checkboxContainer_checkbox {
+    flex: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding-right: 24px;
   }

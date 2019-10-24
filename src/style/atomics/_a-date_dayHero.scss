@@ -1,3 +1,14 @@
-.date_dayHero {
+.date_dayHero_day {
     font-size: 1.5em;
+    margin-right: 0.5em;
+}
+
+.date_dayHero_time {
+    font-size: 1em;
+}
+
+.date_dayHero_message {
+    font-size: 0.75em;
+    color: $gray-3;
+    margin-top: 1em;
 }

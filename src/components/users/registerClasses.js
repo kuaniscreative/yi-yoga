@@ -35,7 +35,7 @@ class RegisterClasses extends Component {
         e.preventDefault();
 
         const matchCourses = [];
-        const session = this.props.session[0].sortedByCourse;
+        const session = this.props.session;
         const selected = this.state.selected;
 
         selected.forEach(selection => {
@@ -57,18 +57,27 @@ class RegisterClasses extends Component {
                     courses.map((course, i) => {
                         return (
                             <label key={i} className="checkboxContainer">
-                                <div className='date_dayHero'>
-                                    <span className='date_dayHero_day'>
+                                <div className="date_dayHero checkboxContainer_message">
+                                    <span className="date_dayHero_day">
                                         {course.day}
                                     </span>
+                                    <span className="date_dayHero_time">
+                                        {course.time}
+                                    </span>
+                                    <div className="date_dayHero_message">
+                                        行天宮 ｜ 自備瑜珈墊，可放教室
+                                    </div>
                                 </div>
-                                <input
-                                    type="checkbox"
-                                    name={course.name}
-                                    value={course.name}
-                                    onChange={this.handleChange}
-                                />
-                                <span className="checkmark"></span>
+
+                                <div className="checkboxContainer_checkbox">
+                                    <input
+                                        type="checkbox"
+                                        name={course.name}
+                                        value={course.name}
+                                        onChange={this.handleChange}
+                                    />
+                                    <span className="checkmark"></span>
+                                </div>
                             </label>
                         );
                     })}
