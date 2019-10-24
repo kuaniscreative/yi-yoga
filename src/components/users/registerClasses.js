@@ -49,15 +49,33 @@ class RegisterClasses extends Component {
     }
 
     render() {
-        const session = this.props.session ? this.props.session[0].sortedByCourse : null;
+        const courses = this.props.regularCourse;
         return (
             <form onSubmit={this.handleSubmit}>
-                {
+                {/* {
                     session && session.map((item, i) => {
                         return (
                             <div key={i}>
                                 <input type="checkbox" name={item.name} value={item.name} onChange={this.handleChange} /> {`${item.name} 共${item.length}堂`}
                             </div>  
+                        )
+                    })
+                } */}
+                {
+                    courses && courses.map((course, i) => {
+                        return (
+                            <div key={i}>
+                                <input type="checkbox" name={course.name} value={course.name} onChange={this.handleChange} /> 
+                                <span>
+                                    {course.day}
+                                </span>
+                                <span>
+                                    {course.time}
+                                </span>
+                                <span>
+                                    {course.length}
+                                </span>
+                            </div>
                         )
                     })
                 }
@@ -68,9 +86,26 @@ class RegisterClasses extends Component {
 }
 
 const mapStateToProps = (state) => {
+    const session = state.firestore.ordered.newSession ? state.firestore.ordered.newSession[0] : null;
+    let regularCourse = state.firestore.ordered.regularCourse ? state.firestore.ordered.regularCourse : null;
+    if (regularCourse) {
+        regularCourse = regularCourse.map((course) => {
+            const key = course.name;
+            const length = session.sortedByCourse.find((course) => {
+                return course.name === key;
+            }).length; 
+            
+            return {
+                ...course,
+                length
+            }
+        })
+    }
+    
     return {
         userId: state.firebase.auth.uid,
-        session: state.firestore.ordered.newSession
+        session: session,
+        regularCourse: regularCourse
     }
 }
 
@@ -84,6 +119,6 @@ const mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-        {collection: 'newSession'}
+        {collection: 'newSession'}, {collection: 'regularCourse'}
     ])
 )(RegisterClasses)
