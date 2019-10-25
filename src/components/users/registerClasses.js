@@ -45,14 +45,15 @@ class RegisterClasses extends Component {
                     matchCourses.push(course);
                 }
             });
+            this.props.updateRegisterStatus(selection, session.id,this.props.userId);
         });
-        this.props.updateRegisterStatus('星期一 19:20 - 20:20', 'KZ6kC4qlTuG3Y4CG1uw6',this.props.userId);
-        // this.props.addStudentToClasses(matchCourses, this.props.userId);
-        // this.props.registerToCourse(matchCourses, this.props.userId);
+        this.props.addStudentToClasses(matchCourses, this.props.userId);
+        this.props.registerToCourse(matchCourses, this.props.userId);
     };
 
     render() {
         const courses = this.props.regularCourse;
+        
         return (
             <form onSubmit={this.handleSubmit}>
                 {courses &&
