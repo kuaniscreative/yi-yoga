@@ -84,7 +84,7 @@ class RegisterClasses extends Component {
                             </label>
                         );
                     })}
-                <button>確認</button>
+                <button className='outlineButton'>確認</button>
             </form>
         );
     }
