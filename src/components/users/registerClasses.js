@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -85,6 +86,7 @@ class RegisterClasses extends Component {
                         );
                     })}
                 <button className='outlineButton'>確認</button>
+                <Link to='/' className='cancelGray'>取消</Link>
             </form>
         );
     }
