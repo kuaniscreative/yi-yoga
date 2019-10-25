@@ -39,12 +39,13 @@ class RegisterClasses extends Component {
         const selected = this.state.selected;
 
         selected.forEach(selection => {
-            session.forEach(course => {
+            session.sortedByCourse.forEach(course => {
                 if (selection === course.name) {
                     matchCourses.push(course);
                 }
             });
         });
+
         this.props.addStudentToClasses(matchCourses, this.props.userId);
         this.props.registerToCourse(matchCourses, this.props.userId);
     };
