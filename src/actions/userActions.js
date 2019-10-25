@@ -1,3 +1,4 @@
+// register classes
 export const registerToCourse = (course, userId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
@@ -92,6 +93,35 @@ export const addStudentToClasses = (course, userId) => {
     };
 };
 
+export const updateRegisterStatus = (courseName, sessionId, userId) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+        const registerStatus = firestore.collection("registerStatus");
+
+        registerStatus
+            .where("name", "==", courseName)
+            .where("session", "==", sessionId)
+            .get()
+            .then(snapshot => {
+                const match = snapshot.docs;
+                match.forEach(ref => {
+                    
+                    if (ref.data().students.length === 14) {
+                        registerStatus.doc(ref.id).update({
+                            students:firebase.firestore.FieldValue.arrayUnion(userId),
+                            full: true
+                        })
+                    } else {
+                        registerStatus.doc(ref.id).update({
+                            students:firebase.firestore.FieldValue.arrayUnion(userId),
+                        })
+                    }
+                });
+            });
+    };
+};
+
 export const leaveApplication = (selectedDate, userId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
@@ -124,7 +154,7 @@ export const leaveApplication = (selectedDate, userId) => {
                         absence: firebase.firestore.FieldValue.arrayUnion(
                             userId
                         )
-                    })
+                    });
 
                 // 將請假的課堂從user.allClasses中移除
                 firestore
@@ -141,9 +171,14 @@ export const leaveApplication = (selectedDate, userId) => {
                                 );
                             }
                         );
-                        const leaveRecord_year = selectedDate.toDate().getFullYear();
-                        const leaveRecord_month = selectedDate.toDate().getMonth();
-                        const record = `${leaveRecord_year }/${leaveRecord_month + 1}`;
+                        const leaveRecord_year = selectedDate
+                            .toDate()
+                            .getFullYear();
+                        const leaveRecord_month = selectedDate
+                            .toDate()
+                            .getMonth();
+                        const record = `${leaveRecord_year}/${leaveRecord_month +
+                            1}`;
 
                         firestore
                             .collection("user")
@@ -157,8 +192,9 @@ export const leaveApplication = (selectedDate, userId) => {
                                     record
                                 )
                             });
-                    })
-            }).then(() => {
+                    });
+            })
+            .then(() => {
                 // alert('請假成功');
                 // document.location.href = '/';
             });
@@ -166,27 +202,34 @@ export const leaveApplication = (selectedDate, userId) => {
 };
 
 export const rescheduleApplication = (classId, userId, stamp) => {
-    return (dispatch, getState, {getFirebase, getFirestore}) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
-        firestore.collection('classProfile').doc(classId).update({
-            pendingStudent: firebase.firestore.FieldValue.arrayUnion(userId)
-        }).then(() => {
-            alert('已候捕');
-            document.location.href = '/';
-        })
+        firestore
+            .collection("classProfile")
+            .doc(classId)
+            .update({
+                pendingStudent: firebase.firestore.FieldValue.arrayUnion(userId)
+            })
+            .then(() => {
+                alert("已候捕");
+                document.location.href = "/";
+            });
 
         const rescheduleInfo = {
             stamp: stamp,
-            pendingClass: classId,
-        }
+            pendingClass: classId
+        };
 
-        firestore.collection('user').doc(userId).update({
-            reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
-            rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleInfo)
-        })
- 
-        
-    }
-}
+        firestore
+            .collection("user")
+            .doc(userId)
+            .update({
+                reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
+                rescheduled: firebase.firestore.FieldValue.arrayUnion(
+                    rescheduleInfo
+                )
+            });
+    };
+};

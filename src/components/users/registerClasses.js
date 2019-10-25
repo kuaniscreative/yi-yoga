@@ -8,7 +8,8 @@ import { firestoreConnect } from "react-redux-firebase";
 // actions
 import {
     registerToCourse,
-    addStudentToClasses
+    addStudentToClasses,
+    updateRegisterStatus
 } from "../../actions/userActions";
 
 class RegisterClasses extends Component {
@@ -45,9 +46,9 @@ class RegisterClasses extends Component {
                 }
             });
         });
-
-        this.props.addStudentToClasses(matchCourses, this.props.userId);
-        this.props.registerToCourse(matchCourses, this.props.userId);
+        this.props.updateRegisterStatus('星期一 19:20 - 20:20', 'KZ6kC4qlTuG3Y4CG1uw6',this.props.userId);
+        // this.props.addStudentToClasses(matchCourses, this.props.userId);
+        // this.props.registerToCourse(matchCourses, this.props.userId);
     };
 
     render() {
@@ -123,6 +124,9 @@ const mapDispatchToProps = dispatch => {
         },
         addStudentToClasses: (course, userId) => {
             dispatch(addStudentToClasses(course, userId));
+        },
+        updateRegisterStatus: (courseName, sessionId, userId) => {
+            dispatch(updateRegisterStatus(courseName, sessionId, userId));
         }
     };
 };
