@@ -1,0 +1,14 @@
+.stepIndicator {
+    display: flex;
+    width: 50%;
+    max-width: 144px;
+    border-bottom: 1px solid $gray-3;
+    align-items: center;
+    margin-bottom: 4em;
+
+
+    p {
+        font-size: 0.75em;
+        padding: 1em 0;
+    }
+}
