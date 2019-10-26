@@ -5,6 +5,8 @@ import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
 // components
+import RegularCourseForm from "./registerClasses_regularCourseForm";
+import StepIndicator from '../stepIndicator';
 
 // actions
 import {
@@ -57,45 +59,15 @@ class RegisterClasses extends Component {
     };
 
     render() {
-        const courses = this.props.regularCourse;
-
         return (
-            <form onSubmit={this.handleSubmit}>
-                {courses &&
-                    courses.map((course, i) => {
-                        return (
-                            <label key={i} className="checkboxContainer">
-                                <div className="date_dayHero checkboxContainer_message">
-                                    <span className="date_dayHero_day">
-                                        {course.day}
-                                    </span>
-                                    <span className="date_dayHero_time">
-                                        {course.time}
-                                    </span>
-                                    <div className="date_dayHero_message">
-                                        行天宮 ｜ 自備瑜珈墊，可放教室
-                                    </div>
-                                </div>
-
-                                <div className="checkboxContainer_checkbox">
-                                    <input
-                                        type="checkbox"
-                                        name={course.name}
-                                        value={course.name}
-                                        onChange={this.handleChange}
-                                    />
-                                    <span className="checkmark"></span>
-                                </div>
-                            </label>
-                        );
-                    })}
-                <div className='nextStepButtonsArea'>
-                    <button className="outlineButton">確認</button>
-                    <Link to="/" className="cancelGray">
-                        取消
-                    </Link>
-                </div>
-            </form>
+            <div id="registerClasses">
+                <StepIndicator indicator='選擇課堂' />
+                <RegularCourseForm
+                    handleChange={this.handleChange}
+                    handleSubmit={this.handleSubmit}
+                    courses={this.props.regularCourse}
+                />
+            </div>
         );
     }
 }
