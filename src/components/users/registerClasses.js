@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -46,7 +46,11 @@ class RegisterClasses extends Component {
                     matchCourses.push(course);
                 }
             });
-            this.props.updateRegisterStatus(selection, session.id,this.props.userId);
+            this.props.updateRegisterStatus(
+                selection,
+                session.id,
+                this.props.userId
+            );
         });
         this.props.addStudentToClasses(matchCourses, this.props.userId);
         this.props.registerToCourse(matchCourses, this.props.userId);
@@ -54,7 +58,7 @@ class RegisterClasses extends Component {
 
     render() {
         const courses = this.props.regularCourse;
-        
+
         return (
             <form onSubmit={this.handleSubmit}>
                 {courses &&
@@ -85,8 +89,12 @@ class RegisterClasses extends Component {
                             </label>
                         );
                     })}
-                <button className='outlineButton'>確認</button>
-                <Link to='/' className='cancelGray'>取消</Link>
+                <div className='nextStepButtonsArea'>
+                    <button className="outlineButton">確認</button>
+                    <Link to="/" className="cancelGray">
+                        取消
+                    </Link>
+                </div>
             </form>
         );
     }
