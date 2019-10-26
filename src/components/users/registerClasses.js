@@ -6,7 +6,8 @@ import { firestoreConnect } from "react-redux-firebase";
 
 // components
 import RegularCourseForm from "./registerClasses_regularCourseForm";
-import StepIndicator from '../stepIndicator';
+import StepIndicator from "../stepIndicator";
+import Preview from "./registerClasses_preview";
 
 // actions
 import {
@@ -17,7 +18,9 @@ import {
 
 class RegisterClasses extends Component {
     state = {
-        selected: []
+        selected: [],
+        enablePreview: false,
+        matchCourses: []
     };
 
     handleChange = e => {
@@ -35,7 +38,7 @@ class RegisterClasses extends Component {
         });
     };
 
-    handleSubmit = e => {
+    courseSelected = e => {
         e.preventDefault();
 
         const matchCourses = [];
@@ -48,25 +51,41 @@ class RegisterClasses extends Component {
                     matchCourses.push(course);
                 }
             });
-            this.props.updateRegisterStatus(
-                selection,
-                session.id,
-                this.props.userId
-            );
+            // this.props.updateRegisterStatus(
+            //     selection,
+            //     session.id,
+            //     this.props.userId
+            // );
         });
-        this.props.addStudentToClasses(matchCourses, this.props.userId);
-        this.props.registerToCourse(matchCourses, this.props.userId);
+        // this.props.addStudentToClasses(matchCourses, this.props.userId);
+        // this.props.registerToCourse(matchCourses, this.props.userId);
+        this.setState({
+            enablePreview: true,
+            matchCourses: matchCourses
+        });
     };
+
+    indicatorOutput = () => {
+        if (this.state.enablePreview === false) {
+            return '選擇課堂'
+        } else if (this.state.enablePreview === true) {
+            return '確認表單'
+        }
+    }
 
     render() {
         return (
             <div id="registerClasses">
-                <StepIndicator indicator='選擇課堂' />
-                <RegularCourseForm
-                    handleChange={this.handleChange}
-                    handleSubmit={this.handleSubmit}
-                    courses={this.props.regularCourse}
-                />
+                <StepIndicator indicator={this.indicatorOutput()} />
+                {this.state.enablePreview ? (
+                    <Preview matchCourses={this.state.matchCourses}/>
+                ) : (
+                    <RegularCourseForm
+                        handleChange={this.handleChange}
+                        handleSubmit={this.courseSelected}
+                        courses={this.props.regularCourse}
+                    />
+                )}
             </div>
         );
     }
