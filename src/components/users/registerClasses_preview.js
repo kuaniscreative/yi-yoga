@@ -41,7 +41,7 @@ class Preview extends Component {
             <div className="preview">
                 {this.optionsList(courses)}
                 <div className="nextStepButtonsArea">
-                    <button className="outlineButton">確認</button>
+                    <button className="outlineButton" onClick={this.props.apply}>確認</button>
                     <Link to="/" className="cancelGray">
                         取消
                     </Link>

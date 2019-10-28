@@ -33,8 +33,6 @@ export const registerToCourse = (course, userId) => {
                         registeredCourse: course
                     })
                     .then(() => {
-                        alert("報名成功");
-                        document.location.href = "/";
                         dispatch({ type: "REGISTERED_TO_COURSE", course });
                     });
             });

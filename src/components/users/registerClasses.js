@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -8,6 +7,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import RegularCourseForm from "./registerClasses_regularCourseForm";
 import StepIndicator from "../stepIndicator";
 import Preview from "./registerClasses_preview";
+import RegisterClassSuccess from './registerClasses_success';
 
 // actions
 import {
@@ -110,19 +110,31 @@ class RegisterClasses extends Component {
         }
     }
 
+    conditionalComponents = () => {
+        const preview =  this.state.enablePreview;
+        const success = this.props.registerClassSuccess;
+
+        if (success) {
+            return <RegisterClassSuccess />
+        } else if (preview) {
+            return  <Preview matchCourses={this.state.matchCourses}  deselect = {this.deselect} apply={this.apply}/>
+        } else {
+            return <RegularCourseForm
+            handleChange={this.handleChange}
+            handleSubmit={this.courseSelected}
+            courses={this.props.regularCourse}
+        />
+        }
+    }
+
     render() {
+        console.log(this.props)
         return (
             <div id="registerClasses">
                 <StepIndicator indicator={this.indicatorOutput()} />
-                {this.state.enablePreview ? (
-                    <Preview matchCourses={this.state.matchCourses}  deselect = {this.deselect} apply={this.apply}/>
-                ) : (
-                    <RegularCourseForm
-                        handleChange={this.handleChange}
-                        handleSubmit={this.courseSelected}
-                        courses={this.props.regularCourse}
-                    />
-                )}
+                {
+                    this.conditionalComponents()
+                }
             </div>
         );
     }
@@ -152,7 +164,8 @@ const mapStateToProps = state => {
     return {
         userId: state.firebase.auth.uid,
         session: session,
-        regularCourse: regularCourse
+        regularCourse: regularCourse,
+        registerClassSuccess: state.user.registerClassSuccess
     };
 };
 
