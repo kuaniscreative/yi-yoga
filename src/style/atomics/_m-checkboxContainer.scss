@@ -76,14 +76,17 @@
     transform: rotate(45deg);
   }
 
+
+/* compositions */  
   .checkboxContainer_message {
-    flex: 1;
+    flex: 1 0;
     padding-right: 24px
   }
   .checkboxContainer_checkbox {
-    flex: 0;
+    flex: 0 0 80px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    padding-right: 24px;
+    justify-content: center;
+
   }
