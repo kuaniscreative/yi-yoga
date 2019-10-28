@@ -51,19 +51,56 @@ class RegisterClasses extends Component {
                     matchCourses.push(course);
                 }
             });
-            // this.props.updateRegisterStatus(
-            //     selection,
-            //     session.id,
-            //     this.props.userId
-            // );
         });
-        // this.props.addStudentToClasses(matchCourses, this.props.userId);
-        // this.props.registerToCourse(matchCourses, this.props.userId);
+
         this.setState({
+            selected: [],
             enablePreview: true,
             matchCourses: matchCourses
         });
     };
+
+    deselect = (course) => {
+        const currentCourses = this.state.matchCourses;
+        const afterDeletion = currentCourses.filter((item) => {
+            return item !== course;
+        })
+
+        if (afterDeletion.length) {
+            this.setState({
+                ...this.state,
+                matchCourses: afterDeletion
+            }, () => {
+                console.log(this.state);
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                enablePreview: false,
+                matchCourses: afterDeletion
+            }, () => {
+                console.log(this.state);
+            })
+        }
+
+        
+    }
+
+    apply = () => {
+        const selectedCourse = this.state.matchCourses;
+        const userId = this.props.userId;
+        const session = this.props.session;
+
+        selectedCourse.forEach((course) => {
+            this.props.updateRegisterStatus(
+                course,
+                session.id,
+                userId
+            );
+        })
+        this.props.addStudentToClasses(selectedCourse, userId);
+        this.props.registerToCourse(selectedCourse, userId);
+    }
 
     indicatorOutput = () => {
         if (this.state.enablePreview === false) {
@@ -78,7 +115,7 @@ class RegisterClasses extends Component {
             <div id="registerClasses">
                 <StepIndicator indicator={this.indicatorOutput()} />
                 {this.state.enablePreview ? (
-                    <Preview matchCourses={this.state.matchCourses}/>
+                    <Preview matchCourses={this.state.matchCourses}  deselect = {this.deselect} apply={this.apply}/>
                 ) : (
                     <RegularCourseForm
                         handleChange={this.handleChange}
