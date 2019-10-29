@@ -27,7 +27,7 @@ class ClassSingle extends Component {
         const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
 
         return (
-            <label>
+            <label className='checkboxContainer'>
                 <div className="dateHero checkboxContainer_message">
                     <span name="date">{`${dd}`}</span>
                     <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>

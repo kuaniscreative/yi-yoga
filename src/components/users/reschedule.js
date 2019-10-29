@@ -45,29 +45,6 @@ class Reschedule extends Component {
         });
     };
 
-    // sortClassesByDay = (classes = []) => {
-    //     // map the timestamps to date objects
-    //     let dates = classes.map(classInfo => {
-    //         return {
-    //             ...classInfo,
-    //             classDate: classInfo.classDate.toDate()
-    //         };
-    //     });
-
-    //     // sort the dates by month
-    //     const sortedByDay = [];
-    //     dates.forEach(classInfo => {
-    //         const day = classInfo.classDate.getDay();
-    //         if (sortedByDay[day]) {
-    //             sortedByDay[day].push(classInfo);
-    //         } else {
-    //             sortedByDay[day] = [];
-    //         }
-    //     });
-
-    //     return sortedByDay;
-    // };
-
     requestTimeTable = (mm, yyyy) => {
         const available = this.classFilter(mm, yyyy);
         // const sorted = this.sortClassesByDay(available);
@@ -77,16 +54,10 @@ class Reschedule extends Component {
         });
     };
 
-    // handleClick = e => {
-    //     const stamp = e.target.dataset.stamp;
-    //     this.props.selectdRescheduleStamp(stamp);
-    //     this.requestTimeTable(stamp);
-    // };
-
     handleClick = e => {
         const yyyy = e.target.dataset.year;
         const mm = e.target.dataset.month;
-
+        
         this.requestTimeTable(mm, yyyy);
     };
 
@@ -132,11 +103,21 @@ class Reschedule extends Component {
         }
     };
 
+    indicatorOutput = () => {
+        if (this.state.timeTable.length) {
+            return '選擇補課日期'
+        } 
+        return '選擇已請假課堂'
+
+    }
+
     render() {
         return (
             <div id="reschedule">
-                <StepIndicator indicator="選擇已請假課堂" />
-                {this.conditionalComponents()}
+                <StepIndicator indicator={this.indicatorOutput()} />
+                <div className='innerContent'>
+                    {this.conditionalComponents()}
+                </div>
                 <div className="nextStepButtonsArea">
                     {/* <button className="outlineButton" onClick={this.props.apply}>確認</button> */}
                     <Link to="/" className="cancelGray">
