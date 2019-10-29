@@ -15,8 +15,9 @@ class ClassSingle extends Component {
     };
 
     render() {
-        const classId = this.props.classSingle.id;
-        const date = this.props.classSingle.classDate.toDate();
+        const classInfo = this.props.classSingle;
+        const classId = classInfo.id;
+        const date = classInfo.classDate.toDate();
         const dd = date.getDate();
         const mm = date.getMonth();
         const yyyy = date.getFullYear();
@@ -25,14 +26,25 @@ class ClassSingle extends Component {
         const startAt = `${hr}:${min}`;
         const day = date.getDay();
         const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
+        let pendingNum;
+        let availableNum;
+        if (classInfo) {
+            pendingNum = classInfo.pendingStudents ? classInfo.pendingStudents.length : 0;
+            availableNum = classInfo.students ? 15 - classInfo.students.length : 0;
+        }
 
         return (
-            <label className='checkboxContainer'>
+            <label className="checkboxContainer">
                 <div className="dateHero checkboxContainer_message">
                     <span name="date">{`${dd}`}</span>
                     <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
                     <span name="seperator"> | </span>
                     <span name="dayTime">{`${dayOutput} ${startAt}`}</span>
+                    <div className="dateHero_message">
+                        <span>{`空位： ${availableNum}`}</span>
+                        <span name='seperator'> | </span>
+                        <span>{`等待人數： ${pendingNum}`}</span>
+                    </div>
                 </div>
                 <div className="checkboxContainer_checkbox">
                     <input
