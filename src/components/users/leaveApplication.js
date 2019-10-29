@@ -7,6 +7,7 @@ import { firestoreConnect } from "react-redux-firebase";
 // components
 import AllClasses from "./allClasses";
 import StepIndicator from "../stepIndicator";
+import LeaveApplicationSuccess from './leaveApplication_success';
 
 // actions
 import { leaveApplication } from "../../actions/userActions";
@@ -32,12 +33,22 @@ class LeaveApplication extends Component {
         }
     };
 
+    conditionalComponents = () => {
+        const success = this.props.leaveApplicationSuccess;
+
+        if (success) {
+            return <LeaveApplicationSuccess />
+        }  else {
+            return <AllClasses submit={this.submit} />
+        }
+    }
+
     render() {
         return (
             <div id="leaveApplication">
                 <StepIndicator indicator="選擇日期" />
-                <AllClasses submit={this.submit} />
-                <Link to="/">取消</Link>
+                { this.conditionalComponents() }
+                <Link to="/" onClick={this.props.clearSuccessMessage}>取消</Link>
             </div>
         );
     }
@@ -52,7 +63,8 @@ const mapStateToProps = state => {
 
     return {
         userId: state.firebase.auth.uid,
-        leaveRecord: user ? user.leaveRecord : null
+        leaveRecord: user ? user.leaveRecord : null,
+        leaveApplicationSuccess: state.user.leaveApplicationSuccess
     };
 };
 
@@ -60,6 +72,9 @@ const mapDispatchToProps = dispatch => {
     return {
         leaveApplication: (date, userId) => {
             dispatch(leaveApplication(date, userId));
+        },
+        clearSuccessMessage: () => {
+            dispatch({type:'CLEAR_SUCCESS_MESSAGE'})
         }
     };
 };

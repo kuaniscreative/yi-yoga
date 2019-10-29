@@ -15,6 +15,17 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 selectedRecheduleStamp: action.stamp
             }
+
+        case 'LEAVE_APPLICATION_SUCCESS':
+            return {
+                ...state,
+                leaveApplicationSuccess: true
+            }
+        case 'CLEAR_SUCCESS_MESSAGE':
+            return {
+                ...state,
+                leaveApplicationSuccess: false
+            }
         default:
             return state
     }

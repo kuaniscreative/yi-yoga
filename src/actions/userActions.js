@@ -193,8 +193,7 @@ export const leaveApplication = (selectedDate, userId) => {
                     });
             })
             .then(() => {
-                // alert('請假成功');
-                // document.location.href = '/';
+                dispatch({type: "LEAVE_APPLICATION_SUCCESS"})
             });
     };
 };
