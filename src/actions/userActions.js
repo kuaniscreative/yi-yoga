@@ -211,6 +211,7 @@ export const leaveApplication = (selectedDate, userId) => {
     };
 };
 
+// reschedule
 export const rescheduleApplication = (classId, userId, stamp) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
@@ -228,7 +229,7 @@ export const rescheduleApplication = (classId, userId, stamp) => {
             });
 
         const rescheduleInfo = {
-            stamp: stamp,
+            // stamp: stamp,
             pendingClass: classId
         };
 
@@ -236,7 +237,7 @@ export const rescheduleApplication = (classId, userId, stamp) => {
             .collection("user")
             .doc(userId)
             .update({
-                reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
+                // reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
                 rescheduled: firebase.firestore.FieldValue.arrayUnion(
                     rescheduleInfo
                 )

@@ -8,7 +8,7 @@ import ClassSingle from './reschedule_preview_classSingle';
 class Preview extends Component {
 
     handleClick = () => {
-        console.log('confirn');
+        this.props.submit()
     }
 
     render() {

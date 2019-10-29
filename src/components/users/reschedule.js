@@ -8,6 +8,9 @@ import { firestoreConnect } from "react-redux-firebase";
 import Preview from "./reschedule_preview";
 import StepIndicator from "../stepIndicator";
 
+// actions 
+import {rescheduleApplication} from '../../actions/userActions';
+
 class Reschedule extends Component {
     state = {
         timeTable: [],
@@ -27,9 +30,6 @@ class Reschedule extends Component {
     };
 
     classFilter = (mm, yyyy) => {
-        // const split = classStamp.split("/");
-        // const yyyy = split[0];
-        // const mm = parseInt(split[1], 10) - 1;
         const selectedDate = new Date(yyyy, mm);
         const nextMonth = new Date(yyyy, mm + 1);
 
@@ -96,7 +96,7 @@ class Reschedule extends Component {
     conditionalComponents = () => {
         if (this.state.timeTable.length) {
             return (
-                <Preview classes={this.state.timeTable} select={this.select} />
+                <Preview classes={this.state.timeTable} select={this.select} submit={this.submit}/>
             );
         } else {
             return this.options();
@@ -109,6 +109,12 @@ class Reschedule extends Component {
         } 
         return '選擇已請假課堂'
 
+    }
+
+    submit = () => {
+        const classId = this.state.selected;
+        const userId = this.props.userId;
+        this.props.rescheduleApplication(classId, userId);
     }
 
     render() {
@@ -146,6 +152,7 @@ const mapStateToProps = state => {
               })
             : null;
     return {
+        userId: uid,
         reschedulable: userData.reschedulable,
         rescheduled: userData.rescheduled,
         classProfile: state.firestore.ordered.classProfile,
@@ -157,6 +164,9 @@ const mapDispatchToProps = dispatch => {
     return {
         selectdRescheduleStamp: stamp => {
             dispatch({ type: "RESCHEDULE_STAMP_SELECTED", stamp: stamp });
+        },
+        rescheduleApplication: (classId, userId, stamp) => {
+            dispatch(rescheduleApplication(classId, userId, stamp))
         }
     };
 };
