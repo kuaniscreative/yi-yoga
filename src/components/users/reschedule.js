@@ -6,16 +6,30 @@ import { firestoreConnect } from "react-redux-firebase";
 
 // components
 import Preview from "./reschedule_preview";
+import StepIndicator from "../stepIndicator";
 
 class Reschedule extends Component {
     state = {
-        timeTable: []
+        timeTable: [],
+        selected: ""
     };
 
-    classFilter = classStamp => {
-        const split = classStamp.split("/");
-        const yyyy = split[0];
-        const mm = parseInt(split[1], 10) - 1;
+    select = classId => {
+        this.setState(
+            {
+                ...this.state,
+                selected: classId
+            },
+            () => {
+                console.log(this.state);
+            }
+        );
+    };
+
+    classFilter = (mm, yyyy) => {
+        // const split = classStamp.split("/");
+        // const yyyy = split[0];
+        // const mm = parseInt(split[1], 10) - 1;
         const selectedDate = new Date(yyyy, mm);
         const nextMonth = new Date(yyyy, mm + 1);
 
@@ -31,75 +45,104 @@ class Reschedule extends Component {
         });
     };
 
-    sortClassesByDay = (classes = []) => {
-        // map the timestamps to date objects
-        let dates = classes.map(classInfo => {
-            return {
-                ...classInfo,
-                classDate: classInfo.classDate.toDate()
-            };
-        });
+    // sortClassesByDay = (classes = []) => {
+    //     // map the timestamps to date objects
+    //     let dates = classes.map(classInfo => {
+    //         return {
+    //             ...classInfo,
+    //             classDate: classInfo.classDate.toDate()
+    //         };
+    //     });
 
-        // sort the dates by month
-        const sortedByDay = [];
-        dates.forEach(classInfo => {
-            const day = classInfo.classDate.getDay();
-            if (sortedByDay[day]) {
-                sortedByDay[day].push(classInfo);
-            } else {
-                sortedByDay[day] = []
-            }
-        });
+    //     // sort the dates by month
+    //     const sortedByDay = [];
+    //     dates.forEach(classInfo => {
+    //         const day = classInfo.classDate.getDay();
+    //         if (sortedByDay[day]) {
+    //             sortedByDay[day].push(classInfo);
+    //         } else {
+    //             sortedByDay[day] = [];
+    //         }
+    //     });
 
-        return sortedByDay
-    };
+    //     return sortedByDay;
+    // };
 
-    requestTimeTable = (classStamp) => {
-        const available = this.classFilter(classStamp);
-        const sorted = this.sortClassesByDay(available);
+    requestTimeTable = (mm, yyyy) => {
+        const available = this.classFilter(mm, yyyy);
+        // const sorted = this.sortClassesByDay(available);
         this.setState({
             ...this.state,
-            timeTable: sorted
+            timeTable: available
         });
     };
 
-    handleClick = (e) => {
-        const stamp = e.target.dataset.stamp;
-        this.props.selectdRescheduleStamp(stamp);
-        this.requestTimeTable(stamp);
-        
-    }
+    // handleClick = e => {
+    //     const stamp = e.target.dataset.stamp;
+    //     this.props.selectdRescheduleStamp(stamp);
+    //     this.requestTimeTable(stamp);
+    // };
+
+    handleClick = e => {
+        const yyyy = e.target.dataset.year;
+        const mm = e.target.dataset.month;
+
+        this.requestTimeTable(mm, yyyy);
+    };
+
+    options = () => {
+        const leaveRecord = this.props.leaveRecord;
+        return (
+            leaveRecord &&
+            leaveRecord.records.map((timestamp, i) => {
+                const date = timestamp.toDate();
+                const yyyy = date.getFullYear();
+                const mm = date.getMonth();
+                const dd = date.getDate();
+                const hr = date.getHours();
+                const min = date.getMinutes();
+                const startAt = `${hr}:${min}`;
+                const day = date.getDay();
+                const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
+                return (
+                    <div
+                        className="shadowOption dateHero checkboxContainer_message"
+                        key={i}
+                        data-month={mm}
+                        data-year={yyyy}
+                        onClick={this.handleClick}
+                    >
+                        <span name="date">{`${dd}`}</span>
+                        <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
+                        <span name="seperator"> | </span>
+                        <span name="dayTime">{`${dayOutput} ${startAt}`}</span>
+                    </div>
+                );
+            })
+        );
+    };
+
+    conditionalComponents = () => {
+        if (this.state.timeTable.length) {
+            return (
+                <Preview classes={this.state.timeTable} select={this.select} />
+            );
+        } else {
+            return this.options();
+        }
+    };
 
     render() {
         return (
             <div id="reschedule">
-                補課安排
-                {this.props.reschedulable &&
-                    this.props.reschedulable.map((classSingle, i) => {
-                        return (
-                            <div key={i}>
-                                {classSingle}
-                                <button 
-                                    data-stamp={classSingle}
-                                    onClick={this.handleClick}
-                                >
-                                    補課
-                                </button>
-                            </div>
-                        );
-                    })}
-                    {this.props.rescheduled &&
-                    this.props.rescheduled.map((info, i) => {
-                        return (
-                            <div key={i}>
-                                {info.stamp}以請假
-                            </div>
-                        );
-                    })}
-                {this.state.timeTable.length ? (
-                    <Preview classes={this.state.timeTable} leaveRecord={this.props.reschedulable}/>
-                ) : null}
-                <Link to="/">取消</Link>
+                <StepIndicator indicator="選擇已請假課堂" />
+                {this.conditionalComponents()}
+                <div className="nextStepButtonsArea">
+                    {/* <button className="outlineButton" onClick={this.props.apply}>確認</button> */}
+                    <Link to="/" className="cancelGray">
+                        取消
+                    </Link>
+                </div>
             </div>
         );
     }
@@ -115,20 +158,36 @@ const mapStateToProps = state => {
                   return user.id === uid;
               })
             : {};
+    const leaveRecord =
+        uid && state.firestore.ordered.leaveRecord
+            ? state.firestore.ordered.leaveRecord.find(record => {
+                  return record.id === uid;
+              })
+            : null;
     return {
         reschedulable: userData.reschedulable,
         rescheduled: userData.rescheduled,
-        classProfile: state.firestore.ordered.classProfile
+        classProfile: state.firestore.ordered.classProfile,
+        leaveRecord: leaveRecord
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
-        selectdRescheduleStamp: (stamp) => {dispatch({type:"RESCHEDULE_STAMP_SELECTED", stamp: stamp})}
-    }
-}
+        selectdRescheduleStamp: stamp => {
+            dispatch({ type: "RESCHEDULE_STAMP_SELECTED", stamp: stamp });
+        }
+    };
+};
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([{ collection: "user" }, { collection: "classProfile" }])
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    firestoreConnect([
+        { collection: "user" },
+        { collection: "classProfile" },
+        { collection: "leaveRecord" }
+    ])
 )(Reschedule);

@@ -10,21 +10,40 @@ import { dateOutput } from "../../functions/dateFunctions";
 import { rescheduleApplication } from "../../actions/userActions";
 
 class ClassSingle extends Component {
-    handleClick = () => {
-        const classId = this.props.classInfo.id;
-        const userId = this.props.userId;
-        const stamp = this.props.stamp;
-        this.props.rescheduleApplication(classId, userId, stamp);
+    handleChange = e => {
+        this.props.select(e.target.value);
     };
 
     render() {
-        const output = dateOutput(this.props.classInfo.classDate);
+        const classId = this.props.classSingle.id;
+        const date = this.props.classSingle.classDate.toDate();
+        const dd = date.getDate();
+        const mm = date.getMonth();
+        const yyyy = date.getFullYear();
+        const hr = date.getHours();
+        const min = date.getMinutes();
+        const startAt = `${hr}:${min}`;
+        const day = date.getDay();
+        const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
 
         return (
-            <div>
-                {`${output.yyyy}.${output.mm}.${output.dd} ${output.startAtHour}:${output.startAtMin}`}
-                <button onClick={this.handleClick}>確認</button>
-            </div>
+            <label>
+                <div className="dateHero checkboxContainer_message">
+                    <span name="date">{`${dd}`}</span>
+                    <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
+                    <span name="seperator"> | </span>
+                    <span name="dayTime">{`${dayOutput} ${startAt}`}</span>
+                </div>
+                <div className="checkboxContainer_checkbox">
+                    <input
+                        type="radio"
+                        name="rescheduleDate"
+                        value={classId}
+                        onChange={this.handleChange}
+                    />
+                    <span className="checkmark"></span>
+                </div>
+            </label>
         );
     }
 }
@@ -39,12 +58,15 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         rescheduleApplication: (classId, userId, stamp) => {
-            dispatch(rescheduleApplication(classId, userId, stamp))
+            dispatch(rescheduleApplication(classId, userId, stamp));
         }
     };
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
     firestoreConnect([{ collection: "classProfile" }])
 )(ClassSingle);
