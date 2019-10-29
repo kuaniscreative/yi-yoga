@@ -15,7 +15,7 @@ class AllClasses extends Component {
     render() {
     
         return (
-            <div>
+            <div className='centerList'>
                 {
                     this.props.classes.map((date, i) => {
                         return <DateSingle classSingle={date} key={i} submit={this.props.submit} />

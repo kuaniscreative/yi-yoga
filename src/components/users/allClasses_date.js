@@ -20,14 +20,14 @@ class DateSingle extends Component {
         const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
 
         return (
-            <label className="shadowOption" onClick={this.handleClick}>
+            <div className="shadowOption" onClick={this.handleClick}>
                 <div className="dateHero">
                     <span name="date">{`${dd}`}</span>
                     <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
                     <span name="seperator"> | </span>
                     <span name="dayTime">{`${dayOutput} ${startAt}`}</span>
                 </div>
-            </label>
+            </div>
         );
     }
 }

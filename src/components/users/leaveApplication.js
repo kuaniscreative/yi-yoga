@@ -12,7 +12,6 @@ import StepIndicator from "../stepIndicator";
 import { leaveApplication } from "../../actions/userActions";
 
 class LeaveApplication extends Component {
-
     checkLeaveRecord = date => {
         const checker = `${date.getFullYear()}/${date.getMonth() + 1}`;
         if (
@@ -24,7 +23,7 @@ class LeaveApplication extends Component {
         return true;
     };
 
-    submit = (date) => {
+    submit = date => {
         const canApply = this.checkLeaveRecord(date.toDate());
         if (canApply) {
             this.props.leaveApplication(date, this.props.userId);
