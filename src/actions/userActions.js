@@ -120,6 +120,19 @@ export const updateRegisterStatus = (courseName, sessionId, userId) => {
     };
 };
 
+// leave application
+export const updateLeaveRecord = (date, userId) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        firestore.collection('leaveRecord').doc(userId).update({
+            records: firebase.firestore.FieldValue.arrayUnion(date)
+        }).then(() => {
+            console.log('ttt')
+        })
+    }
+}
 export const leaveApplication = (selectedDate, userId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();

@@ -10,7 +10,7 @@ import StepIndicator from "../stepIndicator";
 import LeaveApplicationSuccess from './leaveApplication_success';
 
 // actions
-import { leaveApplication } from "../../actions/userActions";
+import { leaveApplication, updateLeaveRecord } from "../../actions/userActions";
 
 class LeaveApplication extends Component {
     checkLeaveRecord = date => {
@@ -26,11 +26,12 @@ class LeaveApplication extends Component {
 
     submit = date => {
         const canApply = this.checkLeaveRecord(date.toDate());
-        if (canApply) {
-            this.props.leaveApplication(date, this.props.userId);
-        } else {
-            console.log("you have already leave this month");
-        }
+        this.props.updateLeaveRecord(date, this.props.userId)
+        // if (canApply) {
+        //     this.props.leaveApplication(date, this.props.userId);
+        // } else {
+        //     console.log("you have already leave this month");
+        // }
     };
 
     conditionalComponents = () => {
@@ -72,6 +73,9 @@ const mapDispatchToProps = dispatch => {
     return {
         leaveApplication: (date, userId) => {
             dispatch(leaveApplication(date, userId));
+        },
+        updateLeaveRecord: (date, userId) => {
+            dispatch(updateLeaveRecord(date, userId));
         },
         clearSuccessMessage: () => {
             dispatch({type:'CLEAR_SUCCESS_MESSAGE'})
