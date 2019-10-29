@@ -1,12 +1,10 @@
 .dateHero {
-    margin-bottom: 2em;
-    
     span[name='date'] {
         display: inline-flex;
         width: 48px;
         justify-content: center;
         font-size: 2em;
-        padding-right: 0.2em;
+        padding-right: 0.5em;
     }
 
     span[name='monthYear'] {

@@ -18,7 +18,7 @@ class AllClasses extends Component {
             <div>
                 {
                     this.props.classes.map((date, i) => {
-                        return <DateSingle classSingle={date} key={i} setLeaveDate={this.props.setLeaveDate} />
+                        return <DateSingle classSingle={date} key={i} submit={this.props.submit} />
                     })
                 }
 

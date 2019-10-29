@@ -12,15 +12,6 @@ import StepIndicator from "../stepIndicator";
 import { leaveApplication } from "../../actions/userActions";
 
 class LeaveApplication extends Component {
-    state = {
-        leaveDate: {}
-    };
-
-    setLeaveDate = date => {
-        this.setState({
-            leaveDate: date
-        });
-    };
 
     checkLeaveRecord = date => {
         const checker = `${date.getFullYear()}/${date.getMonth() + 1}`;
@@ -33,23 +24,20 @@ class LeaveApplication extends Component {
         return true;
     };
 
-    submit = () => {
-        const input = this.state.leaveDate;
-        const canApply = this.checkLeaveRecord(input.toDate());
+    submit = (date) => {
+        const canApply = this.checkLeaveRecord(date.toDate());
         if (canApply) {
-            this.props.leaveApplication(input, this.props.userId);
+            this.props.leaveApplication(date, this.props.userId);
         } else {
             console.log("you have already leave this month");
         }
     };
 
     render() {
-        console.log(this.props);
         return (
             <div id="leaveApplication">
                 <StepIndicator indicator="選擇日期" />
-                <AllClasses setLeaveDate={this.setLeaveDate} />
-                <button onClick={this.submit}>確認</button>
+                <AllClasses submit={this.submit} />
                 <Link to="/">取消</Link>
             </div>
         );
