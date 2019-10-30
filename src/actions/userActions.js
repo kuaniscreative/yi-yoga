@@ -212,7 +212,7 @@ export const leaveApplication = (selectedDate, userId) => {
 };
 
 // reschedule
-export const rescheduleApplication = (classId, userId, stamp) => {
+export const reschedulePending = (classId, userId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
@@ -224,23 +224,45 @@ export const rescheduleApplication = (classId, userId, stamp) => {
                 pendingStudent: firebase.firestore.FieldValue.arrayUnion(userId)
             })
             .then(() => {
-                alert("已候捕");
-                document.location.href = "/";
+                // alert("已候捕");
+                // document.location.href = "/";
             });
+    };
+};
 
-        const rescheduleInfo = {
-            // stamp: stamp,
-            pendingClass: classId
-        };
+export const rescheduleAdd = (classId, userId) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
 
         firestore
-            .collection("user")
+            .collection("classProfile")
+            .doc(classId)
+            .update({
+                rescheduleStudent: firebase.firestore.FieldValue.arrayUnion(userId)
+            })
+            .then(() => {
+                // alert("已候捕");
+                // document.location.href = "/";
+            });
+    };
+};
+
+export const updateLeaveRecord_reschedule = (userId, rescheduleDate) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+
+        firestore
+            .collection("leaveRecord")
             .doc(userId)
             .update({
-                // reschedulable: firebase.firestore.FieldValue.arrayRemove(stamp),
-                rescheduled: firebase.firestore.FieldValue.arrayUnion(
-                    rescheduleInfo
-                )
+                reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
+                rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleDate)
+            })
+            .then(() => {
+                // alert("已候捕");
+                // document.location.href = "/";
             });
     };
 };

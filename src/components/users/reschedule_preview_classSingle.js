@@ -6,9 +6,6 @@ import { firestoreConnect } from "react-redux-firebase";
 // functions
 import { dateOutput } from "../../functions/dateFunctions";
 
-// actions
-import { rescheduleApplication } from "../../actions/userActions";
-
 class ClassSingle extends Component {
     handleChange = e => {
         this.props.select(e.target.value);
@@ -67,18 +64,9 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        rescheduleApplication: (classId, userId, stamp) => {
-            dispatch(rescheduleApplication(classId, userId, stamp));
-        }
-    };
-};
-
 export default compose(
     connect(
-        mapStateToProps,
-        mapDispatchToProps
+        mapStateToProps
     ),
     firestoreConnect([{ collection: "classProfile" }])
 )(ClassSingle);

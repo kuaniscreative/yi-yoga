@@ -9,7 +9,7 @@ import Preview from "./reschedule_preview";
 import StepIndicator from "../stepIndicator";
 
 // actions 
-import {rescheduleApplication} from '../../actions/userActions';
+import {reschedulePending, rescheduleAdd, updateLeaveRecord_reschedule} from '../../actions/userActions';
 
 class Reschedule extends Component {
     state = {
@@ -22,9 +22,6 @@ class Reschedule extends Component {
             {
                 ...this.state,
                 selected: classId
-            },
-            () => {
-                console.log(this.state);
             }
         );
     };
@@ -54,18 +51,20 @@ class Reschedule extends Component {
         });
     };
 
-    handleClick = e => {
+    handleClick = (e, date)=> {
         const yyyy = e.target.dataset.year;
         const mm = e.target.dataset.month;
-        
         this.requestTimeTable(mm, yyyy);
+        this.setState({
+            target: date
+        })
     };
 
     options = () => {
         const leaveRecord = this.props.leaveRecord;
         return (
             leaveRecord &&
-            leaveRecord.records.map((timestamp, i) => {
+            leaveRecord.reschedulable.map((timestamp, i) => {
                 const date = timestamp.toDate();
                 const yyyy = date.getFullYear();
                 const mm = date.getMonth();
@@ -81,7 +80,7 @@ class Reschedule extends Component {
                         key={i}
                         data-month={mm}
                         data-year={yyyy}
-                        onClick={this.handleClick}
+                        onClick={(e) => {this.handleClick(e, date)}}
                     >
                         <span name="date">{`${dd}`}</span>
                         <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
@@ -112,9 +111,23 @@ class Reschedule extends Component {
     }
 
     submit = () => {
+        const classProfile = this.props.classProfile;
         const classId = this.state.selected;
         const userId = this.props.userId;
-        this.props.rescheduleApplication(classId, userId);
+        const rescheduleDate = this.state.target;
+        // check if add or pending
+        const selectedClassInfo = classProfile.find((classInfo) => {
+            return classInfo.id === classId
+        })
+        const avalible = 15 - selectedClassInfo.students.length - selectedClassInfo.rescheduleStudents.length;
+        if (avalible) {
+            this.props.rescheduleAdd(classId, userId);
+            this.props.updateLeaveRecord(userId, rescheduleDate);
+        } else {
+            this.props.reschedulePending(classId, userId);
+            this.props.updateLeaveRecord(userId, rescheduleDate);
+        }
+        
     }
 
     render() {
@@ -153,9 +166,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        rescheduleApplication: (classId, userId, stamp) => {
-            dispatch(rescheduleApplication(classId, userId, stamp))
-        }
+        reschedulePending: (classId, userId) => {
+            dispatch(reschedulePending(classId, userId))
+        },
+        rescheduleAdd : (classId, userId) => {
+            dispatch(rescheduleAdd(classId, userId))
+        },
+        updateLeaveRecord: (userId, rescheduleDate) => {
+            dispatch(updateLeaveRecord_reschedule(userId, rescheduleDate))
+        },
     };
 };
 
