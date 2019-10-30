@@ -224,8 +224,7 @@ export const reschedulePending = (classId, userId) => {
                 pendingStudent: firebase.firestore.FieldValue.arrayUnion(userId)
             })
             .then(() => {
-                // alert("已候捕");
-                // document.location.href = "/";
+                dispatch({type: 'RESCHEDULE_PENDING_SUCCESS'})
             });
     };
 };
@@ -242,8 +241,7 @@ export const rescheduleAdd = (classId, userId) => {
                 rescheduleStudent: firebase.firestore.FieldValue.arrayUnion(userId)
             })
             .then(() => {
-                // alert("已候捕");
-                // document.location.href = "/";
+                dispatch({type: 'RESCHEDULE_ADD_SUCCESS'})
             });
     };
 };

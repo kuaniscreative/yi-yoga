@@ -7,6 +7,7 @@ import { firestoreConnect } from "react-redux-firebase";
 // components
 import Preview from "./reschedule_preview";
 import StepIndicator from "../stepIndicator";
+import RescheduleSuccess from './reschedule_success';
 
 // actions 
 import {reschedulePending, rescheduleAdd, updateLeaveRecord_reschedule} from '../../actions/userActions';
@@ -14,9 +15,10 @@ import {reschedulePending, rescheduleAdd, updateLeaveRecord_reschedule} from '..
 class Reschedule extends Component {
     state = {
         timeTable: [],
-        selected: ""
+        selected: "",
     };
 
+    // select the desired reschedule date
     select = classId => {
         this.setState(
             {
@@ -26,6 +28,7 @@ class Reschedule extends Component {
         );
     };
 
+    // filter out the available classes after selectd which leaved class
     classFilter = (mm, yyyy) => {
         const selectedDate = new Date(yyyy, mm);
         const nextMonth = new Date(yyyy, mm + 1);
@@ -42,6 +45,7 @@ class Reschedule extends Component {
         });
     };
 
+    // request the classes that are available for rescheduling
     requestTimeTable = (mm, yyyy) => {
         const available = this.classFilter(mm, yyyy);
         // const sorted = this.sortClassesByDay(available);
@@ -51,6 +55,7 @@ class Reschedule extends Component {
         });
     };
 
+    // click will fire requestTimeTable and set the leave class to state.target
     handleClick = (e, date)=> {
         const yyyy = e.target.dataset.year;
         const mm = e.target.dataset.month;
@@ -60,6 +65,7 @@ class Reschedule extends Component {
         })
     };
 
+    // the classes which user leaved
     options = () => {
         const leaveRecord = this.props.leaveRecord;
         return (
@@ -92,8 +98,15 @@ class Reschedule extends Component {
         );
     };
 
+    // controlling which component should show during different stage
     conditionalComponents = () => {
-        if (this.state.timeTable.length) {
+        if (this.props.addSuccess || this.props.pendingSuccess) {
+            if (this.props.addSuccess) {
+                return <RescheduleSuccess status='補課完成' />
+            } 
+            return <RescheduleSuccess status='已在候補名單' />
+            
+        } else if (this.state.timeTable.length) {
             return (
                 <Preview classes={this.state.timeTable} select={this.select} submit={this.submit}/>
             );
@@ -102,14 +115,18 @@ class Reschedule extends Component {
         }
     };
 
+    // controlling the indicator ouput 
     indicatorOutput = () => {
-        if (this.state.timeTable.length) {
+        if (this.props.addSuccess || this.props.pendingSuccess) {
+            return '補課結果'
+        } else if (this.state.timeTable.length) {
             return '選擇補課日期'
         } 
         return '選擇已請假課堂'
 
     }
 
+    // send the data to middleware
     submit = () => {
         const classProfile = this.props.classProfile;
         const classId = this.state.selected;
@@ -160,7 +177,9 @@ const mapStateToProps = state => {
     return {
         userId: uid,
         classProfile: state.firestore.ordered.classProfile,
-        leaveRecord: leaveRecord
+        leaveRecord: leaveRecord,
+        addSuccess: state.user.reacheduleAddSuccess,
+        pendingSuccess: state.user.reachedulePendingSuccess
     };
 };
 
