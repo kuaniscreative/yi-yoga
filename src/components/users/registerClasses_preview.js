@@ -10,10 +10,10 @@ class Preview extends Component {
                 const time = course.name.replace(`${day} `, "");
                 return (
                     <div key={i} className="checkboxContainer">
-                        <div className="date_dayHero checkboxContainer_message">
-                            <span className="date_dayHero_day">{day}</span>
-                            <span className="date_dayHero_time">{time}</span>
-                            <div className="date_dayHero_message">
+                        <div className="dayHero checkboxContainer_message">
+                            <span className="dayHero_day">{day}</span>
+                            <span className="dayHero_time">{time}</span>
+                            <div className="dayHero_message">
                                 {`${course.length}堂課，金額${course.length *
                                     250}元`}
                             </div>

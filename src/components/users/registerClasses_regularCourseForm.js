@@ -13,14 +13,14 @@ class RegularCourseForm extends Component {
                         courses && courses.map((course, i) => {
                             return (
                                 <label key={i} className="checkboxContainer">
-                                    <div className="date_dayHero checkboxContainer_message">
-                                        <span className="date_dayHero_day">
+                                    <div className="dayHero checkboxContainer_message">
+                                        <span className="dayHero_day">
                                             {course.day}
                                         </span>
-                                        <span className="date_dayHero_time">
+                                        <span className="dayHero_time">
                                             {course.time}
                                         </span>
-                                        <div className="date_dayHero_message">
+                                        <div className="dayHero_message">
                                             行天宮 ｜ 自備瑜珈墊，可放教室
                                         </div>
                                     </div>
