@@ -10,12 +10,6 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 registerClassSuccess: true
             }
-        case 'RESCHEDULE_STAMP_SELECTED': 
-            return {
-                ...state,
-                selectedRecheduleStamp: action.stamp
-            }
-
         case 'LEAVE_APPLICATION_SUCCESS':
             return {
                 ...state,

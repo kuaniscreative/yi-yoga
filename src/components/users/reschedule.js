@@ -125,7 +125,6 @@ class Reschedule extends Component {
                     {this.conditionalComponents()}
                 </div>
                 <div className="nextStepButtonsArea">
-                    {/* <button className="outlineButton" onClick={this.props.apply}>確認</button> */}
                     <Link to="/" className="cancelGray">
                         取消
                     </Link>
@@ -139,12 +138,6 @@ const mapStateToProps = state => {
     const uid = state.firebase.auth.isempty
         ? undefined
         : state.firebase.auth.uid;
-    const userData =
-        uid && state.firestore.ordered.user
-            ? state.firestore.ordered.user.find(user => {
-                  return user.id === uid;
-              })
-            : {};
     const leaveRecord =
         uid && state.firestore.ordered.leaveRecord
             ? state.firestore.ordered.leaveRecord.find(record => {
@@ -153,8 +146,6 @@ const mapStateToProps = state => {
             : null;
     return {
         userId: uid,
-        reschedulable: userData.reschedulable,
-        rescheduled: userData.rescheduled,
         classProfile: state.firestore.ordered.classProfile,
         leaveRecord: leaveRecord
     };
@@ -162,9 +153,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        selectdRescheduleStamp: stamp => {
-            dispatch({ type: "RESCHEDULE_STAMP_SELECTED", stamp: stamp });
-        },
         rescheduleApplication: (classId, userId, stamp) => {
             dispatch(rescheduleApplication(classId, userId, stamp))
         }
