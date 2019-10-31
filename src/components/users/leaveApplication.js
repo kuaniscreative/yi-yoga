@@ -26,21 +26,40 @@ class LeaveApplication extends Component {
 
     submit = date => {
         const canApply = this.checkLeaveRecord(date.toDate());
-        this.props.updateLeaveRecord(date.toDate(), this.props.userId);
-        // if (canApply) {
-        //     this.props.leaveApplication(date, this.props.userId);
-        // } else {
-        //     console.log("you have already leave this month");
-        // }
+        if (canApply) {
+            this.props.leaveApplication(date, this.props.userId);
+            this.props.updateLeaveRecord(date.toDate(), this.props.userId);
+        } else {
+            console.log("you have already leave this month");
+        }
     };
 
     conditionalComponents = () => {
         const success = this.props.leaveApplicationSuccess;
+        const classifyClassesByLeaveRecord = this.props.userClasses && this.props.userClasses.map((timestamp) => {
+            const date = timestamp.toDate();
+            const mm = date.getMonth();
+            const yyyy = date.getFullYear();
+            const leaveRecord = this.props.leaveRecord ? this.props.leaveRecord.stamps : null;
+            let canApply = true;
+            leaveRecord && leaveRecord.forEach((record) => {
+                const recordMonth = parseInt(record.split('/')[1], 10) - 1;
+                const recordYear = parseInt(record.split('/')[0], 10);
+                if (recordMonth === mm && recordYear === yyyy) {
+                    canApply = false;
+                } 
+            })
+
+            return {
+                date: timestamp,
+                canApply
+            }
+        })
 
         if (success) {
             return <LeaveApplicationSuccess />;
         } else {
-            return <ClassList submit={this.submit} classes={this.props.userClasses} />;
+            return <ClassList submit={this.submit} classes={classifyClassesByLeaveRecord} />;
         }
     };
 
