@@ -68,9 +68,6 @@ class LeaveApplication extends Component {
             <div id="leaveApplication">
                 <StepIndicator indicator="選擇日期" />
                 {this.conditionalComponents()}
-                <Link to="/" onClick={this.props.clearSuccessMessage}>
-                    取消
-                </Link>
             </div>
         );
     }
