@@ -7,25 +7,27 @@ import { firestoreConnect } from "react-redux-firebase";
 // components
 import Preview from "./reschedule_preview";
 import StepIndicator from "../stepIndicator";
-import RescheduleSuccess from './reschedule_success';
+import RescheduleSuccess from "./reschedule_success";
 
-// actions 
-import {reschedulePending, rescheduleAdd, updateLeaveRecord_reschedule} from '../../actions/userActions';
+// actions
+import {
+    reschedulePending,
+    rescheduleAdd,
+    updateLeaveRecord_reschedule
+} from "../../actions/userActions";
 
 class Reschedule extends Component {
     state = {
         timeTable: [],
-        selected: "",
+        selected: ""
     };
 
     // select the desired reschedule date
     select = classId => {
-        this.setState(
-            {
-                ...this.state,
-                selected: classId
-            }
-        );
+        this.setState({
+            ...this.state,
+            selected: classId
+        });
     };
 
     // filter out the available classes after selectd which leaved class
@@ -56,75 +58,45 @@ class Reschedule extends Component {
     };
 
     // click will fire requestTimeTable and set the leave class to state.target
-    handleClick = (e, date)=> {
+    handleClick = (e, date) => {
         const yyyy = e.target.dataset.year;
         const mm = e.target.dataset.month;
         this.requestTimeTable(mm, yyyy);
         this.setState({
             target: date
-        })
-    };
-
-    // the classes which user leaved
-    options = () => {
-        const leaveRecord = this.props.leaveRecord;
-        return (
-            leaveRecord &&
-            leaveRecord.reschedulable.map((timestamp, i) => {
-                const date = timestamp.toDate();
-                const yyyy = date.getFullYear();
-                const mm = date.getMonth();
-                const dd = date.getDate();
-                const hr = date.getHours();
-                const min = date.getMinutes();
-                const startAt = `${hr}:${min}`;
-                const day = date.getDay();
-                const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
-                return (
-                    <div
-                        className="shadowOption dateHero checkboxContainer_message"
-                        key={i}
-                        data-month={mm}
-                        data-year={yyyy}
-                        onClick={(e) => {this.handleClick(e, date)}}
-                    >
-                        <span name="date">{`${dd}`}</span>
-                        <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
-                        <span name="seperator"> | </span>
-                        <span name="dayTime">{`${dayOutput} ${startAt}`}</span>
-                    </div>
-                );
-            })
-        );
+        });
     };
 
     // controlling which component should show during different stage
     conditionalComponents = () => {
         if (this.props.addSuccess || this.props.pendingSuccess) {
             if (this.props.addSuccess) {
-                return <RescheduleSuccess status='補課完成' />
-            } 
-            return <RescheduleSuccess status='已在候補名單' />
-            
-        } else if (this.state.timeTable.length) {
-            return (
-                <Preview classes={this.state.timeTable} select={this.select} submit={this.submit}/>
-            );
+                return <RescheduleSuccess status="補課完成" />;
+            }
+            return <RescheduleSuccess status="已在候補名單" />;
         } else {
-            return this.options();
-        }
+            return (
+                <Preview
+                    classes={this.state.timeTable}
+                    select={this.select}
+                    submit={this.submit}
+                    leaveRecord={this.props.leaveRecord}
+                    classSelected={ this.state.timeTable.length ? true : false}
+                    selectLeaveClass={this.handleClick}
+                />
+            );
+        } 
     };
 
-    // controlling the indicator ouput 
+    // controlling the indicator ouput
     indicatorOutput = () => {
         if (this.props.addSuccess || this.props.pendingSuccess) {
-            return '補課結果'
+            return "補課結果";
         } else if (this.state.timeTable.length) {
-            return '選擇補課日期'
-        } 
-        return '選擇已請假課堂'
-
-    }
+            return "選擇補課日期";
+        }
+        return "選擇已請假課堂";
+    };
 
     // send the data to middleware
     submit = () => {
@@ -133,31 +105,28 @@ class Reschedule extends Component {
         const userId = this.props.userId;
         const rescheduleDate = this.state.target;
         // check if add or pending
-        const selectedClassInfo = classProfile.find((classInfo) => {
-            return classInfo.id === classId
-        })
-        const avalible = 15 - selectedClassInfo.students.length - selectedClassInfo.rescheduleStudents.length;
-        if (avalible) {
+        const selectedClassInfo = classProfile.find(classInfo => {
+            return classInfo.id === classId;
+        });
+        const avalible =
+            15 -
+            selectedClassInfo.students.length -
+            selectedClassInfo.rescheduleStudents.length;
+        if (avalible > 0) {
             this.props.rescheduleAdd(classId, userId);
             this.props.updateLeaveRecord(userId, rescheduleDate);
         } else {
             this.props.reschedulePending(classId, userId);
             this.props.updateLeaveRecord(userId, rescheduleDate);
         }
-        
-    }
+    };
 
     render() {
         return (
             <div id="reschedule">
                 <StepIndicator indicator={this.indicatorOutput()} />
-                <div className='innerContent'>
+                <div className="innerContent">
                     {this.conditionalComponents()}
-                </div>
-                <div className="nextStepButtonsArea">
-                    <Link to="/" className="cancelGray">
-                        取消
-                    </Link>
                 </div>
             </div>
         );
@@ -186,14 +155,14 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         reschedulePending: (classId, userId) => {
-            dispatch(reschedulePending(classId, userId))
+            dispatch(reschedulePending(classId, userId));
         },
-        rescheduleAdd : (classId, userId) => {
-            dispatch(rescheduleAdd(classId, userId))
+        rescheduleAdd: (classId, userId) => {
+            dispatch(rescheduleAdd(classId, userId));
         },
         updateLeaveRecord: (userId, rescheduleDate) => {
-            dispatch(updateLeaveRecord_reschedule(userId, rescheduleDate))
-        },
+            dispatch(updateLeaveRecord_reschedule(userId, rescheduleDate));
+        }
     };
 };
 

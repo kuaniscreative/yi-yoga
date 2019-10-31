@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 // components
-import ListByDay from './reschedule_preview_classList';
-import ClassSingle from './reschedule_preview_classSingle';
+import ClassList from './reschedule_preview_classList';
+import LeaveClassesList from './reschedule_preview_LeaveClassesList';
 
 class Preview extends Component {
 
@@ -11,20 +11,21 @@ class Preview extends Component {
         this.props.submit()
     }
 
+    conditionalComponents = () => {
+        if (this.props.classSelected) {
+            return (
+                <ClassList classes={this.props.classes} select={this.props.select} submit={this.props.submit}/>
+            );
+        } else {
+            return <LeaveClassesList leaveRecord={this.props.leaveRecord} selectLeaveClass={this.props.selectLeaveClass}/>
+        }
+    };
+
     render() {
+        console.log(this.props.classSelected)
         return (
             <div>
-                {
-                    this.props.classes.map((classSingle, i) => {
-                        return <ClassSingle classSingle={classSingle} key={i} select={this.props.select}/>
-                    })
-                }
-                <div className="nextStepButtonsArea">
-                    <button className="outlineButton" onClick={this.handleClick}>確認</button>
-                    <Link to="/" className="cancelGray">
-                        取消
-                    </Link>
-                </div>
+                {this.conditionalComponents()}
             </div>
         )
     }

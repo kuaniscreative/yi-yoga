@@ -1,34 +1,41 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 
 // components
 import ClassSingle from "./reschedule_preview_classSingle";
 
-class ListByDay extends Component {
+class ClassList extends Component {
 
-    titleOutPut = () => {
-        const day = this.props.classes[0].classDate.getDay();
-        if (day === 0) {
-            return "星期日";
-        } else {
-            const numToCh = day.toLocaleString("zh-Hans-CN-u-nu-hanidec");
-            return `星期${numToCh}`;
-        }
-    };
+    handleClick = () => {
+        this.props.submit();
+    }
 
     render() {
         return (
             <div>
-                <h2>{this.titleOutPut()}</h2>
-                {
-                    this.props.classes.map((classInfo, i) => {
-                        return (
-                            <ClassSingle key={i} classInfo={classInfo} />
-                        )
-                    })
-                }
+                {this.props.classes.map((classSingle, i) => {
+                    return (
+                        <ClassSingle
+                            classSingle={classSingle}
+                            key={i}
+                            select={this.props.select}
+                        />
+                    );
+                })}
+                <div className="nextStepButtonsArea">
+                    <button
+                        className="outlineButton"
+                        onClick={this.handleClick}
+                    >
+                        確認
+                    </button>
+                    <Link to="/" className="cancelGray">
+                        取消
+                    </Link>
+                </div>
             </div>
         );
     }
 }
 
-export default ListByDay;
+export default ClassList;
