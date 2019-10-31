@@ -10,14 +10,14 @@ import StepIndicator from "../stepIndicator";
 import LeaveApplicationSuccess from "./leaveApplication_success";
 
 // actions
-import { leaveApplication, updateLeaveRecord } from "../../actions/userActions";
+import { leaveApplication, updateLeaveRecord_leave } from "../../actions/userActions";
 
 class LeaveApplication extends Component {
     checkLeaveRecord = date => {
         const checker = `${date.getFullYear()}/${date.getMonth() + 1}`;
         if (
             this.props.leaveRecord &&
-            this.props.leaveRecord.indexOf(checker) > -1
+            this.props.leaveRecord.stamps.indexOf(checker) > -1
         ) {
             return false;
         }
@@ -26,7 +26,7 @@ class LeaveApplication extends Component {
 
     submit = date => {
         const canApply = this.checkLeaveRecord(date.toDate());
-        this.props.updateLeaveRecord(date, this.props.userId);
+        this.props.updateLeaveRecord(date.toDate(), this.props.userId);
         // if (canApply) {
         //     this.props.leaveApplication(date, this.props.userId);
         // } else {
@@ -83,7 +83,7 @@ const mapDispatchToProps = dispatch => {
             dispatch(leaveApplication(date, userId));
         },
         updateLeaveRecord: (date, userId) => {
-            dispatch(updateLeaveRecord(date, userId));
+            dispatch(updateLeaveRecord_leave(date, userId));
         },
         clearSuccessMessage: () => {
             dispatch({ type: "CLEAR_SUCCESS_MESSAGE" });

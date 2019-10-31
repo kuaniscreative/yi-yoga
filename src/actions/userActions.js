@@ -121,15 +121,18 @@ export const updateRegisterStatus = (courseName, sessionId, userId) => {
 };
 
 // leave application
-export const updateLeaveRecord = (date, userId) => {
+export const updateLeaveRecord_leave = (date, userId) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
+        const stamp = `${date.getFullYear()}/${date.getMonth() + 1}`;
 
         firestore.collection('leaveRecord').doc(userId).update({
-            records: firebase.firestore.FieldValue.arrayUnion(date)
+            reschedulable: firebase.firestore.FieldValue.arrayUnion(date),
+            records: firebase.firestore.FieldValue.arrayUnion(date),
+            stamps: firebase.firestore.FieldValue.arrayUnion(stamp)
         }).then(() => {
-            console.log('ttt')
+            console.log('updated user leaveRecord when leave application')
         })
     }
 }
@@ -206,7 +209,7 @@ export const leaveApplication = (selectedDate, userId) => {
                     });
             })
             .then(() => {
-                dispatch({type: "LEAVE_APPLICATION_SUCCESS"})
+                dispatch({type: "LEAVE_APPLICATION_SUCCESS_LEAVE"})
             });
     };
 };
