@@ -12,7 +12,7 @@ class ClassList extends Component {
 
     render() {
         return (
-            <div>
+            <div className='nextStepButtonsArea_parent'>
                 {this.props.classes.map((classSingle, i) => {
                     return (
                         <ClassSingle

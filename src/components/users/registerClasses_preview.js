@@ -38,7 +38,7 @@ class Preview extends Component {
     render() {
         const courses = this.props.matchCourses;
         return (
-            <div className="preview">
+            <div className="preview nextStepButtonsArea_parent">
                 {this.optionsList(courses)}
                 <div className="nextStepButtonsArea">
                     <button className="outlineButton" onClick={this.props.apply}>確認</button>

@@ -8,7 +8,7 @@ class RegularCourseForm extends Component {
         const handleChange = this.props.handleChange;
         const courses = this.props.courses;
         return (
-             <form onSubmit={handleSubmit} className='regularCourseForm'>
+             <form onSubmit={handleSubmit} className='regularCourseForm nextStepButtonsArea_parent'>
                     {
                         courses && courses.map((course, i) => {
                             return (

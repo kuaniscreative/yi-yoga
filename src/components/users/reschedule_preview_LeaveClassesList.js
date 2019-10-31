@@ -36,7 +36,7 @@ class LeaveClassesList extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='nextStepButtonsArea_parent'>
                 {this.options()}
                 <div className="nextStepButtonsArea">
                     <Link to="/" className="cancelGray">

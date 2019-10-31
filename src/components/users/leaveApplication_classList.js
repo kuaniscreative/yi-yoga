@@ -26,7 +26,7 @@ class ClassList extends Component {
 
     render() {
         return (
-            <div className='centerList'>
+            <div className='centerList nextStepButtonsArea_parent'>
                 {
                     this.props.classes && this.props.classes.map((classInfo, i) => {
                         return <DateSingle classSingle={classInfo.date} key={i} select={this.select} canApply={classInfo.canApply} />
