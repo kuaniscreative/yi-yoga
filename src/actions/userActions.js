@@ -209,7 +209,7 @@ export const leaveApplication = (selectedDate, userId) => {
                     });
             })
             .then(() => {
-                dispatch({type: "LEAVE_APPLICATION_SUCCESS_LEAVE"})
+                dispatch({type: "LEAVE_APPLICATION_SUCCESS"})
             });
     };
 };
