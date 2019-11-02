@@ -55,7 +55,7 @@ class LeaveApplication extends Component {
                 canApply
             }
         })
-
+        
         if (success) {
             return <LeaveApplicationSuccess />;
         } else {
@@ -111,7 +111,7 @@ const mapDispatchToProps = dispatch => {
             dispatch(updateLeaveRecord_leave(date, userId));
         },
         clearSuccessMessage: () => {
-            dispatch({ type: "CLEAR_SUCCESS_MESSAGE" });
+            dispatch({ type: "CLEAR_SUCCESS_MESSAGE_LEAVE" });
         }
     };
 };

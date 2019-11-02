@@ -11,6 +11,7 @@ class UserPanel extends Component {
     
     clearSuccessMessage = (target = '') => {
         const output = `CLEAR_SUCCESS_MESSAGE_${target}`
+        console.log(output);
         this.props.clearSuccessMessage(output);
     }
 
