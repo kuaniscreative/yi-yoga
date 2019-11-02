@@ -69,6 +69,9 @@ class Reschedule extends Component {
 
     // controlling which component should show during different stage
     conditionalComponents = () => {
+        const sortedTimeTable = this.state.timeTable && this.state.timeTable.sort((a, b) => {
+            return a.classDate.seconds - b.classDate.seconds
+        })
         if (this.props.addSuccess || this.props.pendingSuccess) {
             if (this.props.addSuccess) {
                 return <RescheduleSuccess status="補課完成" />;
@@ -77,7 +80,7 @@ class Reschedule extends Component {
         } else {
             return (
                 <Preview
-                    classes={this.state.timeTable}
+                    classes={sortedTimeTable}
                     select={this.select}
                     submit={this.submit}
                     leaveRecord={this.props.leaveRecord}
