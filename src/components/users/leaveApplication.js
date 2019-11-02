@@ -63,10 +63,19 @@ class LeaveApplication extends Component {
         }
     };
 
+    indicatorOutput = () => {
+        const success = this.props.leaveApplicationSuccess;
+        if (success) {
+            return '請假結果'
+        } else {
+            return '選擇請假日期'
+        }
+    }
+
     render() {
         return (
             <div id="leaveApplication">
-                <StepIndicator indicator="選擇日期" />
+                <StepIndicator indicator={this.indicatorOutput()} />
                 {this.conditionalComponents()}
             </div>
         );
