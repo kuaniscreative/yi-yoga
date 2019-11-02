@@ -22,7 +22,10 @@ export const addClassProfile = (classes) => {
 
         for (let classSingle of classes) {
           firestore.collection('classProfile').add({
-            classDate: classSingle
+            classDate: classSingle,
+            absence: [],
+            pendingStudents: [],
+            rescheduleStudents: []
           })
         }
         
