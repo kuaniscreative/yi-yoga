@@ -55,7 +55,7 @@ class LeaveApplication extends Component {
                 canApply
             }
         })
-        
+
         if (success) {
             return <LeaveApplicationSuccess />;
         } else {
