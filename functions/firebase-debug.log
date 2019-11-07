@@ -1,0 +1,19 @@
+[debug] [2019-11-05T09:39:32.049Z] ----------------------------------------------------------------------
+[debug] [2019-11-05T09:39:32.052Z] Command:       /Users/KUAN/.nvm/versions/node/v8.9.4/bin/node /Users/KUAN/.nvm/versions/node/v8.9.4/bin/firebase emulators:start
+[debug] [2019-11-05T09:39:32.052Z] CLI Version:   7.6.2
+[debug] [2019-11-05T09:39:32.052Z] Platform:      darwin
+[debug] [2019-11-05T09:39:32.052Z] Node Version:  v8.9.4
+[debug] [2019-11-05T09:39:32.053Z] Time:          Tue Nov 05 2019 17:39:32 GMT+0800 (CST)
+[debug] [2019-11-05T09:39:32.053Z] ----------------------------------------------------------------------
+[debug] [2019-11-05T09:39:32.053Z] 
+[info] i  Starting emulators: ["functions"]
+[info] ✔  functions: Using node@8 from host.
+[info] ✔  functions: Emulator started at http://localhost:5001
+[info] i  functions: Watching "/Users/KUAN/Desktop/yi-yoga/functions" for Cloud Functions...
+[debug] [2019-11-05T09:39:32.427Z] [worker-~diagnostic~-77d860ff-4962-4077-9508-316f90ef6ba6]: BUSY
+[debug] [2019-11-05T09:39:32.793Z] [runtime-status] Functions runtime initialized. {"cwd":"/Users/KUAN/Desktop/yi-yoga/functions","node_version":"8.9.4"}
+[debug] [2019-11-05T09:39:32.794Z] [runtime-status] Disabled runtime features: undefined {}
+[warn] ⚠  The Cloud Functions emulator requires the module "firebase-admin" to be installed. This package is in your package.json, but it's not available. You probably need to run "npm install" in your functions directory.
+[info] i  functions: Your functions could not be parsed due to an issue with your node_modules (see above)
+[debug] [2019-11-05T09:39:32.814Z] [worker-~diagnostic~-77d860ff-4962-4077-9508-316f90ef6ba6]: exited
+[debug] [2019-11-05T09:39:32.814Z] [worker-~diagnostic~-77d860ff-4962-4077-9508-316f90ef6ba6]: FINISHED
