@@ -10,7 +10,7 @@ import StepIndicator from "../stepIndicator";
 import LeaveApplicationSuccess from "./leaveApplication_success";
 
 // actions
-import { leaveApplication, updateLeaveRecord_leave } from "../../actions/userActions";
+import { leaveApplication, updateLeaveRecord_leave, addPendingStudentToClass } from "../../actions/userActions";
 
 class LeaveApplication extends Component {
     checkLeaveRecord = date => {
@@ -26,9 +26,13 @@ class LeaveApplication extends Component {
 
     submit = date => {
         const canApply = this.checkLeaveRecord(date.toDate());
+        const classId = this.props.classProfile.find((classInfo) => {
+            return classInfo.classDate.seconds === date.seconds
+        }).id;
         if (canApply) {
             this.props.leaveApplication(date, this.props.userId);
             this.props.updateLeaveRecord(date.toDate(), this.props.userId);
+            this.props.addPendingStudentToClass(classId);
         } else {
             console.log("you have already leave this month");
         }
@@ -98,7 +102,8 @@ const mapStateToProps = state => {
         userId: state.firebase.auth.uid,
         leaveRecord: userRecord,
         leaveApplicationSuccess: state.user.leaveApplicationSuccess,
-        userClasses: userData ? userData.allClasses : null
+        userClasses: userData ? userData.allClasses : null,
+        classProfile: state.firestore.ordered.classProfile
     };
 };
 
@@ -112,6 +117,9 @@ const mapDispatchToProps = dispatch => {
         },
         clearSuccessMessage: () => {
             dispatch({ type: "CLEAR_SUCCESS_MESSAGE_LEAVE" });
+        },
+        addPendingStudentToClass: (classId) => {
+            dispatch(addPendingStudentToClass(classId))
         }
     };
 };

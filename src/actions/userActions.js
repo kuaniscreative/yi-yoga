@@ -136,6 +136,7 @@ export const updateLeaveRecord_leave = (date, userId) => {
         })
     }
 }
+
 export const leaveApplication = (selectedDate, userId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
@@ -213,6 +214,30 @@ export const leaveApplication = (selectedDate, userId) => {
             });
     };
 };
+
+export const addPendingStudentToClass = (classId) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        firestore.collection('classProfile').doc(classId).get().then((snapshot) => {
+            const classInfo = snapshot.data();
+            const studentId = classInfo.pendingStudents ? classInfo.pendingStudents[0] : undefined;
+            const available = classInfo.students.length + classInfo.rescheduleStudents.length < 16;
+
+            if (classInfo.pendingStudents.length > 0 && available) {
+                return firestore.collection('classProfile').doc(classId).update({
+                    pendingStudents: firebase.firestore.FieldValue.arrayRemove(studentId),
+                    rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(studentId)
+                }).then(() => {
+                    console.log(classId);
+                })
+            } else {
+                console.log('no students to add')
+            }
+        })
+    }
+}
 
 // reschedule
 export const reschedulePending = (classId, userId) => {
