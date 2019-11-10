@@ -266,7 +266,7 @@ export const rescheduleAdd = (classId, userId) => {
             .collection("classProfile")
             .doc(classId)
             .update({
-                rescheduleStudent: firebase.firestore.FieldValue.arrayUnion(userId)
+                rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(userId)
             })
             .then(() => {
                 dispatch({type: 'RESCHEDULE_ADD_SUCCESS'})

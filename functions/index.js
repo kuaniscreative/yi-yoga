@@ -20,110 +20,109 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-exports.sendMail = functions.https.onRequest((req, res) => {
-    // for gmail usage, you need to enable 2 step secure and generate specific password
-    // checkout: https://stackoverflow.com/a/49306726
+// exports.sendMail = functions.https.onRequest((req, res) => {
+//     // for gmail usage, you need to enable 2 step secure and generate specific password
+//     // checkout: https://stackoverflow.com/a/49306726
 
-    // getting dest email by query string
-    const dest = req.query.dest;
+//     // getting dest email by query string
+//     const dest = req.query.dest;
 
-    const mailOptions = {
-        from: "yiyoga.official@gmail.com", // Something like: Jane Doe <janedoe@gmail.com>
-        to: "benben19911020@gmail.com",
-        subject: "I'M A PICKLE!!!", // email subject
-        html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
-                <br />
-            ` // email content in HTML
-    };
+//     const mailOptions = {
+//         from: "yiyoga.official@gmail.com", // Something like: Jane Doe <janedoe@gmail.com>
+//         to: "benben19911020@gmail.com",
+//         subject: "I'M A PICKLE!!!", // email subject
+//         html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
+//                 <br />
+//             ` // email content in HTML
+//     };
 
-    // returning result
-    return transporter.sendMail(mailOptions, (erro, info) => {
-        if (erro) {
-            return res.send(erro.toString());
-        }
-        return res.send("Sended");
-    });
-});
+//     // returning result
+//     return transporter.sendMail(mailOptions, (erro, info) => {
+//         if (erro) {
+//             return res.send(erro.toString());
+//         }
+//         return res.send("Sended");
+//     });
+// });
 
-exports.sendEmail = functions.firestore
-    .document("classProfile/{classId}")
-    .onUpdate((snap, context) => {
-        const mailOptions = {
-            from: `yiyoga.official@gmail.com`,
-            to: "benben19911020@gmail.com",
-            subject: "contact form message",
-            html: `<h1>Order Confirmation</h1>
-                                <p>
-                                   <b>Email: </b><br>
-                                </p>`
-        };
-        return transporter.sendMail(mailOptions, (error, data) => {
-            if (error) {
-                console.log("we got problems");
-                console.log(error);
-                return;
-            }
-            console.log("Sent!");
-            console.log(snap);
-            console.log(context);
-        });
-    });
+// exports.sendEmail = functions.firestore
+//     .document("classProfile/{classId}")
+//     .onUpdate((snap, context) => {
+//         const mailOptions = {
+//             from: `yiyoga.official@gmail.com`,
+//             to: "benben19911020@gmail.com",
+//             subject: "contact form message",
+//             html: `<h1>Order Confirmation</h1>
+//                                 <p>
+//                                    <b>Email: </b><br>
+//                                 </p>`
+//         };
+//         return transporter.sendMail(mailOptions, (error, data) => {
+//             if (error) {
+//                 console.log("we got problems");
+//                 console.log(error);
+//                 return;
+//             }
+//             console.log("Sent!");
+//             console.log(snap);
+//             console.log(context);
+//         });
+//     });
 
-exports.test = functions.https.onRequest((req, res) => {
-    return admin
-        .firestore()
-        .collection("classProfile")
-        .doc("0JAqfaVllMOwluFbSvtG")
-        .get()
-        .then(snap => {
-            console.log("did it");
-            console.log(snap);
-            res.send("test");
-        })
-        .catch(err => {
-            res.send(err);
-        });
-});
+// exports.test = functions.https.onRequest((req, res) => {
+//     return admin
+//         .firestore()
+//         .collection("classProfile")
+//         .doc("0JAqfaVllMOwluFbSvtG")
+//         .get()
+//         .then(snap => {
+//             console.log("did it");
+//             console.log(snap);
+//             res.send("test");
+//         })
+//         .catch(err => {
+//             res.send(err);
+//         });
+// });
 
-function sendRescheduleEmail(userId) {
-    const mailOptions = {
-        from: `yiyoga.official@gmail.com`,
-        to: "benben19911020@gmail.com",
-        subject: "contact form message",
-        html: `<h1>Order Confirmation</h1>`
-    };
-    return transporter.sendMail(mailOptions, (error, data) => {
-        if (error) {
-            console.log("we got problems");
-            console.log(error);
-            return;
-            console.log("Sent!");
-        }
-    });
+// function sendRescheduleEmail(userId) {
+//     const mailOptions = {
+//         from: `yiyoga.official@gmail.com`,
+//         to: "benben19911020@gmail.com",
+//         subject: "contact form message",
+//         html: `<h1>Order Confirmation</h1>`
+//     };
+//     return transporter.sendMail(mailOptions, (error, data) => {
+//         if (error) {
+//             console.log("we got problems");
+//             console.log(error);
+//             return;
+//             console.log("Sent!");
+//         }
+//     });
     
-}
+// }
 
 exports.rescheduleSuccessNotification = functions.firestore
     .document("classProfile/{classId}")
-    .onUpdate((snap, context) => {
+    .onUpdate((change, context) => {
         const id = context.params.classId;
-        const change = snap.val()
-        const before = snap.before.val();
-        const absence = change.absense;
-        const pendingStudents = change.pendingStudents;
+        const data = change.after.data()
+        const before = chnge.before.data();
+        const pendingStudents = data.pendingStudents;
         const pendingStudentArranged = before.pendingStudents.length > pendingStudents ? true : false;
-        const user = change.rescheduleStudents.find((student) => {
+        const user = data.rescheduleStudents.find((student) => {
             return before.pendingStudents.indexOf(student) > -1 && before.rescheduleStudents.indexOf(student) < 0
         })
-        
-        if (pendingStudentArranged) {
-            console.log('pending arranged!')
-            console.log(user);
-            return
-        } else {
-            console.log('not working');
-            return
-        }
-        
+        console.log(change.after.data(), id, `pending students is arranged: ${pendingStudentArranged}`, user);
+        // if (pendingStudentArranged) {
+        //     console.log('pending arranged!')
+        //     console.log(user);
+        //     return
+        // } else {
+        //     console.log('not working');
+        //     return
+        // }
+        return true
 
     });
