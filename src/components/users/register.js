@@ -41,7 +41,7 @@ class Register extends Component {
                     <input name='name' type="text" onChange={this.handleChange} />
                     <label>暱稱</label>
                     <input name='nickName' type="text" onChange={this.handleChange} />
-                    <NextStepButtonsArea action={this.submit}/>
+                    <NextStepButtonsArea />
                 </form>
             </div>
         );

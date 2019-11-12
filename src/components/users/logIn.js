@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+// components
+import StepIndicator from '../stepIndicator';
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
+
 // actions
 import { signIn } from '../../actions/authActions';
 
@@ -27,15 +31,14 @@ class LogIn extends Component {
     render() {
         return (
             <div>
-                登入
-                <form onSubmit={this.handleSubmit}>
+                <StepIndicator indicator='登入'/>
+                <form className='comfyForm innerContent' onSubmit={this.handleSubmit}>
                     <label>帳號</label>
                     <input name='email' type="text" onChange={this.handleChange} />
                     <label>密碼</label>
                     <input name='password' type="password" onChange={this.handleChange} />
-                    <button>送出</button>
+                    <NextStepButtonsArea />
                 </form>
-                <Link to='/'>取消</Link>
             </div>
         )
     }

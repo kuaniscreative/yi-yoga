@@ -6,7 +6,7 @@ const GuestPanel = () => {
         <div id="guestPanel">
             <div className='heroMessage'>
                 <p>最強凍齡瑜伽</p>
-                <p>沒有芝依</p>
+                <p>沒有芝伊</p>
             </div>
             <Link to="/log-in" className="outlineButton">
                 登入
