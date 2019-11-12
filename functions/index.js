@@ -100,29 +100,48 @@ const transporter = nodemailer.createTransport({
 //             console.log("Sent!");
 //         }
 //     });
-    
+
 // }
 
 exports.rescheduleSuccessNotification = functions.firestore
     .document("classProfile/{classId}")
     .onUpdate((change, context) => {
-        const id = context.params.classId;
-        const data = change.after.data()
-        const before = chnge.before.data();
-        const pendingStudents = data.pendingStudents;
-        const pendingStudentArranged = before.pendingStudents.length > pendingStudents ? true : false;
-        const user = data.rescheduleStudents.find((student) => {
-            return before.pendingStudents.indexOf(student) > -1 && before.rescheduleStudents.indexOf(student) < 0
-        })
-        console.log(change.after.data(), id, `pending students is arranged: ${pendingStudentArranged}`, user);
-        // if (pendingStudentArranged) {
-        //     console.log('pending arranged!')
-        //     console.log(user);
-        //     return
-        // } else {
-        //     console.log('not working');
-        //     return
-        // }
-        return true
+        const classId = context.params.classId;
+        const data = change.after.data();
+        const dataBefore = change.before.data();
+        const pendingStudentArranged =
+            dataBefore.pendingStudents.length > data.pendingStudents.length;
+        const targetStudent = data.rescheduleStudents.find(student => {
+            return (
+                dataBefore.pendingStudents.indexOf(student) > -1 &&
+                dataBefore.rescheduleStudents.indexOf(student) < 0
+            );
+        });
 
+        if (pendingStudentArranged) {
+            admin
+                .firestore()
+                .collection("user")
+                .doc(targetStudent)
+                .get()
+                .then(snap => {
+                    const userInfo = snap.data();
+                    const email = userInfo.email;
+                    const mailOptions = {
+                        from: "yiyoga.official@gmail.com",
+                        to: email,
+                        subject: "補課通知",
+                        html: `<p style="font-size: 16px;">補課成功囉！</p>`
+                    };
+
+                    return transporter.sendMail(mailOptions, (error, data) => {
+                        if (error) {
+                            console.log(error);
+                            return;
+                        }
+                    });
+                });
+        }
+
+        return true
     });
