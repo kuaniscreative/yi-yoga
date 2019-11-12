@@ -4,13 +4,9 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
-// actions
-import { signOut } from "../../actions/authActions";
-
 class UserPanel extends Component {
     clearSuccessMessage = (target = "") => {
         const output = `CLEAR_SUCCESS_MESSAGE_${target}`;
-        console.log(output);
         this.props.clearSuccessMessage(output);
     };
 
@@ -53,8 +49,6 @@ class UserPanel extends Component {
                     </Link>
                     {this.registerClassProcessor()}
                 </div>
-
-                <button onClick={this.props.signOut}>登出</button>
             </div>
         );
     }
@@ -68,9 +62,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        signOut: () => {
-            dispatch(signOut());
-        },
         clearSuccessMessage: dispatchType => {
             dispatch({ type: dispatchType });
         }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
+import { connect } from 'react-redux';
 
 // Components
 import Main from "./components/main";
@@ -9,7 +10,10 @@ import Reschedule from "./components/users/reschedule";
 import LeaveApplication from "./components/users/leaveApplication";
 import RegisterClasses from "./components/users/registerClasses";
 import Admin from "./components/admin/admin";
+import Header from './components/header';
 
+// actions
+import { signOut } from './actions/authActions';
 class App extends Component {
     state = {
         loggedIn: true
@@ -17,6 +21,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                <Header signOut={this.props.signOut}/>
                 <BrowserRouter>
                     <div className='mainContentWrapper'>
                         <Route exact path="/" component={Main} />
@@ -39,4 +44,12 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signOut: () => {
+            dispatch(signOut());
+        }
+    }
+}
+
+export default connect()(App);

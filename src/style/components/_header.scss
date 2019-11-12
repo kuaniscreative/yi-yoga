@@ -1,0 +1,10 @@
+#header {
+    display: flex;
+    padding: 1em;
+    flex-direction: row-reverse;
+    font-size: 0.75em;
+
+    button {
+        color: $gray-2;
+    }
+}
