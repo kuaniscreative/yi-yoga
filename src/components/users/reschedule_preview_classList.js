@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 // components
 import ClassSingle from "./reschedule_preview_classSingle";
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
 class ClassList extends Component {
 
@@ -22,17 +23,7 @@ class ClassList extends Component {
                         />
                     );
                 })}
-                <div className="nextStepButtonsArea">
-                    <button
-                        className="outlineButton"
-                        onClick={this.handleClick}
-                    >
-                        確認
-                    </button>
-                    <Link to="/" className="cancelGray">
-                        取消
-                    </Link>
-                </div>
+                <NextStepButtonsArea action={this.handleClick}/>
             </div>
         );
     }

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+// components
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
+
 class RegularCourseForm extends Component {
 
     render() {
@@ -37,12 +40,7 @@ class RegularCourseForm extends Component {
                                 </label>
                             );
                         })}
-                    <div className="nextStepButtonsArea">
-                        <button className="outlineButton">確認</button>
-                        <Link to="/" className="cancelGray">
-                            取消
-                        </Link>
-                    </div>
+                        <NextStepButtonsArea />
                 </form>
         )
     }

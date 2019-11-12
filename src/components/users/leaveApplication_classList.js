@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 // components
 import DateSingle from './leaveApplication_classSingle';
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
 // functions
 
@@ -32,12 +33,7 @@ class ClassList extends Component {
                         return <DateSingle classSingle={classInfo.date} key={i} select={this.select} canApply={classInfo.canApply} />
                     })
                 }
-                <div className="nextStepButtonsArea">
-                    <button className="outlineButton" onClick={this.submit}>確認</button>
-                    <Link to="/" className="cancelGray">
-                        取消
-                    </Link>
-                </div>
+                <NextStepButtonsArea action={this.submit}/>
             </div>
         )
     }

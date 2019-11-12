@@ -1,0 +1,15 @@
+#registerClasses {
+
+    .shadowOption {
+        margin-bottom: 2em;
+    }
+    .nextStepButtonsArea {
+        @include media('below-small') {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+        }
+    }
+}
