@@ -3,6 +3,7 @@
     border: 1px solid $gray-6;
     border-radius: 1.5em;
     font-size: 0.9em;
+    line-height: 1;
 }
 
 .cancelGray {
@@ -18,3 +19,16 @@
     font-size: 0.75em;
     border-radius: 4px;
 }
+
+// .squareButton {
+//     display: inline-block;
+//     width: 96px;
+//     height: 96px;
+//     border: 1px solid $gray-6;
+//     border-radius: 8px;
+
+//     &_text {
+//         padding: 16px;
+//         font-size: 1em;
+//     }
+// }

@@ -3,4 +3,18 @@
         padding: 1em;
         font-size: 1.5em;
     }
+
+
+    .userPanel_actions {
+        display: flex;
+        
+        a {
+            display: inline-flex;
+            flex: 1 1 33%;
+            align-items: center;
+            justify-content: center;
+            margin: 1em;
+            font-weight: 400;
+        }
+    }
 }
