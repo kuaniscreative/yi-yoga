@@ -1,0 +1,16 @@
+.comfyForm {
+    label {
+        display: block;
+        font-size: 0.75em;
+        margin-bottom: 0.5em;
+    }
+
+    input[type='text'],
+    input[type='password'] {
+        display: block;
+        border-bottom: 1px solid $gray-1;
+        padding: 0.5em 0;
+        margin-bottom: 2.5em;
+        font-size:1.5em;
+    }
+}

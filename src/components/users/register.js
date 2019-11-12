@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 
+// components
+import StepIndicator from '../stepIndicator';
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
+
 // actions
 import { signUp } from '../../actions/authActions';
 
@@ -27,8 +31,8 @@ class Register extends Component {
     render() {
         return (
             <div>
-                申請
-                <form onSubmit={this.handleSubmit}>
+                <StepIndicator indicator='註冊帳號'/>
+                <form className='comfyForm innerContent' onSubmit={this.handleSubmit}>
                     <label>帳號</label>
                     <input name='email' type="text" onChange={this.handleChange} />
                     <label>密碼</label>
@@ -37,9 +41,8 @@ class Register extends Component {
                     <input name='name' type="text" onChange={this.handleChange} />
                     <label>暱稱</label>
                     <input name='nickName' type="text" onChange={this.handleChange} />
-                    <button>確認</button>
+                    <NextStepButtonsArea action={this.submit}/>
                 </form>
-                <Link to="/">取消</Link>
             </div>
         );
     }
