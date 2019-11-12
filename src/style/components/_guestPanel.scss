@@ -1,0 +1,19 @@
+#guestPanel {
+    display: block;
+    position: fixed;
+    top: 50%;
+    transform: translate(0 -50%);
+    .heroMessage {
+        margin-bottom: 1em;
+    }
+    p {
+        font-size: 2em;
+    }
+    .outlineButton {
+        display: inline-block;
+        margin: 1em;
+    }
+    .outlineButton:nth-child(2) {
+        margin-left: 0;
+    }
+}
