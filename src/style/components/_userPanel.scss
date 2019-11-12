@@ -7,14 +7,16 @@
 
     .userPanel_actions {
         display: flex;
-        
-        a {
-            display: inline-flex;
+        width: 100%;
+        flex-wrap: wrap;
+
+
+        .rectButton {
             flex: 1 1 33%;
-            align-items: center;
-            justify-content: center;
             margin: 1em;
-            font-weight: 400;
+        }
+        .disableSelect {
+            border: 1px solid $gray-2;
         }
     }
 }
