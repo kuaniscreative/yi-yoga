@@ -28,9 +28,10 @@ class UserPanel extends Component {
     };
 
     render() {
+        const nickName = this.props.userData ? this.props.userData.nickName : null;
         return (
             <div id="userPanel">
-                <StepIndicator indicator={"嗨，小明"} />
+                <StepIndicator indicator={`嗨，${nickName}`} />
                 <div className="userPanel_infos"></div>
                 <div className="userPanel_actions">
                     <Link
@@ -77,7 +78,14 @@ class UserPanel extends Component {
 }
 
 const mapStateToProps = state => {
+    const uid = state.firebase.auth.uid;
+    const userData = state.firestore.ordered.user
+        ? state.firestore.ordered.user.find(user => {
+              return user.id === uid;
+          })
+        : null;
     return {
+        userData: userData,
         newSession: state.firestore.ordered.newSession
     };
 };
@@ -95,5 +103,5 @@ export default compose(
         mapStateToProps,
         mapDispatchToProps
     ),
-    firestoreConnect([{ collection: "newSession" }])
+    firestoreConnect([{ collection: "newSession" }, { collection: 'user'}])
 )(UserPanel);
