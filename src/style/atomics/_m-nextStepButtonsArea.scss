@@ -10,6 +10,17 @@
     }
 }
 
+.nextStepButtonsArea--notFixed {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > a,
+    & > button {
+        margin: 1.5em;    
+    }
+}
+
 .nextStepButtonsArea_parent {
     @include media('below-small') {
         &::after {

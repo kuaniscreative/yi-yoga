@@ -74,9 +74,9 @@ class Reschedule extends Component {
         })
         if (this.props.addSuccess || this.props.pendingSuccess) {
             if (this.props.addSuccess) {
-                return <RescheduleSuccess status="補課完成" />;
+                return <RescheduleSuccess status="success" />;
             }
-            return <RescheduleSuccess status="已在候補名單" />;
+            return <RescheduleSuccess status="pending" />;
         } else {
             return (
                 <Preview
