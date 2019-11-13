@@ -9,8 +9,6 @@
  *
  */
 
-
-
 /* Customize the label (the checkboxContainer) */
 .checkboxContainer {
     display: flex;
@@ -19,52 +17,56 @@
     margin-bottom: 2.5em;
     cursor: pointer;
     user-select: none;
-  }
-  
-  /* Hide the browser's default checkbox */
-  .checkboxContainer input {
+}
+
+/* Hide the browser's default checkbox */
+.checkboxContainer input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
     height: 0;
     width: 0;
-  }
-  
-  /* Create a custom checkbox */
-  .checkmark {
+}
+
+/* Create a custom checkbox */
+.checkmark {
     display: block;
     position: relative;
     height: 24px;
     width: 24px;
     border: 1px solid $gray-5;
     border-radius: 4px;
-    background-color:white;
-  }
-  
-  /* On mouse-over, add a grey background color */
-  .checkboxContainer:hover input ~ .checkmark {
     background-color: white;
-  }
-  
-  /* When the checkbox is checked, add a blue background */
-  .checkboxContainer input:checked ~ .checkmark {
-    background-color: #2196F3;
-  }
-  
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
+    @include media("below-iphoneSE") {
+        height: 20px;
+        width: 20px;
+    }
+}
+
+/* On mouse-over, add a grey background color */
+.checkboxContainer:hover input ~ .checkmark {
+    background-color: white;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkboxContainer input:checked ~ .checkmark {
+    background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
     content: "";
     position: absolute;
     visibility: hidden;
-  }
-  
-  /* Show the checkmark when checked */
-  .checkboxContainer input:checked ~ .checkmark:after {
-    visibility: visible
-  }
-  
-  /* Style the checkmark/indicator */
-  .checkboxContainer .checkmark:after {
+}
+
+/* Show the checkmark when checked */
+.checkboxContainer input:checked ~ .checkmark:after {
+    visibility: visible;
+}
+
+/* Style the checkmark/indicator */
+.checkboxContainer .checkmark:after {
     left: 9px;
     top: 5px;
     width: 5px;
@@ -74,19 +76,31 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-  }
+    @include media("below-iphoneSE") {
+        left: 7.2px;
+        top: 4.5px;
+        width: 4px;
+        height: 8px;
+        border-width: 0 2px 2px 0;
+    }
+}
 
-
-/* compositions */  
-  .checkboxContainer_message {
+/* compositions */
+.checkboxContainer_message {
     flex: 1 0;
-    padding-right: 24px
-  }
-  .checkboxContainer_checkbox {
+    padding-right: 24px;
+    @include media("below-iphoneSE") {
+        padding-right: 0;
+    }
+}
+.checkboxContainer_checkbox {
     flex: 0 0 80px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     justify-content: center;
     font-size: 0.75em;
-  }
+    @include media("below-iphoneSE") {
+        font-size: 0.6em;
+    }
+}

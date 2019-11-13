@@ -5,19 +5,31 @@
         justify-content: center;
         font-size: 2em;
         padding-right: 0.5em;
+        @include media('below-iphoneSE') {
+            font-size: 1.5em;
+        }
     }
 
     span[name='monthYear'] {
         font-size: 0.75em;
+        @include media('below-iphoneSE') {
+            font-size: 0.6em;
+        }
     }
 
     span[name='dayTime'] {
-        font-size: 0.75em
+        font-size: 0.75em;
+        @include media('below-iphoneSE') {
+            font-size: 0.6em;
+        }
     }
 
     span[name='seperator'] {
         font-size: 0.75em;
         padding: 0 0.5em;
+        @include media('below-iphoneSE') {
+            font-size: 0.6em;
+        }
     }
 
     .dateHero_message {

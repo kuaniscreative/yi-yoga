@@ -1,14 +1,21 @@
 .dayHero_day {
     font-size: 1.5em;
     margin-right: 0.5em;
+    @include media('below-iphoneSE') {
+        font-size: 1.2em;
+    }
 }
 
 .dayHero_time {
     font-size: 1em;
+    @include media('below-iphoneSE') {
+        font-size: 0.75em;
+    }
 }
 
 .dayHero_message {
     font-size: 0.75em;
+    line-height: 1.5em;
     color: $gray-3;
     margin-top: 1em;
 }
