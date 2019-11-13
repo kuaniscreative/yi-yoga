@@ -28,16 +28,21 @@ export const signUp = (userInfo) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
-
         firebase.auth().createUserWithEmailAndPassword(
             userInfo.email,
             userInfo.password
         ).then((res) => {
+            firestore.collection('leaveRecord').doc(res.user.uid).set({
+                records:[],
+                reschedulable: [],
+                rescheduled: [],
+                stamps: []
+            })
+            
             return firestore.collection('user').doc(res.user.uid).set({
                 name: userInfo.name || null,
                 nickName: userInfo.nickName || null,
-                email: userInfo.nickName || null
-                
+                email: userInfo.email || null
             })
         })
     }
