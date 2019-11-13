@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 
 // components
@@ -29,6 +29,7 @@ class Register extends Component {
     }
 
     render() {
+        if (this.props.uid) return <Redirect to='/'/>
         return (
             <div>
                 <StepIndicator indicator='註冊帳號'/>
@@ -48,10 +49,16 @@ class Register extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        uid: state.firebase.auth.uid
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         signUp: (userInfo) => { dispatch(signUp(userInfo)) }
     }
 }
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
