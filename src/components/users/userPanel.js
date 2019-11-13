@@ -63,13 +63,10 @@ class UserPanel extends Component {
                         <p className="rectButton_text">報名</p>
                     </Link>
                     <Link
-                        to="/"
-                        className="rectButton disableSelect"
-                        onClick={() => {
-                            this.clearSuccessMessage("RESCHEDULE");
-                        }}
+                        to="/info"
+                        className="rectButton"
                     >
-                        <p className="rectButton_text">資訊</p>
+                        <p className="rectButton_text">使用者及課堂資訊</p>
                     </Link>
                 </div>
             </div>

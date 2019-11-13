@@ -10,10 +10,10 @@ import Reschedule from "./components/users/reschedule";
 import LeaveApplication from "./components/users/leaveApplication";
 import RegisterClasses from "./components/users/registerClasses";
 import Admin from "./components/admin/admin";
-import Header from './components/header';
+import Info from './components/info';
 
 // actions
-import { signOut } from './actions/authActions';
+
 class App extends Component {
     state = {
         loggedIn: true
@@ -21,7 +21,6 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <Header signOut={this.props.signOut}/>
                 <BrowserRouter>
                     <div className='mainContentWrapper'>
                         <Route exact path="/" component={Main} />
@@ -36,6 +35,10 @@ class App extends Component {
                             path="/leave-application"
                             component={LeaveApplication}
                         />
+                        <Route
+                            path="/info"
+                            component={Info}
+                        />
                         <Route path="/admin" component={Admin} />
                     </div>
                 </BrowserRouter>
@@ -44,12 +47,6 @@ class App extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        signOut: () => {
-            dispatch(signOut());
-        }
-    }
-}
 
-export default connect(null, mapDispatchToProps)(App);
+
+export default connect()(App);

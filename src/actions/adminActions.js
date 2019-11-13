@@ -25,7 +25,8 @@ export const addClassProfile = (classes) => {
             classDate: classSingle,
             absence: [],
             pendingStudents: [],
-            rescheduleStudents: []
+            rescheduleStudents: [],
+            students:[]
           })
         }
         
