@@ -16,4 +16,12 @@
             background: white;
         }
     }
+
+    .nextStepButtonsArea--notFixed {
+        justify-content: flex-start;
+
+        a {
+            margin-left: 0; 
+        }
+    }
 }

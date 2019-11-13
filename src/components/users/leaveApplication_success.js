@@ -8,7 +8,7 @@ const LeaveApplicationSuccess = () => {
             <p className="resultMessage_action">
                 <Link to='/reschedule'>現在去補課 &rarr;</Link>
             </p>
-            <div className="nextStepButtonsArea">
+            <div className="nextStepButtonsArea--notFixed">
                 <Link to="/" className="outlineButton">
                     回首頁
                 </Link>
