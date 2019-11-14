@@ -1,30 +1,29 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
 class SideMenu extends Component {
-
     clearSuccessMessage = (target = "") => {
         const output = `CLEAR_SUCCESS_MESSAGE_${target}`;
         this.props.clearSuccessMessage(output);
     };
 
-    handleClick = (target = '') => {
-        const sideMenu = document.getElementById('sideMenu');
-        sideMenu.classList.remove('active');
+    handleClick = (target = "") => {
+        const sideMenu = document.getElementById("sideMenu");
+        sideMenu.classList.remove("active");
 
         if (target.length) {
-            this.clearSuccessMessage(target)
+            this.clearSuccessMessage(target);
         }
-        
-    }
+    };
 
     render() {
         return (
             <div id="sideMenu">
-                <div id="sideMenu_users">
+                <div id="sideMenu_actions">
+                    <p className="sideMenu_division">課程管理</p>
                     <Link
                         to="/leave-application"
                         className=""
@@ -46,20 +45,58 @@ class SideMenu extends Component {
                     </Link>
                     <Link
                         to={this.props.newSession ? "/register-classes" : "/"}
-                        className=''
+                        className=""
                         onClick={() => {
                             this.handleClick("NEWSESSION");
                         }}
                     >
                         <p className="rectButton_text">報名</p>
                     </Link>
-                    <Link to="/info" className="" onClick={() => {
+                    
+                </div>
+                <div id="sideMenu_users">
+                    <p className="sideMenu_division">使用者</p>
+                    <Link
+                        to="/leave-application"
+                        className=""
+                        onClick={() => {
+                            this.handleClick("LEAVE");
+                        }}
+                    >
+                        <p className="rectButton_text">課程狀態</p>
+                    </Link>
+                    
+                </div>
+                <div id="sideMenu_infos">
+                    <p className="sideMenu_division">課程資訊</p>
+                    <Link
+                        to="/info"
+                        className=""
+                        onClick={() => {
                             this.handleClick("NEWSESSION");
-                        }}>
-                        <p className="rectButton_text">使用者及課堂資訊</p>
+                        }}
+                    >
+                        <p className="rectButton_text">上課地點</p>
+                    </Link>
+                    <Link
+                        to="/info"
+                        className=""
+                        onClick={() => {
+                            this.handleClick("NEWSESSION");
+                        }}
+                    >
+                        <p className="rectButton_text">請假規則</p>
+                    </Link>
+                    <Link
+                        to="/info"
+                        className=""
+                        onClick={() => {
+                            this.handleClick("NEWSESSION");
+                        }}
+                    >
+                        <p className="rectButton_text">補課規則</p>
                     </Link>
                 </div>
-                <div id="sideMenu_infos"></div>
             </div>
         );
     }
@@ -87,6 +124,9 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([{collection: 'user'}, {collection: 'newSession'}])
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    firestoreConnect([{ collection: "user" }, { collection: "newSession" }])
 )(SideMenu);
