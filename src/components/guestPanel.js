@@ -10,7 +10,7 @@ const GuestPanel = () => {
                     <p>沒有芝伊</p>
                 </div>
                 <div className="heroMessage_sub">
-                    <p>的最強課程管理系統</p>
+                    <p>----的最強課程管理系統</p>
                 </div>
             </div>
             <Link to="/log-in" className="outlineButton">
