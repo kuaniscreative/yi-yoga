@@ -1,13 +1,9 @@
 #guestPanel {
     display: block;
-    position: fixed;
-    top: 50%;
-    transform: translate(0 -50%);
+    padding: 1em;
     .heroMessage {
-        margin-bottom: 1.5em;
-    }
-    p {
-        font-size: 2em;
+        margin-top: 6em;
+        padding: 2em 2em 2em 0;
     }
     .outlineButton {
         display: inline-block;

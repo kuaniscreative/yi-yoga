@@ -1,0 +1,22 @@
+.heroMessage_main {
+    font-weight: 400;
+    padding-right: 2em;
+    margin-bottom: 1.5em;
+
+    p {
+        font-size: 1.75em;
+        line-height: 1.4em;
+    }
+}
+
+.heroMessage_sub {
+    font-weight: 400;
+    padding-right: 2em;
+    
+
+    p {
+        color: $gray-5;
+        font-size: 1em;
+        font-weight: 200;
+    }
+}
