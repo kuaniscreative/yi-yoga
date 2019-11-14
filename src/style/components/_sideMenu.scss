@@ -1,0 +1,11 @@
+#sideMenu {
+    width: 100%;
+    position: fixed;
+    background: teal;
+    z-index: 11;
+
+    a {
+        font-size: 1.5em;
+        font-weight: 400;
+    }
+}
