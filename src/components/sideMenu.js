@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
 
 class SideMenu extends Component {
 
@@ -84,4 +86,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect([{collection: 'user'}, {collection: 'newSession'}])
+)(SideMenu);
