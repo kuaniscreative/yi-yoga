@@ -1,11 +1,18 @@
 #sideMenu {
+    visibility: hidden;
     width: 100%;
+    padding: 1.5em 1em 1em 1em;
+    height: calc(100% - 56px);
     position: fixed;
-    background: teal;
+    background: #F77251;
     z-index: 11;
 
+    &.active {
+        visibility: visible;
+    }
+
     a {
-        font-size: 1.5em;
+        font-size: 1.6em;
         font-weight: 400;
     }
 }

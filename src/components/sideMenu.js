@@ -8,7 +8,17 @@ class SideMenu extends Component {
         const output = `CLEAR_SUCCESS_MESSAGE_${target}`;
         this.props.clearSuccessMessage(output);
     };
-    
+
+    handleClick = (target = '') => {
+        const sideMenu = document.getElementById('sideMenu');
+        sideMenu.classList.remove('active');
+
+        if (target.length) {
+            this.clearSuccessMessage(target)
+        }
+        
+    }
+
     render() {
         return (
             <div id="sideMenu">
@@ -17,7 +27,7 @@ class SideMenu extends Component {
                         to="/leave-application"
                         className=""
                         onClick={() => {
-                            this.clearSuccessMessage("LEAVE");
+                            this.handleClick("LEAVE");
                         }}
                     >
                         <p className="rectButton_text">請假</p>
@@ -27,7 +37,7 @@ class SideMenu extends Component {
                         to="/reschedule"
                         className=""
                         onClick={() => {
-                            this.clearSuccessMessage("RESCHEDULE");
+                            this.handleClick("RESCHEDULE");
                         }}
                     >
                         <p className="rectButton_text">補課</p>
@@ -36,12 +46,14 @@ class SideMenu extends Component {
                         to={this.props.newSession ? "/register-classes" : "/"}
                         className=''
                         onClick={() => {
-                            this.clearSuccessMessage("NEWSESSION");
+                            this.handleClick("NEWSESSION");
                         }}
                     >
                         <p className="rectButton_text">報名</p>
                     </Link>
-                    <Link to="/info" className="">
+                    <Link to="/info" className="" onClick={() => {
+                            this.handleClick("NEWSESSION");
+                        }}>
                         <p className="rectButton_text">使用者及課堂資訊</p>
                     </Link>
                 </div>
@@ -51,6 +63,18 @@ class SideMenu extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    const uid = state.firebase.auth.uid;
+    const userData = state.firestore.ordered.user
+        ? state.firestore.ordered.user.find(user => {
+              return user.id === uid;
+          })
+        : null;
+    return {
+        userData: userData,
+        newSession: state.firestore.ordered.newSession
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -60,4 +84,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(SideMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);

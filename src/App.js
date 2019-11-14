@@ -12,6 +12,7 @@ import RegisterClasses from "./components/users/registerClasses";
 import Admin from "./components/admin/admin";
 import Info from "./components/info";
 import SideMenu from "./components/sideMenu";
+import Header from './components/header';
 
 // actions
 
@@ -23,6 +24,7 @@ class App extends Component {
         return (
             <div className="App">
                 <BrowserRouter>
+                    <Header />
                     <SideMenu />
                     <div className="mainContentWrapper">
                         <Route exact path="/" component={Main} />

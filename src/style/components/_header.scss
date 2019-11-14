@@ -1,10 +1,46 @@
 #header {
     display: flex;
-    padding: 1em;
-    flex-direction: row-reverse;
-    font-size: 0.75em;
+    width: 100%;
+    height: 56px;
+    background: white;
+    box-shadow: 0 0 8px -6px;
+    z-index: 17;
 
-    button {
-        color: $gray-2;
+}
+
+#menuButton {
+    width: 72px;
+    height: 100%;
+    position: relative;
+
+
+    &::after,
+    &::before {
+        content: '';
+        display: block;
+        width: 40%;
+        height: 0;
+        border-bottom: 1.2px solid $gray-6;
+        position: relative;
+        top: 50%;
+        left: 50%;
     }
+
+    &::after {
+        transform: translate( -50%, -480%);
+    }
+
+    &::before {
+        transform: translate( -50%, 480%);
+    }
+}
+
+#siteName {
+    display: flex;
+    padding: 0 0.5em;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: 400;
+    color: $gray-6;
 }
