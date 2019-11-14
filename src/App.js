@@ -13,6 +13,10 @@ import Admin from "./components/admin/admin";
 import Info from "./components/info";
 import SideMenu from "./components/sideMenu";
 import Header from './components/header';
+import UserStatus from './components/users/userStatus';
+import LocationInfo from './components/locationInfo';
+import LeaveRule from './components/leaveRule';
+import RescheduleRule from './components/rescheduleRule'
 
 // actions
 
@@ -41,6 +45,10 @@ class App extends Component {
                         />
                         <Route path="/info" component={Info} />
                         <Route path="/admin" component={Admin} />
+                        <Route path="/userStatus" component={UserStatus} />
+                        <Route path="/locationInfo" component={LocationInfo} />
+                        <Route path="/leaveRule" component={LeaveRule} />
+                        <Route path="/rescheduleRule" component={RescheduleRule} />
                     </div>
                 </BrowserRouter>
             </div>

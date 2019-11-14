@@ -57,10 +57,10 @@ class SideMenu extends Component {
                 <div id="sideMenu_users">
                     <p className="sideMenu_division">使用者</p>
                     <Link
-                        to="/leave-application"
+                        to="/userStatus"
                         className=""
                         onClick={() => {
-                            this.handleClick("LEAVE");
+                            this.handleClick();
                         }}
                     >
                         <p className="rectButton_text">課程狀態</p>
@@ -70,28 +70,28 @@ class SideMenu extends Component {
                 <div id="sideMenu_infos">
                     <p className="sideMenu_division">課程資訊</p>
                     <Link
-                        to="/info"
+                        to="/locationInfo"
                         className=""
                         onClick={() => {
-                            this.handleClick("NEWSESSION");
+                            this.handleClick();
                         }}
                     >
                         <p className="rectButton_text">上課地點</p>
                     </Link>
                     <Link
-                        to="/info"
+                        to="/leaveRule"
                         className=""
                         onClick={() => {
-                            this.handleClick("NEWSESSION");
+                            this.handleClick();
                         }}
                     >
                         <p className="rectButton_text">請假規則</p>
                     </Link>
                     <Link
-                        to="/info"
+                        to="/rescheduleRule"
                         className=""
                         onClick={() => {
-                            this.handleClick("NEWSESSION");
+                            this.handleClick();
                         }}
                     >
                         <p className="rectButton_text">補課規則</p>
