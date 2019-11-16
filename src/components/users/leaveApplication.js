@@ -46,7 +46,9 @@ class LeaveApplication extends Component {
         const success = this.props.leaveApplicationSuccess;
         const classifyClassesByLeaveRecord =
             this.props.userClasses &&
-            this.props.userClasses.map(timestamp => {
+            this.props.userClasses.sort((a, b) => {
+                return a.seconds - b.seconds
+            }).map(timestamp => {
                 const date = timestamp.toDate();
                 const mm = date.getMonth();
                 const yyyy = date.getFullYear();
