@@ -33,6 +33,7 @@ export const registerToCourse = (course, userId) => {
                         registeredCourse: course
                     })
                     .then(() => {
+                        dispatch({type: 'LOADED'});
                         dispatch({ type: "REGISTERED_TO_COURSE", course });
                     });
             });

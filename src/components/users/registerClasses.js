@@ -128,7 +128,6 @@ class RegisterClasses extends Component {
     }
 
     render() {
-        console.log(this.props)
         return (
             <div id="registerClasses">
                 <StepIndicator indicator={this.indicatorOutput()} />
@@ -172,6 +171,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         registerToCourse: (course, userId) => {
+            dispatch({type: 'LOADING'});
             dispatch(registerToCourse(course, userId));
         },
         addStudentToClasses: (course, userId) => {
