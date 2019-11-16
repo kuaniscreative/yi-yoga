@@ -27,6 +27,9 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                <div id='loadingBar'>
+                    <div id='loadingBar_bar'></div>
+                </div>
                 <BrowserRouter>
                     <Header />
                     <SideMenu />
