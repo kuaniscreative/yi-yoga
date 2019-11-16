@@ -22,59 +22,67 @@ class SideMenu extends Component {
     render() {
         return (
             <div id="sideMenu">
-                <div id="sideMenu_actions">
-                    <p className="sideMenu_division">課程管理</p>
-                    <Link
-                        to="/leave-application"
-                        className=""
-                        onClick={() => {
-                            this.handleClick("LEAVE");
-                        }}
-                    >
-                        <p className="rectButton_text">請假</p>
-                    </Link>
+                {this.props.uid ? (
+                    <div id="sideMenu_actions">
+                        <p className="sideMenu_division">課程管理</p>
+                        <Link
+                            to="/leave-application"
+                            className=""
+                            onClick={() => {
+                                this.handleClick("LEAVE");
+                            }}
+                        >
+                            <p className="rectButton_text">請假</p>
+                        </Link>
 
-                    <Link
-                        to="/reschedule"
-                        className=""
-                        onClick={() => {
-                            this.handleClick("RESCHEDULE");
-                        }}
-                    >
-                        <p className="rectButton_text">補課</p>
-                    </Link>
-                    <Link
-                        to={this.props.newSession ? "/register-classes" : "/"}
-                        className=""
-                        onClick={() => {
-                            this.handleClick("NEWSESSION");
-                        }}
-                    >
-                        <p className="rectButton_text">報名</p>
-                    </Link>
-                    
-                </div>
-                <div id="sideMenu_users">
-                    <p className="sideMenu_division">使用者</p>
-                    <Link
-                        to="/userStatus"
-                        className=""
-                        onClick={() => {
-                            this.handleClick();
-                        }}
-                    >
-                        <p className="rectButton_text">課程狀態</p>
-                    </Link>
-                    <Link
-                        to="/userAccount"
-                        className=""
-                        onClick={() => {
-                            this.handleClick();
-                        }}
-                    >
-                        <p className="rectButton_text">帳號管理</p>
-                    </Link>
-                </div>
+                        <Link
+                            to="/reschedule"
+                            className=""
+                            onClick={() => {
+                                this.handleClick("RESCHEDULE");
+                            }}
+                        >
+                            <p className="rectButton_text">補課</p>
+                        </Link>
+                        <Link
+                            to={
+                                this.props.newSession
+                                    ? "/register-classes"
+                                    : "/"
+                            }
+                            className=""
+                            onClick={() => {
+                                this.handleClick("NEWSESSION");
+                            }}
+                        >
+                            <p className="rectButton_text">報名</p>
+                        </Link>
+                    </div>
+                ) : null}
+                {this.props.uid ? (
+                    <div id="sideMenu_users">
+                        <p className="sideMenu_division">使用者</p>
+                        <Link
+                            to="/userStatus"
+                            className=""
+                            onClick={() => {
+                                this.handleClick();
+                            }}
+                        >
+                            <p className="rectButton_text">課程狀態</p>
+                        </Link>
+                        <Link
+                            to="/userAccount"
+                            className=""
+                            onClick={() => {
+                                this.handleClick();
+                            }}
+                        >
+                            <p className="rectButton_text">帳號管理</p>
+                        </Link>
+                    </div>
+                ) : null}
+
                 <div id="sideMenu_infos">
                     <p className="sideMenu_division">課程資訊</p>
                     <Link
@@ -118,6 +126,7 @@ const mapStateToProps = state => {
           })
         : null;
     return {
+        uid: uid,
         userData: userData,
         newSession: state.firestore.ordered.newSession
     };
