@@ -163,7 +163,9 @@ const mapStateToProps = state => {
     return {
         userId: state.firebase.auth.uid,
         session: session,
-        regularCourse: regularCourse,
+        regularCourse: regularCourse ? regularCourse.sort((a, b) => {
+            return a.reference.seconds - b.reference.seconds
+        }) : null,
         registerClassSuccess: state.user.registerClassSuccess
     };
 };
