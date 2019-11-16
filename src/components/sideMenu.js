@@ -65,7 +65,15 @@ class SideMenu extends Component {
                     >
                         <p className="rectButton_text">課程狀態</p>
                     </Link>
-                    
+                    <Link
+                        to="/userAccount"
+                        className=""
+                        onClick={() => {
+                            this.handleClick();
+                        }}
+                    >
+                        <p className="rectButton_text">帳號管理</p>
+                    </Link>
                 </div>
                 <div id="sideMenu_infos">
                     <p className="sideMenu_division">課程資訊</p>

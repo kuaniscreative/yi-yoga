@@ -10,7 +10,7 @@ import Reschedule from "./components/users/reschedule";
 import LeaveApplication from "./components/users/leaveApplication";
 import RegisterClasses from "./components/users/registerClasses";
 import Admin from "./components/admin/admin";
-import Info from "./components/info";
+import UserAccount from "./components/users/userAccount";
 import SideMenu from "./components/sideMenu";
 import Header from './components/header';
 import UserStatus from './components/users/userStatus';
@@ -43,7 +43,7 @@ class App extends Component {
                             path="/leave-application"
                             component={LeaveApplication}
                         />
-                        <Route path="/info" component={Info} />
+                        <Route path="/userAccount" component={UserAccount} />
                         <Route path="/admin" component={Admin} />
                         <Route path="/userStatus" component={UserStatus} />
                         <Route path="/locationInfo" component={LocationInfo} />

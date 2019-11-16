@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 
 // actions
-import { signOut } from '../actions/authActions';
+import { signOut } from '../../actions/authActions';
 
-const Info = ({signOut}) => {
+const UserAccount = ({signOut}) => {
     return (
         <div>
             <button onClick={signOut}>登出</button>
@@ -23,4 +23,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     null,
     mapDispatchToProps
-)(Info);
+)(UserAccount);
