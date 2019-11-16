@@ -53,6 +53,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         signIn: (cred) => {
+            dispatch({type: 'LOADING'});
             dispatch(signIn(cred))
         } 
     }

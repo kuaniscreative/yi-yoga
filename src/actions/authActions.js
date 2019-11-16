@@ -7,7 +7,8 @@ export const signIn = (credentials) => {
             credentials.password
         ).then(() => {
             document.location.href = "/";
-            dispatch({type: 'LOGIN_SUCCESS'})
+            dispatch({type: 'LOGIN_SUCCESS'});
+            dispatch({type: "LOADED"});
         }).catch((err) => {
             dispatch({type: 'LOGIN_ERROR', err})
         })
@@ -32,6 +33,8 @@ export const signUp = (userInfo) => {
             userInfo.email,
             userInfo.password
         ).then((res) => {
+            dispatch({type:'LOADED'});
+
             firestore.collection('leaveRecord').doc(res.user.uid).set({
                 records:[],
                 reschedulable: [],

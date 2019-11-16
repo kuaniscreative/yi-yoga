@@ -57,7 +57,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signUp: (userInfo) => { dispatch(signUp(userInfo)) }
+        signUp: (userInfo) => { 
+            dispatch({type: 'LOADING'});
+            dispatch(signUp(userInfo)) }
     }
 }
 
