@@ -4,6 +4,9 @@
     .heroMessage {
         margin-top: 6em;
         padding: 2em 2em 2em 0;
+        @include media('below-iphoneSE') {
+            margin-top: 3em;
+        }
     }
     .outlineButton {
         display: inline-block;
