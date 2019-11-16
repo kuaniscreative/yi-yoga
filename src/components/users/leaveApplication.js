@@ -10,7 +10,11 @@ import StepIndicator from "../stepIndicator";
 import LeaveApplicationSuccess from "./leaveApplication_success";
 
 // actions
-import { leaveApplication, updateLeaveRecord_leave, addPendingStudentToClass } from "../../actions/userActions";
+import {
+    leaveApplication,
+    updateLeaveRecord_leave,
+    addPendingStudentToClass
+} from "../../actions/userActions";
 
 class LeaveApplication extends Component {
     checkLeaveRecord = date => {
@@ -26,8 +30,8 @@ class LeaveApplication extends Component {
 
     submit = date => {
         const canApply = this.checkLeaveRecord(date.toDate());
-        const classId = this.props.classProfile.find((classInfo) => {
-            return classInfo.classDate.seconds === date.seconds
+        const classId = this.props.classProfile.find(classInfo => {
+            return classInfo.classDate.seconds === date.seconds;
         }).id;
         if (canApply) {
             this.props.leaveApplication(date, this.props.userId);
@@ -40,41 +44,63 @@ class LeaveApplication extends Component {
 
     conditionalComponents = () => {
         const success = this.props.leaveApplicationSuccess;
-        const classifyClassesByLeaveRecord = this.props.userClasses && this.props.userClasses.map((timestamp) => {
-            const date = timestamp.toDate();
-            const mm = date.getMonth();
-            const yyyy = date.getFullYear();
-            const leaveRecord = this.props.leaveRecord ? this.props.leaveRecord.stamps : null;
-            let canApply = true;
-            leaveRecord && leaveRecord.forEach((record) => {
-                const recordMonth = parseInt(record.split('/')[1], 10) - 1;
-                const recordYear = parseInt(record.split('/')[0], 10);
-                if (recordMonth === mm && recordYear === yyyy) {
-                    canApply = false;
-                } 
-            })
+        const classifyClassesByLeaveRecord =
+            this.props.userClasses &&
+            this.props.userClasses.map(timestamp => {
+                const date = timestamp.toDate();
+                const mm = date.getMonth();
+                const yyyy = date.getFullYear();
+                const leaveRecord = this.props.leaveRecord
+                    ? this.props.leaveRecord.stamps
+                    : null;
+                let canApply = true;
+                leaveRecord &&
+                    leaveRecord.forEach(record => {
+                        const recordMonth =
+                            parseInt(record.split("/")[1], 10) - 1;
+                        const recordYear = parseInt(record.split("/")[0], 10);
+                        if (recordMonth === mm && recordYear === yyyy) {
+                            canApply = false;
+                        }
+                    });
 
-            return {
-                date: timestamp,
-                canApply
-            }
-        })
+                return {
+                    date: timestamp,
+                    canApply
+                };
+            });
 
         if (success) {
             return <LeaveApplicationSuccess />;
+        } else if (this.props.userClasses) {
+            return (
+                <ClassList
+                    submit={this.submit}
+                    classes={classifyClassesByLeaveRecord}
+                />
+            );
         } else {
-            return <ClassList submit={this.submit} classes={classifyClassesByLeaveRecord} />;
+            return (
+                <div className="innerContent nextStepButtonsArea_parent">
+                    還沒有報名任何課程
+                    <div className="nextStepButtonsArea">
+                        <Link to="/" className="cancelGray">
+                            回首頁
+                        </Link>
+                    </div>
+                </div>
+            );
         }
     };
 
     indicatorOutput = () => {
         const success = this.props.leaveApplicationSuccess;
         if (success) {
-            return '請假結果'
+            return "請假結果";
         } else {
-            return '選擇請假日期'
+            return "選擇請假日期";
         }
-    }
+    };
 
     render() {
         return (
@@ -94,9 +120,12 @@ const mapStateToProps = state => {
               return user.id === state.firebase.auth.uid;
           })
         : null;
-    const userRecord = leaveRecord && userId ? leaveRecord.find((record) => {
-        return record.id === userId
-    }) : null;
+    const userRecord =
+        leaveRecord && userId
+            ? leaveRecord.find(record => {
+                  return record.id === userId;
+              })
+            : null;
 
     return {
         userId: state.firebase.auth.uid,
@@ -118,8 +147,8 @@ const mapDispatchToProps = dispatch => {
         clearSuccessMessage: () => {
             dispatch({ type: "CLEAR_SUCCESS_MESSAGE_LEAVE" });
         },
-        addPendingStudentToClass: (classId) => {
-            dispatch(addPendingStudentToClass(classId))
+        addPendingStudentToClass: classId => {
+            dispatch(addPendingStudentToClass(classId));
         }
     };
 };
@@ -129,5 +158,9 @@ export default compose(
         mapStateToProps,
         mapDispatchToProps
     ),
-    firestoreConnect([{ collection: "classProfile" }, { collection: "user" }, {collection: 'leaveRecord'}])
+    firestoreConnect([
+        { collection: "classProfile" },
+        { collection: "user" },
+        { collection: "leaveRecord" }
+    ])
 )(LeaveApplication);

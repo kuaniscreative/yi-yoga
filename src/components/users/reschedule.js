@@ -69,6 +69,7 @@ class Reschedule extends Component {
 
     // controlling which component should show during different stage
     conditionalComponents = () => {
+        console.log(this.props.leaveRecord)
         const sortedTimeTable = this.state.timeTable && this.state.timeTable.sort((a, b) => {
             return a.classDate.seconds - b.classDate.seconds
         })
@@ -77,7 +78,7 @@ class Reschedule extends Component {
                 return <RescheduleSuccess status="success" />;
             }
             return <RescheduleSuccess status="pending" />;
-        } else {
+        } else if (this.props.leaveRecord && this.props.leaveRecord.reschedulable.length) {
             return (
                 <Preview
                     classes={sortedTimeTable}
@@ -88,7 +89,18 @@ class Reschedule extends Component {
                     selectLeaveClass={this.handleClick}
                 />
             );
-        } 
+        } else {
+            return (
+                <div className="innerContent nextStepButtonsArea_parent">
+                    沒有可以補課的課堂
+                    <div className="nextStepButtonsArea">
+                        <Link to="/" className="cancelGray">
+                            回首頁
+                        </Link>
+                    </div>
+                </div>
+            )
+        }
     };
 
     // controlling the indicator ouput
