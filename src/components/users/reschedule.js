@@ -58,9 +58,7 @@ class Reschedule extends Component {
     };
 
     // click will fire requestTimeTable and set the leave class to state.target
-    handleClick = (e, date) => {
-        const yyyy = e.target.dataset.year;
-        const mm = e.target.dataset.month;
+    handleClick = (mm, yyyy, date) => {
         this.requestTimeTable(mm, yyyy);
         this.setState({
             target: date

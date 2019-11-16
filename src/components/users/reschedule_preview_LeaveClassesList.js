@@ -23,7 +23,7 @@ class LeaveClassesList extends Component {
                         key={i}
                         data-month={mm}
                         data-year={yyyy}
-                        onClick={(e) => {this.props.selectLeaveClass(e, date)}}
+                        onClick={() => {this.props.selectLeaveClass(mm, yyyy, date)}}
                     >
                         <span name="date">{`${dd}`}</span>
                         <span name="monthYear">{`${mm + 1}月 ${yyyy}`}</span>
