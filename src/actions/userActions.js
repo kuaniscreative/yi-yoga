@@ -250,7 +250,7 @@ export const reschedulePending = (classId, userId) => {
             .collection("classProfile")
             .doc(classId)
             .update({
-                pendingStudent: firebase.firestore.FieldValue.arrayUnion(userId)
+                pendingStudents: firebase.firestore.FieldValue.arrayUnion(userId)
             })
             .then(() => {
                 dispatch({type: 'RESCHEDULE_PENDING_SUCCESS'})
@@ -275,7 +275,7 @@ export const rescheduleAdd = (classId, userId) => {
     };
 };
 
-export const updateLeaveRecord_reschedule = (userId, rescheduleDate) => {
+export const updateLeaveRecord_rescheduleAdd = (userId, rescheduleDate) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
@@ -287,9 +287,20 @@ export const updateLeaveRecord_reschedule = (userId, rescheduleDate) => {
                 reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
                 rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleDate)
             })
-            .then(() => {
-                // alert("已候捕");
-                // document.location.href = "/";
-            });
+    };
+};
+
+export const updateLeaveRecord_reschedulePending = (userId, rescheduleDate) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+
+        firestore
+            .collection("leaveRecord")
+            .doc(userId)
+            .update({
+                reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
+                reschedulePending: firebase.firestore.FieldValue.arrayUnion(rescheduleDate)
+            })
     };
 };

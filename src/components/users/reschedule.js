@@ -13,7 +13,8 @@ import RescheduleSuccess from "./reschedule_success";
 import {
     reschedulePending,
     rescheduleAdd,
-    updateLeaveRecord_reschedule
+    updateLeaveRecord_rescheduleAdd,
+    updateLeaveRecord_reschedulePending
 } from "../../actions/userActions";
 
 class Reschedule extends Component {
@@ -127,10 +128,10 @@ class Reschedule extends Component {
             selectedClassInfo.rescheduleStudents.length;
         if (avalible > 0) {
             this.props.rescheduleAdd(classId, userId);
-            this.props.updateLeaveRecord(userId, rescheduleDate);
+            this.props.updateLeaveRecord_add(userId, rescheduleDate);
         } else {
             this.props.reschedulePending(classId, userId);
-            this.props.updateLeaveRecord(userId, rescheduleDate);
+            this.props.updateLeaveRecord_pending(userId, rescheduleDate);
         }
     };
 
@@ -173,8 +174,11 @@ const mapDispatchToProps = dispatch => {
         rescheduleAdd: (classId, userId) => {
             dispatch(rescheduleAdd(classId, userId));
         },
-        updateLeaveRecord: (userId, rescheduleDate) => {
-            dispatch(updateLeaveRecord_reschedule(userId, rescheduleDate));
+        updateLeaveRecord_add: (userId, rescheduleDate) => {
+            dispatch(updateLeaveRecord_rescheduleAdd(userId, rescheduleDate));
+        },
+        updateLeaveRecord_pending: (userId, rescheduleDate) => {
+            dispatch(updateLeaveRecord_reschedulePending(userId, rescheduleDate));
         }
     };
 };

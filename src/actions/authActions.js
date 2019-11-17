@@ -38,6 +38,7 @@ export const signUp = (userInfo) => {
             firestore.collection('leaveRecord').doc(res.user.uid).set({
                 records:[],
                 reschedulable: [],
+                reschedulePending: [],
                 rescheduled: [],
                 stamps: []
             })
