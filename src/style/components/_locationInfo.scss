@@ -1,0 +1,31 @@
+#locationInfo {
+    .stepIndicator {
+        margin-bottom: 3em;
+    }
+
+    li {
+        color: $gray-4;
+        font-weight: 400;
+        margin-bottom: 0.5em;
+    }
+    .comfyList {
+        margin-bottom: 3em;
+    }
+    .nextStepButtonsArea--notFixed {
+        justify-content: flex-start;
+
+        .outlineButton {
+            margin-left: 0;
+        }
+    }
+    .location_title {
+        margin-bottom: 0.5em;
+    }
+    .ch-eg-name {
+        span {
+            display: block;
+            color: $gray-4;
+            font-size: 0.75em;
+        }
+    }
+}
