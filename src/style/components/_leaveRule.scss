@@ -1,0 +1,16 @@
+#leaveRule {
+
+    li {
+        font-weight: 400;
+    }
+    .comfyList {
+        margin-bottom: 2.5em;
+    }
+    .nextStepButtonsArea--notFixed {
+        justify-content: flex-start;
+
+        .outlineButton {
+            margin-left: 0;
+        }
+    }
+}

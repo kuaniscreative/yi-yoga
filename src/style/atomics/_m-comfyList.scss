@@ -1,0 +1,41 @@
+ol.comfyList {
+    counter-reset: theCounter;
+
+    li:before {
+        counter-increment: theCounter;
+        content: counter(theCounter);
+        color: white;
+        background: #2980b9;
+        display: inline-block;
+        text-align: center;
+        margin: 5px 10px;
+        line-height: 40px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+ul.comfyList {
+    padding-left: 1em;
+
+    li {
+        position: relative;
+        line-height: 2em;
+        margin-bottom: 0.5em;
+    }
+    li:before {
+        width: 8px;
+        height: 8px;
+        content: "";
+        display: block;
+        margin-right: 15px;
+        margin-bottom: 3px;
+        font-size: 1rem;
+        background-color: #ff9a57;
+        border-radius: 8px;
+        position: absolute;
+        left: -1rem;
+        top: 1em;
+        transform: translateY(-50%);
+    }
+}
