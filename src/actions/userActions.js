@@ -141,14 +141,15 @@ export const updatePaymentStatus = (paymentId, method, account, date) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
-
         firestore.collection('paymentStatus').doc(paymentId).update({
             method: method,
             account: account,
             date: date,
             moneySent: true
         }).then(() => {
-            console.log('success')
+            dispatch({type: 'UPDATE_PAYMENT_SUCCESS'})
+        }).catch((err) => {
+            console.log(err)
         })
     }
 }

@@ -34,6 +34,12 @@ const userReducer = (state = initState, action) => {
                 reacheduleAddSuccess: false,
                 reachedulePendingSuccess: false
             };
+        case "UPDATE_PAYMENT_SUCCESS": 
+            console.log("UPDATE_PAYMENT_SUCCESS");
+            return {
+                ...state,
+                updatePaymentSuccess: true
+            }
         default:
             return state;
     }
