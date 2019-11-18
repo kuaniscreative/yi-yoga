@@ -128,10 +128,10 @@ class Reschedule extends Component {
             selectedClassInfo.rescheduleStudents.length;
         if (avalible > 0) {
             this.props.rescheduleAdd(classId, userId);
-            this.props.updateLeaveRecord_add(userId, rescheduleDate);
+            this.props.updateLeaveRecord_add(userId, rescheduleDate, classId);
         } else {
             this.props.reschedulePending(classId, userId);
-            this.props.updateLeaveRecord_pending(userId, rescheduleDate);
+            this.props.updateLeaveRecord_pending(userId, rescheduleDate, classId);
         }
     };
 
@@ -174,11 +174,11 @@ const mapDispatchToProps = dispatch => {
         rescheduleAdd: (classId, userId) => {
             dispatch(rescheduleAdd(classId, userId));
         },
-        updateLeaveRecord_add: (userId, rescheduleDate) => {
-            dispatch(updateLeaveRecord_rescheduleAdd(userId, rescheduleDate));
+        updateLeaveRecord_add: (userId, rescheduleDate, classId) => {
+            dispatch(updateLeaveRecord_rescheduleAdd(userId, rescheduleDate, classId));
         },
-        updateLeaveRecord_pending: (userId, rescheduleDate) => {
-            dispatch(updateLeaveRecord_reschedulePending(userId, rescheduleDate));
+        updateLeaveRecord_pending: (userId, rescheduleDate, classId) => {
+            dispatch(updateLeaveRecord_reschedulePending(userId, rescheduleDate, classId));
         }
     };
 };

@@ -1,0 +1,34 @@
+#userStatus {
+    font-weight: 400;
+    .leaveSingle {
+        margin-bottom: 1.5em;
+        p[name='title'] {
+            font-size: 1em;
+            font-weight: 500;
+            margin-bottom: 0.5em;
+        }
+    }
+    .stepIndicator {
+        margin-bottom: 2em;
+    }
+    .comfyList {
+        color: $gray-4;
+        li {
+            line-height: 1.5em;
+            font-size: 0.9em;
+            margin-bottom: 0;
+        }
+        li:before {
+            width: 6px;
+            height: 6px;
+            top: 0.6em;
+            margin-left: 2px;
+        } 
+        .action {
+            text-decoration: underline;
+        }
+        a {
+            color: $gray-4;
+        }
+    }
+}

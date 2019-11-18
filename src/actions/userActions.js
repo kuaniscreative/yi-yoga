@@ -275,32 +275,42 @@ export const rescheduleAdd = (classId, userId) => {
     };
 };
 
-export const updateLeaveRecord_rescheduleAdd = (userId, rescheduleDate) => {
+export const updateLeaveRecord_rescheduleAdd = (userId, rescheduleDate, classId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
+
+        const rescheduleInfo = {
+            leaveDate: rescheduleDate,
+            rescheduleClassId:classId
+        }
 
         firestore
             .collection("leaveRecord")
             .doc(userId)
             .update({
                 reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
-                rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleDate)
+                rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleInfo)
             })
     };
 };
 
-export const updateLeaveRecord_reschedulePending = (userId, rescheduleDate) => {
+export const updateLeaveRecord_reschedulePending = (userId, rescheduleDate, classId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
+
+        const pendingInfo = {
+            leaveDate: rescheduleDate,
+            pendingClassId:classId
+        }
 
         firestore
             .collection("leaveRecord")
             .doc(userId)
             .update({
                 reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
-                reschedulePending: firebase.firestore.FieldValue.arrayUnion(rescheduleDate)
+                reschedulePending: firebase.firestore.FieldValue.arrayUnion(pendingInfo)
             })
     };
 };
