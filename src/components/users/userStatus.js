@@ -6,10 +6,18 @@ import { firestoreConnect } from "react-redux-firebase";
 // components
 import StepIndicator from "../stepIndicator";
 import LeaveSingle from "./userStatus_leaveSingle";
+import RescheduleSingle from './userStatus_rescheduleSingle';
 
 const UserStatus = ({ uid, leaveRecord, classProfile }) => {
     return (
         <div id="userStatus" className="innerContent">
+            {
+            /**
+            *
+            *   請假
+            *
+            */
+             }
             <div className='contentBlock'>
                 <StepIndicator indicator="請假狀態" />
                 { leaveRecord && leaveRecord.reschedulable.map((date, i) => {
@@ -19,20 +27,37 @@ const UserStatus = ({ uid, leaveRecord, classProfile }) => {
                     const pendingClassInfo = classProfile && classProfile.find((profile) => {
                         return profile.id === date.pendingClassId
                     })
-                    console.log(pendingClassInfo)
                     return <LeaveSingle status="reschedulePending" date={date.leaveDate} pendingClassInfo={pendingClassInfo} uid={uid} key={i}/>
                 })}
                 { leaveRecord && leaveRecord.rescheduled.map((date, i) => {
                     const rescheduleClassInfo = classProfile && classProfile.find((profile) => {
                         return profile.id === date.rescheduleClassId
                     })
-                    console.log(uid,rescheduleClassInfo)
                     return <LeaveSingle status="rescheduled" date={date.leaveDate} rescheduleClassInfo={rescheduleClassInfo} key={i}/>
                 })}
             </div>
-            <StepIndicator indicator="補課狀態" />
-            <p>2019年11月2日請假，已安排補課</p>
-            <p>2019年12月5日請假，補課候補中</p>
+            {
+            /**
+            *
+            *   補課
+            *
+            */
+             }
+            <div className='contentBlock'>
+                <StepIndicator indicator="補課狀態" />
+                { leaveRecord && leaveRecord.reschedulePending.map((date, i) => {
+                    const pendingClassInfo = classProfile && classProfile.find((profile) => {
+                        return profile.id === date.pendingClassId
+                    })
+                    return <RescheduleSingle pendingClassInfo={pendingClassInfo} uid={uid} key={i}/>
+                })}
+                { leaveRecord && leaveRecord.rescheduled.map((date, i) => {
+                    const rescheduleClassInfo = classProfile && classProfile.find((profile) => {
+                        return profile.id === date.rescheduleClassId
+                    })
+                    return <RescheduleSingle rescheduleClassInfo={rescheduleClassInfo} key={i}/>
+                })}
+            </div>
         </div>
     );
 };

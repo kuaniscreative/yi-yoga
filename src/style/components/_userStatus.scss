@@ -1,6 +1,7 @@
 #userStatus {
     font-weight: 400;
-    .leaveSingle {
+    .leaveSingle,
+    .RescheduleSingle {
         margin-bottom: 1.5em;
         p[name='title'] {
             font-size: 1em;
@@ -30,5 +31,8 @@
         a {
             color: $gray-4;
         }
+    }
+    .contentBlock {
+        margin-bottom: 4em;
     }
 }
