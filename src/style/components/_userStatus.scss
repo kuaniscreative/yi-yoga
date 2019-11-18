@@ -1,7 +1,8 @@
 #userStatus {
     font-weight: 400;
     .leaveSingle,
-    .RescheduleSingle {
+    .RescheduleSingle,
+    .paymentSingle {
         margin-bottom: 1.5em;
         p[name='title'] {
             font-size: 1em;
@@ -34,5 +35,9 @@
     }
     .contentBlock {
         margin-bottom: 4em;
+    }
+
+    p[name='default'] {
+        color: $gray-2;
     }
 }
