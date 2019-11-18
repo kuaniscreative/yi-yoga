@@ -121,6 +121,22 @@ export const updateRegisterStatus = (courseName, sessionId, userId) => {
     };
 };
 
+export const addPaymentStatus = (courseName, userId, amount) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+
+        firestore.collection('paymentStatus').add({
+            amount: amount,
+            method: null,
+            owner: userId,
+            session: courseName,
+            moneyReceived: false,
+            moneySent: false
+        })
+    }
+}
+
 // leave application
 export const updateLeaveRecord_leave = (date, userId) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {

@@ -13,7 +13,8 @@ import RegisterClassSuccess from './registerClasses_success';
 import {
     registerToCourse,
     addStudentToClasses,
-    updateRegisterStatus
+    updateRegisterStatus,
+    addPaymentStatus
 } from "../../actions/userActions";
 
 class RegisterClasses extends Component {
@@ -90,6 +91,9 @@ class RegisterClasses extends Component {
         const selectedCourse = this.state.matchCourses;
         const userId = this.props.userId;
         const session = this.props.session;
+        const amount = this.state.matchCourses.reduce((acc, cValue, cIndex) => {
+            return acc + cValue.length
+        }, 0) * 250
 
         selectedCourse.forEach((course) => {
             this.props.updateRegisterStatus(
@@ -100,6 +104,7 @@ class RegisterClasses extends Component {
         })
         this.props.addStudentToClasses(selectedCourse, userId);
         this.props.registerToCourse(selectedCourse, userId);
+        this.props.addPaymentStatus(session.name, userId, amount)
     }
 
     indicatorOutput = () => {
@@ -181,6 +186,9 @@ const mapDispatchToProps = dispatch => {
         },
         updateRegisterStatus: (courseName, sessionId, userId) => {
             dispatch(updateRegisterStatus(courseName, sessionId, userId));
+        },
+        addPaymentStatus: (courseName, userId, amount) => {
+            dispatch(addPaymentStatus(courseName, userId, amount))
         }
     };
 };
