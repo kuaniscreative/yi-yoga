@@ -37,16 +37,16 @@ class NewSession extends Component {
         const targets = []
         const currentSessions = this.props.sessions; 
         const checkValidPeriod = () => {
-            for (let session of currentSessions) {
-                for (let period of session.period) {
-                    if (period.year === start.year && period.month === start.month) {
-                        return false
-                    } 
-                    if (period.year === end.year && period.month === end.month) {
-                        return false
-                    }
-                }
-            }
+            // for (let session of currentSessions) {
+            //     for (let period of session.period) {
+            //         if (period.year === start.year && period.month === start.month) {
+            //             return false
+            //         } 
+            //         if (period.year === end.year && period.month === end.month) {
+            //             return false
+            //         }
+            //     }
+            // }
             return true
         }
 

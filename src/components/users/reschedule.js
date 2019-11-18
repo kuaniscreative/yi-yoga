@@ -68,7 +68,6 @@ class Reschedule extends Component {
 
     // controlling which component should show during different stage
     conditionalComponents = () => {
-        console.log(this.props.leaveRecord)
         const sortedTimeTable = this.state.timeTable && this.state.timeTable.sort((a, b) => {
             return a.classDate.seconds - b.classDate.seconds
         })

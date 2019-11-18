@@ -12,20 +12,22 @@ const UserStatus = ({ uid, leaveRecord, classProfile }) => {
         <div id="userStatus" className="innerContent">
             <div className='contentBlock'>
                 <StepIndicator indicator="請假狀態" />
-                { leaveRecord && leaveRecord.reschedulable.map((date) => {
-                    return <LeaveSingle status="reschedulable" date={date}/>
+                { leaveRecord && leaveRecord.reschedulable.map((date, i) => {
+                    return <LeaveSingle status="reschedulable" date={date} key={i}/>
                 })}
-                { leaveRecord && leaveRecord.reschedulePending.map((date) => {
+                { leaveRecord && leaveRecord.reschedulePending.map((date, i) => {
                     const pendingClassInfo = classProfile && classProfile.find((profile) => {
                         return profile.id === date.pendingClassId
                     })
-                    return <LeaveSingle status="reschedulePending" date={date.leaveDate} pendingClassInfo={pendingClassInfo} uid={uid}/>
+                    console.log(pendingClassInfo)
+                    return <LeaveSingle status="reschedulePending" date={date.leaveDate} pendingClassInfo={pendingClassInfo} uid={uid} key={i}/>
                 })}
-                { leaveRecord && leaveRecord.rescheduled.map((date) => {
+                { leaveRecord && leaveRecord.rescheduled.map((date, i) => {
                     const rescheduleClassInfo = classProfile && classProfile.find((profile) => {
                         return profile.id === date.rescheduleClassId
                     })
-                    return <LeaveSingle status="rescheduled" date={date.leaveDate} rescheduleClassInfo={rescheduleClassInfo}/>
+                    console.log(uid,rescheduleClassInfo)
+                    return <LeaveSingle status="rescheduled" date={date.leaveDate} rescheduleClassInfo={rescheduleClassInfo} key={i}/>
                 })}
             </div>
             <StepIndicator indicator="補課狀態" />
