@@ -399,3 +399,37 @@ export const updateLeaveRecord_reschedulePending = (
             });
     };
 };
+
+export const cancelReschedulePending = (userId, pendingClassId) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+        function updateLeaveRecord() {
+            return firestore.collection('leaveRecord').doc(userId).get().then((res) => {
+                const data = res.data();
+                const currentPending = data.reschedulePending;
+                const newPending = currentPending.filter((profile) => {
+                    return profile.pendingClassId !== pendingClassId
+                })
+                const leaveDate = currentPending.find((profile) => {
+                    return profile.pendingClassId === pendingClassId
+                }).leaveDate;
+                
+                return firestore.collection('leaveRecord').doc(userId).update({
+                    reschedulePending: newPending,
+                    reschedulable: firebase.firestore.FieldValue.arrayUnion(leaveDate)
+                })
+            })
+        }
+        function updateClassProfile() {
+            return firestore.collection('classProfile').doc(pendingClassId).update({
+                pendingStudents: firebase.firestore.FieldValue.arrayRemove(userId)
+            })
+        }
+
+        const tasks = [updateLeaveRecord(), updateClassProfile()];
+
+        Promise.all(tasks)
+    }
+}
+
