@@ -89,9 +89,8 @@ class Payment extends Component {
     render() {
         return (
             <div id="payment">
-                <StepIndicator indicator="通知結果" />
-                {/* { this.conditionalComponent() } */}
-                <PaymentSuccess />
+                <StepIndicator indicator={this.indicator()} />
+                { this.conditionalComponent() }
             </div>
         );
     }
