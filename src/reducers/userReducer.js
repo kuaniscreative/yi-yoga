@@ -7,6 +7,11 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 registerClassSuccess: true
             };
+        case 'ADD_PAYMENT_SUCCESS':
+            return {
+                ...state,
+                paymentId: action.id
+            }
         case "LEAVE_APPLICATION_SUCCESS":
             return {
                 ...state,

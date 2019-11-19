@@ -3,13 +3,21 @@
     .shadowOption {
         margin-bottom: 2em;
     }
-    .nextStepButtonsArea {
-        @include media('below-small') {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
+    .nextStepButtonsArea--notFixed {
+        justify-content: flex-start;
+        a {
+            margin-left: 0;
         }
+    }
+    .resultMessage_text,
+    .resultMessage_action {
+        margin-bottom: 0.5em;
+        font-weight: 400;
+    }
+    .comfyList {
+        margin-bottom: 2em;
+    }
+    li:before {
+        top: 0.6em;
     }
 }
