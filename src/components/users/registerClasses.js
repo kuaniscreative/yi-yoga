@@ -7,15 +7,10 @@ import { firestoreConnect } from "react-redux-firebase";
 import RegularCourseForm from "./registerClasses_regularCourseForm";
 import StepIndicator from "../stepIndicator";
 import Preview from "./registerClasses_preview";
-import RegisterClassSuccess from './registerClasses_success';
+import RegisterClassSuccess from "./registerClasses_success";
 
 // actions
-import {
-    registerToCourse,
-    addStudentToClasses,
-    updateRegisterStatus,
-    addPaymentStatus
-} from "../../actions/userActions";
+import { registerToCourse } from "../../actions/userActions";
 
 class RegisterClasses extends Component {
     state = {
@@ -61,84 +56,91 @@ class RegisterClasses extends Component {
         });
     };
 
-    deselect = (course) => {
+    deselect = course => {
         const currentCourses = this.state.matchCourses;
-        const afterDeletion = currentCourses.filter((item) => {
+        const afterDeletion = currentCourses.filter(item => {
             return item !== course;
-        })
+        });
 
         if (afterDeletion.length) {
-            this.setState({
-                ...this.state,
-                matchCourses: afterDeletion
-            }, () => {
-                console.log(this.state);
-            })
+            this.setState(
+                {
+                    ...this.state,
+                    matchCourses: afterDeletion
+                },
+                () => {
+                    console.log(this.state);
+                }
+            );
         } else {
-            this.setState({
-                ...this.state,
-                enablePreview: false,
-                matchCourses: afterDeletion
-            }, () => {
-                console.log(this.state);
-            })
+            this.setState(
+                {
+                    ...this.state,
+                    enablePreview: false,
+                    matchCourses: afterDeletion
+                },
+                () => {
+                    console.log(this.state);
+                }
+            );
         }
-
-        
-    }
+    };
 
     apply = () => {
         const selectedCourse = this.state.matchCourses;
         const userId = this.props.userId;
         const session = this.props.session;
-        const amount = this.state.matchCourses.reduce((acc, cValue, cIndex) => {
-            return acc + cValue.length
-        }, 0) * 250
+        const amount =
+            this.state.matchCourses.reduce((acc, cValue, cIndex) => {
+                return acc + cValue.length;
+            }, 0) * 250;
 
-        selectedCourse.forEach((course) => {
-            this.props.updateRegisterStatus(
-                course,
-                session.id,
-                userId
-            );
-        })
-        this.props.addStudentToClasses(selectedCourse, userId);
-        this.props.registerToCourse(selectedCourse, userId);
-        this.props.addPaymentStatus(session.name, userId, amount)
-    }
+        this.props.registerToCourse(
+            selectedCourse,
+            userId,
+            session.name,
+            amount
+        );
+    };
 
     indicatorOutput = () => {
         if (this.state.enablePreview === false) {
-            return '選擇課堂'
+            return "選擇課堂";
         } else if (this.state.enablePreview === true) {
-            return '確認表單'
+            return "確認表單";
         }
-    }
+    };
 
     conditionalComponents = () => {
-        const preview =  this.state.enablePreview;
+        const preview = this.state.enablePreview;
         const success = this.props.registerClassSuccess;
 
         if (success) {
-            return <RegisterClassSuccess />
+            return <RegisterClassSuccess />;
         } else if (preview) {
-            return  <Preview matchCourses={this.state.matchCourses}  deselect = {this.deselect} apply={this.apply}/>
+            return (
+                <Preview
+                    matchCourses={this.state.matchCourses}
+                    deselect={this.deselect}
+                    apply={this.apply}
+                />
+            );
         } else {
-            return <RegularCourseForm
-            handleChange={this.handleChange}
-            handleSubmit={this.courseSelected}
-            courses={this.props.regularCourse}
-        />
+            return (
+                <RegularCourseForm
+                    handleChange={this.handleChange}
+                    handleSubmit={this.courseSelected}
+                    courses={this.props.regularCourse}
+                />
+            );
         }
-    }
+    };
 
     render() {
         return (
             <div id="registerClasses">
                 <StepIndicator indicator={this.indicatorOutput()} />
-                {
-                    this.conditionalComponents()
-                }
+                {this.conditionalComponents()}
             </div>
         );
     }
@@ -168,36 +170,26 @@ const mapStateToProps = state => {
     return {
         userId: state.firebase.auth.uid,
         session: session,
-        regularCourse: regularCourse ? regularCourse.sort((a, b) => {
-            return a.reference.seconds - b.reference.seconds
-        }) : null,
+        regularCourse: regularCourse
+            ? regularCourse.sort((a, b) => {
+                  return a.reference.seconds - b.reference.seconds;
+              })
+            : null,
         registerClassSuccess: state.user.registerClassSuccess
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        registerToCourse: (course, userId) => {
-            dispatch({type: 'LOADING'});
-            dispatch(registerToCourse(course, userId));
-        },
-        addStudentToClasses: (course, userId) => {
-            dispatch(addStudentToClasses(course, userId));
-        },
-        updateRegisterStatus: (courseName, sessionId, userId) => {
-            dispatch(updateRegisterStatus(courseName, sessionId, userId));
-        },
-        addPaymentStatus: (courseName, userId, amount) => {
-            dispatch(addPaymentStatus(courseName, userId, amount))
+        registerToCourse: (course, userId, courseName, amount) => {
+            dispatch({ type: "LOADING" });
+            dispatch(registerToCourse(course, userId, courseName, amount));
         }
     };
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: "newSession" },
         { collection: "regularCourse" }

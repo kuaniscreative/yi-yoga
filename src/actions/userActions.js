@@ -1,12 +1,51 @@
-// register classes
-export const registerToCourse = (course, userId) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
+import { getFirebase } from "react-redux-firebase";
+import { getFirestore } from "redux-firestore";
 
+// register classes
+export const registerToCourse = (course, userId, courseName, amount) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        /**
+         * 
+         *      報名時有三個步驟：
+         *      1. 更新user資料
+         *      2. 將uid加入至classProfile當中
+         *      3. 新增付款資料
+         * 
+         */
+        const tasks = [
+            updateUserData(course, userId),
+            addStudentToClasses(course, userId),
+            addPaymentStatus(courseName, userId, amount)
+        ];
+
+        Promise.all(tasks)
+            .then(() => {
+                dispatch({type: 'REGISTERED_TO_COURSE'});
+                dispatch({type: 'LOADED'});
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+};
+
+function updateUserData(course, userId) {
+    const firestore = getFirestore();
+    return (
+        /**
+         *
+         *  獲取使用者資訊
+         *
+         */
         firestore
             .collection("user")
             .doc(userId)
             .get()
+            /**
+             *
+             *  then, 將報名課程加入ˇ用者資訊
+             *
+             */
             .then(res => {
                 const userData = res.data();
                 const currentClasses = userData.allClasses || [];
@@ -25,151 +64,124 @@ export const registerToCourse = (course, userId) => {
                     return new Date(item);
                 });
 
-                firestore
+                return firestore
                     .collection("user")
                     .doc(userId)
                     .update({
                         allClasses: newClasses,
                         registeredCourse: course
-                    })
-                    .then(() => {
-                        dispatch({type: 'LOADED'});
-                        dispatch({ type: "REGISTERED_TO_COURSE", course });
                     });
+            })
+    );
+}
+
+function addStudentToClasses(course, userId) {
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+    return firestore
+        .collection("classProfile")
+        .get()
+        .then(res => {
+            // store data in constants
+            const classProfile = res.docs.map(snapshot => {
+                return snapshot.data();
             });
-    };
-};
-
-export const addStudentToClasses = (course, userId) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        const firebase = getFirebase();
-
-        firestore
-            .collection("classProfile")
-            .get()
-            .then(res => {
-                // store data in constants
-                const classProfile = res.docs.map(snapshot => {
-                    return snapshot.data();
-                });
-                const classList = classProfile.map(obj => {
-                    return obj.classDate.toDate();
-                });
-                const ids = res.docs.map(snapshot => {
-                    return snapshot.id;
-                });
-
-                // destruct courses and reconstruct to a new array of all classes
-                let reconstruct = [];
-                course.forEach(item => {
-                    reconstruct = reconstruct.concat(item.classes);
-                });
-                reconstruct = reconstruct.map(timestamp => {
-                    return timestamp.toDate();
-                });
-
-                // select equal classes and register the students
-                const classList_value = classList.map(date => {
-                    return date.valueOf();
-                });
-                reconstruct.forEach(studentDate => {
-                    const date_value = studentDate.valueOf();
-                    const indexAt = classList_value.indexOf(date_value);
-                    if (indexAt > -1) {
-                        const classId = ids[indexAt];
-                        firestore
-                            .collection("classProfile")
-                            .doc(classId)
-                            .update({
-                                students: firebase.firestore.FieldValue.arrayUnion(
-                                    userId
-                                )
-                            });
-                    }
-                });
+            const classList = classProfile.map(obj => {
+                return obj.classDate.toDate();
             });
-    };
-};
-
-export const updateRegisterStatus = (courseName, sessionId, userId) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        const firebase = getFirebase();
-        const registerStatus = firestore.collection("registerStatus");
-
-        registerStatus
-            .where("name", "==", courseName)
-            .where("session", "==", sessionId)
-            .get()
-            .then(snapshot => {
-                const match = snapshot.docs;
-                match.forEach(ref => {
-                    
-                    if (ref.data().students.length === 14) {
-                        registerStatus.doc(ref.id).update({
-                            students:firebase.firestore.FieldValue.arrayUnion(userId),
-                            full: true
-                        })
-                    } else {
-                        registerStatus.doc(ref.id).update({
-                            students:firebase.firestore.FieldValue.arrayUnion(userId),
-                        })
-                    }
-                });
+            const ids = res.docs.map(snapshot => {
+                return snapshot.id;
             });
-    };
-};
 
-export const addPaymentStatus = (courseName, userId, amount) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        const firebase = getFirebase();
+            // destruct courses and reconstruct to a new array of all classes
+            let reconstruct = [];
+            course.forEach(item => {
+                reconstruct = reconstruct.concat(item.classes);
+            });
+            reconstruct = reconstruct.map(timestamp => {
+                return timestamp.toDate();
+            });
 
-        firestore.collection('paymentStatus').add({
-            amount: amount,
-            method: null,
-            owner: userId,
-            session: courseName,
-            moneyReceived: false,
-            moneySent: false
-        })
-    }
+            // select equal classes and register the students
+            const classList_value = classList.map(date => {
+                return date.valueOf();
+            });
+            const promisePending = [];
+            reconstruct.forEach(studentDate => {
+                const date_value = studentDate.valueOf();
+                const indexAt = classList_value.indexOf(date_value);
+                if (indexAt > -1) {
+                    const classId = ids[indexAt];
+                    const promise = firestore
+                        .collection("classProfile")
+                        .doc(classId)
+                        .update({
+                            students: firebase.firestore.FieldValue.arrayUnion(
+                                userId
+                            )
+                        });
+                    promisePending.push(promise);
+                }
+            });
+
+            return Promise.all(promisePending);
+        });
+}
+
+function addPaymentStatus(courseName, userId, amount) {
+    const firestore = getFirestore();
+    return firestore.collection("paymentStatus").add({
+        amount: amount,
+        method: null,
+        owner: userId,
+        session: courseName,
+        moneyReceived: false,
+        moneySent: false
+    });
 }
 
 export const updatePaymentStatus = (paymentId, method, account, date) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
-        firestore.collection('paymentStatus').doc(paymentId).update({
-            method: method,
-            account: account,
-            date: date,
-            moneySent: true
-        }).then(() => {
-            dispatch({type: 'UPDATE_PAYMENT_SUCCESS'})
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-}
+        firestore
+            .collection("paymentStatus")
+            .doc(paymentId)
+            .update({
+                method: method,
+                account: account,
+                date: date,
+                moneySent: true
+            })
+            .then(() => {
+                dispatch({ type: "UPDATE_PAYMENT_SUCCESS" });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+};
 
 // leave application
 export const updateLeaveRecord_leave = (date, userId) => {
-    return (dispatch, getState, {getFirebase, getFirestore}) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
         const stamp = `${date.getFullYear()}/${date.getMonth() + 1}`;
 
-        firestore.collection('leaveRecord').doc(userId).update({
-            reschedulable: firebase.firestore.FieldValue.arrayUnion(date),
-            records: firebase.firestore.FieldValue.arrayUnion(date),
-            stamps: firebase.firestore.FieldValue.arrayUnion(stamp)
-        }).then(() => {
-            console.log('updated user leaveRecord when leave application')
-        })
-    }
-}
+        firestore
+            .collection("leaveRecord")
+            .doc(userId)
+            .update({
+                reschedulable: firebase.firestore.FieldValue.arrayUnion(date),
+                records: firebase.firestore.FieldValue.arrayUnion(date),
+                stamps: firebase.firestore.FieldValue.arrayUnion(stamp)
+            })
+            .then(() => {
+                console.log("updated user leaveRecord when leave application");
+            });
+    };
+};
 
 export const leaveApplication = (selectedDate, userId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -244,34 +256,51 @@ export const leaveApplication = (selectedDate, userId) => {
                     });
             })
             .then(() => {
-                dispatch({type: "LEAVE_APPLICATION_SUCCESS"})
+                dispatch({ type: "LEAVE_APPLICATION_SUCCESS" });
             });
     };
 };
 
-export const addPendingStudentToClass = (classId) => {
-    return (dispatch, getState, {getFirebase, getFirestore}) => {
+export const addPendingStudentToClass = classId => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
 
-        firestore.collection('classProfile').doc(classId).get().then((snapshot) => {
-            const classInfo = snapshot.data();
-            const studentId = classInfo.pendingStudents ? classInfo.pendingStudents[0] : undefined;
-            const available = classInfo.students.length + classInfo.rescheduleStudents.length < 16;
+        firestore
+            .collection("classProfile")
+            .doc(classId)
+            .get()
+            .then(snapshot => {
+                const classInfo = snapshot.data();
+                const studentId = classInfo.pendingStudents
+                    ? classInfo.pendingStudents[0]
+                    : undefined;
+                const available =
+                    classInfo.students.length +
+                        classInfo.rescheduleStudents.length <
+                    16;
 
-            if (classInfo.pendingStudents.length > 0 && available) {
-                return firestore.collection('classProfile').doc(classId).update({
-                    pendingStudents: firebase.firestore.FieldValue.arrayRemove(studentId),
-                    rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(studentId)
-                }).then(() => {
-                    console.log(classId);
-                })
-            } else {
-                console.log('no students to add')
-            }
-        })
-    }
-}
+                if (classInfo.pendingStudents.length > 0 && available) {
+                    return firestore
+                        .collection("classProfile")
+                        .doc(classId)
+                        .update({
+                            pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                                studentId
+                            ),
+                            rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                                studentId
+                            )
+                        })
+                        .then(() => {
+                            console.log(classId);
+                        });
+                } else {
+                    console.log("no students to add");
+                }
+            });
+    };
+};
 
 // reschedule
 export const reschedulePending = (classId, userId) => {
@@ -283,10 +312,12 @@ export const reschedulePending = (classId, userId) => {
             .collection("classProfile")
             .doc(classId)
             .update({
-                pendingStudents: firebase.firestore.FieldValue.arrayUnion(userId)
+                pendingStudents: firebase.firestore.FieldValue.arrayUnion(
+                    userId
+                )
             })
             .then(() => {
-                dispatch({type: 'RESCHEDULE_PENDING_SUCCESS'})
+                dispatch({ type: "RESCHEDULE_PENDING_SUCCESS" });
             });
     };
 };
@@ -300,50 +331,68 @@ export const rescheduleAdd = (classId, userId) => {
             .collection("classProfile")
             .doc(classId)
             .update({
-                rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(userId)
+                rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                    userId
+                )
             })
             .then(() => {
-                dispatch({type: 'RESCHEDULE_ADD_SUCCESS'})
+                dispatch({ type: "RESCHEDULE_ADD_SUCCESS" });
             });
     };
 };
 
-export const updateLeaveRecord_rescheduleAdd = (userId, rescheduleDate, classId) => {
+export const updateLeaveRecord_rescheduleAdd = (
+    userId,
+    rescheduleDate,
+    classId
+) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
         const rescheduleInfo = {
             leaveDate: rescheduleDate,
-            rescheduleClassId:classId
-        }
+            rescheduleClassId: classId
+        };
 
         firestore
             .collection("leaveRecord")
             .doc(userId)
             .update({
-                reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
-                rescheduled: firebase.firestore.FieldValue.arrayUnion(rescheduleInfo)
-            })
+                reschedulable: firebase.firestore.FieldValue.arrayRemove(
+                    rescheduleDate
+                ),
+                rescheduled: firebase.firestore.FieldValue.arrayUnion(
+                    rescheduleInfo
+                )
+            });
     };
 };
 
-export const updateLeaveRecord_reschedulePending = (userId, rescheduleDate, classId) => {
+export const updateLeaveRecord_reschedulePending = (
+    userId,
+    rescheduleDate,
+    classId
+) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
         const pendingInfo = {
             leaveDate: rescheduleDate,
-            pendingClassId:classId
-        }
+            pendingClassId: classId
+        };
 
         firestore
             .collection("leaveRecord")
             .doc(userId)
             .update({
-                reschedulable: firebase.firestore.FieldValue.arrayRemove(rescheduleDate),
-                reschedulePending: firebase.firestore.FieldValue.arrayUnion(pendingInfo)
-            })
+                reschedulable: firebase.firestore.FieldValue.arrayRemove(
+                    rescheduleDate
+                ),
+                reschedulePending: firebase.firestore.FieldValue.arrayUnion(
+                    pendingInfo
+                )
+            });
     };
 };
