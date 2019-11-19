@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const PaymentSingle = ({ infos }) => {
     const status = infos.moneyReceived
@@ -6,7 +7,6 @@ const PaymentSingle = ({ infos }) => {
         : infos.moneySent
         ? "confirmPending"
         : "unpaid";
-
     const statusOuput = () => {
         switch (status) {
             case "unpaid":
@@ -14,7 +14,9 @@ const PaymentSingle = ({ infos }) => {
                     <ul className="comfyList">
                         <li>
                             未繳費。如果已繳費，
+                            <Link to={`/payment/${infos.id}`}>
                             <span className="action">點此通知芝伊</span>
+                            </Link>
                         </li>
                     </ul>
                 );
