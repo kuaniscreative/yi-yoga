@@ -1,6 +1,13 @@
 #leaveApplication {
     .centerList {
         padding: 0 1em;
+
+        @include media("above-tablet") {
+            max-width: 520px;
+            margin-left: 8.3%;
+            margin-right: auto;
+            margin-top: 1em;
+        }
     }
     .shadowOption {
         flex: 0 0 100%;
@@ -15,13 +22,22 @@
             width: 100%;
             background: white;
         }
+        @include media("above-tablet") {
+            margin-top: 1em;
+        }
     }
 
     .nextStepButtonsArea--notFixed {
         justify-content: flex-start;
 
         a {
-            margin-left: 0; 
+            margin-left: 0;
+        }
+    }
+
+    .checkboxContainer {
+        @include media('above-tablet') {
+            margin-bottom: 3em;
         }
     }
 }

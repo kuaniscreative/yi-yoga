@@ -6,8 +6,13 @@
 
     & > a,
     & > button {
-        margin: 1.5em;    
+        margin: 1.5em;   
+        @include media("above-tablet") {
+            margin-left: 2.5em;
+            margin-right: 2.5em;
+        } 
     }
+
 }
 
 .nextStepButtonsArea--notFixed {

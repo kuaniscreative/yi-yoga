@@ -138,7 +138,7 @@ class RegisterClasses extends Component {
 
     render() {
         return (
-            <div id="registerClasses">
+            <div id="registerClasses" className='meat'>
                 <StepIndicator indicator={this.indicatorOutput()} />
                 {this.conditionalComponents()}
             </div>
