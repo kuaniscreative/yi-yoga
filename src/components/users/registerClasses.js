@@ -105,7 +105,7 @@ class RegisterClasses extends Component {
 
     indicatorOutput = () => {
         if (this.state.enablePreview === false) {
-            return "選擇課堂";
+            return "選擇報名課堂";
         } else if (this.state.enablePreview === true) {
             return "確認表單";
         }
@@ -138,7 +138,7 @@ class RegisterClasses extends Component {
 
     render() {
         return (
-            <div id="registerClasses" className='meat'>
+            <div id="registerClasses">
                 <StepIndicator indicator={this.indicatorOutput()} />
                 {this.conditionalComponents()}
             </div>

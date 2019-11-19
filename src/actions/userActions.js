@@ -12,6 +12,7 @@ export const registerToCourse = (course, userId, courseName, amount) => {
          *      3. 新增付款資料
          * 
          */
+        dispatch({type: 'LOADING'});
         const tasks = [
             updateUserData(course, userId),
             addStudentToClasses(course, userId),

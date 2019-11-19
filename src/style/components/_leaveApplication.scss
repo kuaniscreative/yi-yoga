@@ -1,13 +1,6 @@
 #leaveApplication {
     .centerList {
         padding: 0 1em;
-
-        @include media("above-tablet") {
-            max-width: 520px;
-            margin-left: 8.3%;
-            margin-right: auto;
-            margin-top: 1em;
-        }
     }
     .shadowOption {
         flex: 0 0 100%;

@@ -1,7 +1,4 @@
 #registerClasses {
-    .checkboxContainer {
-        
-    }
 
     .preview {
         padding: 0 1em;
@@ -12,4 +9,8 @@
 
 .regularCourseForm {
     padding: 0 1em;
+    
+    @include media('above-tablet') {
+        padding: 0;
+    }
 }

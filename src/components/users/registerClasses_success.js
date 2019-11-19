@@ -5,7 +5,7 @@ class RegisterClassSuccess extends Component {
     render() {
         const id = this.props.paymentId;
         return (
-            <div className="innerContent">
+            <div className="innerContent success">
                 <p className="resultMessage_title">報名成功</p>
                 <ul className="comfyList">
                     <li>

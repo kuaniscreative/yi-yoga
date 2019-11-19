@@ -20,4 +20,12 @@
     li:before {
         top: 0.6em;
     }
+    .options {
+        @include media('above-tablet') {
+            margin-bottom: 6em;
+        }
+    }
+    .success .nextStepButtonsArea--notFixed {
+        margin-top: 6em;
+    }
 }

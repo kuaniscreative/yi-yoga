@@ -6,6 +6,7 @@
     width: 100%;
     height: 2px;
     overflow: hidden;
+    z-index: 20;
 
     &.active {
         display: block;

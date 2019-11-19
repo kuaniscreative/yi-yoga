@@ -12,7 +12,7 @@ class Preview extends Component {
                 const day = course.name.split(" ", 1)[0];
                 const time = course.name.replace(`${day} `, "");
                 return (
-                    <div key={i} className="checkboxContainer">
+                    <div key={i} className="checkboxContainer noReverse">
                         <div className="dayHero checkboxContainer_message">
                             <span className="dayHero_day">{day}</span>
                             <span className="dayHero_time">{time}</span>
@@ -42,7 +42,9 @@ class Preview extends Component {
         const courses = this.props.matchCourses;
         return (
             <div className="preview nextStepButtonsArea_parent">
+                <div className="options">
                 {this.optionsList(courses)}
+                </div>
                 <NextStepButtonsArea action={this.props.apply}/>
             </div>
         );
