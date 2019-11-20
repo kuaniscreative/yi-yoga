@@ -67,9 +67,6 @@ class RegisterClasses extends Component {
                 {
                     ...this.state,
                     matchCourses: afterDeletion
-                },
-                () => {
-                    console.log(this.state);
                 }
             );
         } else {

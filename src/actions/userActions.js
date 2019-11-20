@@ -17,7 +17,6 @@ export const registerToCourse = (course, userId, courseName, amount) => {
             updateUserData(course, userId),
             addStudentToClasses(course, userId),
             addPaymentStatus(courseName, userId, amount).then((res) => {
-                console.log(res.id);
                 dispatch({type: 'ADD_PAYMENT_SUCCESS', id: res.id})
             })
         ];
