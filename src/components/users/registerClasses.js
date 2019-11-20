@@ -38,13 +38,13 @@ class RegisterClasses extends Component {
         e.preventDefault();
 
         const matchCourses = [];
-        const session = this.props.session;
+        const course = this.props.course;
         const selected = this.state.selected;
 
         selected.forEach(selection => {
-            session.sortedByCourse.forEach(course => {
-                if (selection === course.name) {
-                    matchCourses.push(course);
+            course.forEach(courseInfo => {
+                if (selection === courseInfo.name) {
+                    matchCourses.push(courseInfo);
                 }
             });
         });
@@ -144,29 +144,22 @@ class RegisterClasses extends Component {
 }
 
 const mapStateToProps = state => {
-    const session = state.firestore.ordered.newSession
-        ? state.firestore.ordered.newSession[0]
+    const session = state.firestore.ordered.session
+        ? state.firestore.ordered.session.find((item) => {
+            return item.open
+        })
         : null;
+    const course = session && state.firestore.ordered.course ? state.firestore.ordered.course.filter((item) => {
+        return item.session === session.id;
+    }) : null
     let regularCourse = state.firestore.ordered.regularCourse
         ? state.firestore.ordered.regularCourse
         : null;
-    if (regularCourse) {
-        regularCourse = regularCourse.map(course => {
-            const key = course.name;
-            const length = session.sortedByCourse.find(course => {
-                return course.name === key;
-            }).length;
-
-            return {
-                ...course,
-                length
-            };
-        });
-    }
 
     return {
         userId: state.firebase.auth.uid,
         session: session,
+        course: course,
         regularCourse: regularCourse
             ? regularCourse.sort((a, b) => {
                   return a.reference.seconds - b.reference.seconds;
@@ -188,7 +181,8 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
-        { collection: "newSession" },
+        { collection: "session" },
+        { collection: 'course' },
         { collection: "regularCourse" }
     ])
 )(RegisterClasses);

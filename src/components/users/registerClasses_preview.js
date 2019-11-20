@@ -17,7 +17,7 @@ class Preview extends Component {
                             <span className="dayHero_day">{day}</span>
                             <span className="dayHero_time">{time}</span>
                             <div className="dayHero_message">
-                                {`${course.length}堂課，金額${course.length *
+                                {`${course.classes.length}堂課，金額${course.classes.length *
                                     250}元`}
                             </div>
                         </div>
