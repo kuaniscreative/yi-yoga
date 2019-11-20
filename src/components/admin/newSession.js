@@ -26,19 +26,21 @@ class NewSession extends Component {
         // get the classes and push them to targets
         while (startDate.valueOf() !== endDate.valueOf()) {
             const day = startDate.getDay();
-            const match = regularCourse.find((course) => {
+            const match = regularCourse.filter((course) => {
                 return course.dayNum === day
             })
 
-            if (match) {
-                const d = new Date(
-                    startDate.getFullYear(),
-                    startDate.getMonth(),
-                    startDate.getDate(),
-                    match.reference.toDate().getHours(),
-                    match.reference.toDate().getMinutes()
-                );
-                targets.push(d);
+            if (match.length) {
+                match.forEach((course) => {
+                    const d = new Date(
+                        startDate.getFullYear(),
+                        startDate.getMonth(),
+                        startDate.getDate(),
+                        course.reference.toDate().getHours(),
+                        course.reference.toDate().getMinutes()
+                    );
+                    targets.push(d);
+                })
             }
 
             startDate.setDate(startDate.getDate() + 1);
