@@ -24,7 +24,7 @@ class RegularCourseForm extends Component {
                                             {course.time}
                                         </span>
                                         <div className="dayHero_message">
-                                            行天宮 ｜ 自備瑜珈墊，可放教室
+                                            {course.classInfo}
                                         </div>
                                     </div>
 

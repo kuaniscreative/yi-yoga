@@ -2,18 +2,45 @@ export const registerSession = sessionInfo => {
     return (dispatch, getState, { getFirestore, getFirebase }) => {
         const firestore = getFirestore();
 
+        /**
+         *  第一步： 將目前開放報名的課程關掉
+         */
         firestore
             .collection("session")
-            .add({
-                name: sessionInfo.name,
-                classes: sessionInfo.classes,
-                open: true
+            .where('open', '==', true)
+            .get()
+            .then((snap) => {
+                const ids = snap.docs.map((snap) => {
+                    return snap.id
+                })
+                const promiseTask = [];
+                ids.forEach((id) => {
+                    const task = firestore.collection("session").doc(id).update({
+                        open: false
+                    })
+                    promiseTask.push(task);
+                })
+
+                return Promise.all(promiseTask);
             })
+            /**
+            *  第二步： 新增資料到session
+            */
+            .then(() => {
+                return firestore.collection('session').add({
+                    name: sessionInfo.name,
+                    classes: sessionInfo.classes,
+                    open: true
+                })
+            })
+            /**
+            *  第三步： 新增couse & classProfile的資料
+            */
             .then((res) => {
                 const classes = sessionInfo.classes;
                 const sessionId = res.id;
                 
-                function addCouseProfile() {
+                function addCourseProfile() {
                     return firestore.collection('regularCourse').get().then((snap) => {
                         const data = snap.docs.map((doc) => {
                             return doc.data();
@@ -54,7 +81,7 @@ export const registerSession = sessionInfo => {
                     return Promise.all(promiseTasks);
                 }
 
-                const promiseTasks = [addCouseProfile(), addClassProfile()]
+                const promiseTasks = [addCourseProfile(), addClassProfile()]
                 return Promise.all(promiseTasks);
             })
             .then(() => {
