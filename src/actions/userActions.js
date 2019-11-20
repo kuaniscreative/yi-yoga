@@ -16,6 +16,7 @@ export const registerToCourse = (course, userId, courseName, amount) => {
         const tasks = [
             updateUserData(course, userId),
             addStudentToClasses(course, userId),
+            updateCourseData(course, userId),
             addPaymentStatus(courseName, userId, amount).then((res) => {
                 dispatch({type: 'ADD_PAYMENT_SUCCESS', id: res.id})
             })
@@ -141,6 +142,20 @@ function addPaymentStatus(courseName, userId, amount) {
         moneyReceived: false,
         moneySent: false
     });
+}
+
+function updateCourseData(course, userId) {
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+    const promiseTask = [];
+    course.forEach((courseInfo) => {
+        const task = firestore.collection('course').doc(courseInfo.id).update({
+            registeredStudents: firebase.firestore.FieldValue.arrayUnion(userId)
+        })
+        promiseTask.push(task);
+    })
+
+    return Promise.all(promiseTask)
 }
 
 export const updatePaymentStatus = (paymentId, method, account, date) => {

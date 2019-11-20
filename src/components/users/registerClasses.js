@@ -48,12 +48,24 @@ class RegisterClasses extends Component {
                 }
             });
         });
+        let canApply = true;
+        let doubuled;
+        matchCourses.forEach((courseInfo) => {
+            if (courseInfo.registeredStudents.indexOf(this.props.userId) >= 0) {
+                canApply = false
+                doubuled = courseInfo;
+            }
+        })
 
-        this.setState({
-            selected: [],
-            enablePreview: true,
-            matchCourses: matchCourses
-        });
+        if (!canApply) {
+            alert(`${doubuled.name}已經報名過了`)
+        } else {
+            this.setState({
+                selected: [],
+                enablePreview: true,
+                matchCourses: matchCourses
+            });
+        }
     };
 
     deselect = course => {
@@ -91,7 +103,7 @@ class RegisterClasses extends Component {
             this.state.matchCourses.reduce((acc, cValue, cIndex) => {
                 return acc + cValue.length;
             }, 0) * 250;
-
+        
         this.props.registerToCourse(
             selectedCourse,
             userId,

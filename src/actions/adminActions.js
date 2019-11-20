@@ -59,6 +59,7 @@ export const registerSession = sessionInfo => {
                                 session: sessionId,
                                 classes: matchClasses,
                                 name: regularCourse.name,
+                                registeredStudents: []
                             })
                             promiseTasks.push(task);
                         })
