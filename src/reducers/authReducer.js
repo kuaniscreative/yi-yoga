@@ -9,6 +9,22 @@ const authReducer = (state = initState, action) => {
                 ...state,
                 userLoggedIn: true
             }
+        case 'SIGNUP_ERR':
+            function messageOutput(err) {
+                switch(err.code) {
+                    case 'auth/email-already-in-use':
+                        return '帳號重複';
+                    case 'auth/invalid-email':
+                        return '帳號格式錯誤';
+                    default:
+                        return err.message
+                }
+            }
+            alert(messageOutput(action.err));
+            return {
+                ...state,
+                errMessage: action.err
+            }
         default:
             return state
     }

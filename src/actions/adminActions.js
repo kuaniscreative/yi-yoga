@@ -89,6 +89,9 @@ export const registerSession = sessionInfo => {
                 alert("新的課程現在可以報名囉！");
                 dispatch({ type: "ADDED_NEW_SESSION"});
             })
+            .catch((err) => {
+                console.log(err);
+            })
     };
 };
 

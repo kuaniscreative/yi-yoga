@@ -6,6 +6,7 @@ import { firebaseReducer } from 'react-redux-firebase';
 import adminReducer from './adminReducer';
 import userReducer from './userReducer';
 import pageReducer from './pageReducer';
+import authReducer from './authReducer';
 
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     firebase: firebaseReducer,
     admin: adminReducer,
     user: userReducer,
+    auth: authReducer,
     pageControl: pageReducer
 })
 
