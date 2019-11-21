@@ -13,13 +13,21 @@ class Register extends Component {
     state = {
         email: '',
         password: '',
+        passwordConfirm:'',
         name: '',
         nickName: ''
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.signUp(this.state);
+        const password = this.state.password;
+        const passwordConfirm = this.state.passwordConfirm;
+         
+        if (password !== passwordConfirm) {
+            alert('密碼輸入錯誤')
+        } else {    
+            this.props.signUp(this.state);
+        }   
     }
 
     handleChange = (e) => {
@@ -38,6 +46,8 @@ class Register extends Component {
                     <input name='email' type="text" onChange={this.handleChange} placeholder="請輸入信箱"/>
                     <label>密碼</label>
                     <input name='password' type="password" onChange={this.handleChange} placeholder="至少6位數之密碼"/>
+                    <label>確認密碼</label>
+                    <input name='passwordConfirm' type="password" onChange={this.handleChange} placeholder="再次輸入密碼"/>
                     <label>姓名</label>
                     <input name='name' type="text" onChange={this.handleChange} placeholder="你的名字"/>
                     <label>暱稱</label>
