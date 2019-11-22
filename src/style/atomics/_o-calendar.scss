@@ -1,5 +1,9 @@
 .calendar {
     width: 320px;
+
+    .inactive {
+        color: $gray-2;
+    }
 }
 
 .calendarCellWrapper {
@@ -13,7 +17,7 @@
 }
 
 .weekDay {
-    color: $gray-2;
+    color: $gray-3;
 }
 
 .calendarCell {
@@ -36,9 +40,5 @@
     height: 0;
     padding-top: 128%;
 }
-.calendarCell_date {
-    
-}
-.tt {
-    font-size: 0.75em;
-}
+
+

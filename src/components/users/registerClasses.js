@@ -161,7 +161,7 @@ class RegisterClasses extends Component {
                     </div>
                 ) : null}
                 {this.props.session ? (
-                    <SelectClassPanel />
+                    <SelectClassPanel classes={this.props.session.classes}/>
                 ) : null}
                 
             </div>

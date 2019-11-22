@@ -16,7 +16,7 @@ class SelectClassPanel extends Component {
                     indicator="step.1 選取課堂"
                     className="actionCard_content"
                 />
-                <Calendar />
+                <Calendar classes={this.props.classes}/>
             </div>
         );
     }

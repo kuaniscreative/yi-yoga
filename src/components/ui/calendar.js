@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 
 class Calendar extends Component {
 
-    createCalendar = (month, year) => {
+    state = {
+
+    }
+
+    generateDateInfo = (month, year) => {
         const date = new Date(year, month, 1);
         const daysInMonth = () => {
             return 32 - new Date(year, month, 32).getDate();
@@ -18,15 +22,59 @@ class Calendar extends Component {
             } else {
                 return (base + 1) * 7
             }
-            
         }
-        const cell = (howMany) => {
-            const arr = []
-            for (let i = 0; i < howMany; i++) {
-                arr.push(i)
+
+        const dateInfo = [];
+
+        for (let i = 0; i < howManyCell(); i ++) {
+            const startpoint = date.getDay();
+            const dateOuput = i - startpoint + 1;
+            const newDate = new Date(year, month, dateOuput);
+            if (i < startpoint || dateOuput > daysInMonth()) {
+                dateInfo.push({
+                    date: null
+                })
+            } else {
+                dateInfo.push({
+                    date: newDate.toLocaleDateString(),
+                })
             }
-            return arr
         }
+
+        return dateInfo
+    }
+
+    appendClassInfo = (dateInfos, classes) => {
+        const result = dateInfos.map((info) => {
+            const mappedClasses = classes.map((timestamp) => {
+                return {
+                    dateString: timestamp.toDate().toLocaleDateString(),
+                    date: timestamp.toDate()
+                }
+            })
+            const matched = mappedClasses.filter((obj) => {
+                return obj.dateString === info.date
+            })
+            if (matched.length) {
+                return {
+                    ...info,
+                    hasClass: matched.map((obj) => {
+                        return obj.date
+                    })
+                }
+            } else {
+                return {
+                    ...info
+                }
+            }
+            
+        })
+        return result
+    }
+
+    paintCalendar = (month, year, classes) => {
+        const dateInfos = this.generateDateInfo(month, year);
+        const cellDatas = this.appendClassInfo(dateInfos, classes);
         return (
             <div className='calendar'>
                 <div className="weekDay calendarCellWrapper">
@@ -40,19 +88,25 @@ class Calendar extends Component {
                 </div>
                 <div className='calenderDay calendarCellWrapper'>
                     {
-                        cell(howManyCell()).map((el, i) => {
-                            const startpoint = date.getDay();
-                            const dateOuput = i - startpoint + 1;
-                            if (i < startpoint) {
+                        cellDatas.map((data, i) => {
+                            if (!data.date) {
                                 return <div className='calendarCell' key={i}></div>
-                            } else if (dateOuput > daysInMonth()) {
-                                return <div className='calendarCell' key={i}></div>
+                            } else if (!data.hasClass) {
+                                let split = data.date.split('/');
+                                split = split.map((str) => {
+                                    return parseInt(str)
+                                })
+                                const date = new Date(split[2], split[1] - 1, split [0]).getDate();
+
+                                return <div className='calendarCell inactive' key={i}>{date}</div>
                             } else {
-                                return (
-                                    <div className='calendarCell' data-date={`${dateOuput}/${month + 1}/${year}`} key={i}>
-                                        <div>{dateOuput}</div>
-                                    </div>
-                                )
+                                let split = data.date.split('/');
+                                split = split.map((str) => {
+                                    return parseInt(str)
+                                })
+                                const date = new Date(split[2], split[1] - 1, split [0]).getDate();
+
+                                return <div className='calendarCell' key={i} data-date={data.date}>{date}</div>
                             }
                         })
                     }
@@ -62,9 +116,10 @@ class Calendar extends Component {
     }
 
     render() {
-        return (
+        const classes = this.props.classes;
+       return (
             <div>
-                {this.createCalendar(1, 2019)}
+                {this.paintCalendar(0, 2020, classes)}
             </div>
         )
     }
