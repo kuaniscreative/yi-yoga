@@ -1,0 +1,44 @@
+.calendar {
+    width: 320px;
+}
+
+.calendarCellWrapper {
+    display: flex;
+    width: 100%;
+    position: relative;
+    flex-wrap: wrap;
+    & > div {
+        flex: 1 0 calc(14.2% - 16px); // 扣除calendarCell的margin;  
+    }
+}
+
+.weekDay {
+    color: $gray-2;
+}
+
+.calendarCell {
+    margin: 8px;
+    display: flex;
+    width: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    & > div {
+        flex: 0 0 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+}
+.calendarCell:before {
+    content: '';
+    display: block;
+    position: relative;
+    height: 0;
+    padding-top: 128%;
+}
+.calendarCell_date {
+    
+}
+.tt {
+    font-size: 0.75em;
+}
