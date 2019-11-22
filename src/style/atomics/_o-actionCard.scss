@@ -8,8 +8,7 @@
 }
 
 .actionCard_title {
-    display: none;
-
+    margin-bottom: 2em;
     @include media("above-tablet") {
         display: flex;
         align-items: center;
@@ -23,6 +22,7 @@
 }
 
 .actionCard_content {
+    margin: 1em 0;
     @include media("above-tablet") {
         margin: 1.5rem 4rem 4rem 4rem;
     }

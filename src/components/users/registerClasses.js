@@ -5,9 +5,9 @@ import { firestoreConnect } from "react-redux-firebase";
 
 // components
 import RegularCourseForm from "./registerClasses_regularCourseForm";
-import StepIndicator from "../stepIndicator";
 import Preview from "./registerClasses_preview";
 import RegisterClassSuccess from "./registerClasses_success";
+import SelectClassPanel from './registerClass_selectClassPanel';
 
 // actions
 import { registerToCourse } from "../../actions/userActions";
@@ -50,15 +50,15 @@ class RegisterClasses extends Component {
         });
         let canApply = true;
         let doubuled;
-        matchCourses.forEach((courseInfo) => {
+        matchCourses.forEach(courseInfo => {
             if (courseInfo.registeredStudents.indexOf(this.props.userId) >= 0) {
-                canApply = false
+                canApply = false;
                 doubuled = courseInfo;
             }
-        })
+        });
 
         if (!canApply) {
-            alert(`${doubuled.name}已經報名過了`)
+            alert(`${doubuled.name}已經報名過了`);
         } else {
             this.setState({
                 selected: [],
@@ -75,12 +75,10 @@ class RegisterClasses extends Component {
         });
 
         if (afterDeletion.length) {
-            this.setState(
-                {
-                    ...this.state,
-                    matchCourses: afterDeletion
-                }
-            );
+            this.setState({
+                ...this.state,
+                matchCourses: afterDeletion
+            });
         } else {
             this.setState(
                 {
@@ -103,7 +101,7 @@ class RegisterClasses extends Component {
             this.state.matchCourses.reduce((acc, cValue, cIndex) => {
                 return acc + cValue.length;
             }, 0) * 250;
-        
+
         this.props.registerToCourse(
             selectedCourse,
             userId,
@@ -145,14 +143,27 @@ class RegisterClasses extends Component {
         }
     };
 
+    selectSession = e => {
+        const sessionId = e.target.dataset.session;
+        this.setState({
+            ...this.state,
+            session: sessionId
+        });
+    };
+
     render() {
         return (
-            <div id="registerClasses" className='actionCard'>
-                <div className='actionCard_title'>
-                    <p>報名</p>
-                </div>
-                <StepIndicator indicator={this.indicatorOutput()} className='actionCard_content'/>
-                {this.conditionalComponents()}
+            <div id="registerClasses" className="actionCard titleWithInfoAbove">
+                {this.props.session ? (
+                    <div className="actionCard_title">
+                        <p className='titleWithInfoAbove_above'>報名表單</p>
+                        <p className='titleWithInfoAbove_title'>{this.props.session.name}</p>
+                    </div>
+                ) : null}
+                {this.props.session ? (
+                    <SelectClassPanel />
+                ) : null}
+                
             </div>
         );
     }
@@ -160,13 +171,16 @@ class RegisterClasses extends Component {
 
 const mapStateToProps = state => {
     const session = state.firestore.ordered.session
-        ? state.firestore.ordered.session.find((item) => {
-            return item.open
-        })
+        ? state.firestore.ordered.session.find(item => {
+              return item.open;
+          })
         : null;
-    const course = session && state.firestore.ordered.course ? state.firestore.ordered.course.filter((item) => {
-        return item.session === session.id;
-    }) : null
+    const course =
+        session && state.firestore.ordered.course
+            ? state.firestore.ordered.course.filter(item => {
+                  return item.session === session.id;
+              })
+            : null;
     let regularCourse = state.firestore.ordered.regularCourse
         ? state.firestore.ordered.regularCourse
         : null;
@@ -197,7 +211,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: "session" },
-        { collection: 'course' },
+        { collection: "course" },
         { collection: "regularCourse" }
     ])
 )(RegisterClasses);
