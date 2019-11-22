@@ -1,0 +1,35 @@
+.actionCard {
+    @include media("above-tablet") {
+        max-width: 720px;
+        border-radius: 1em;
+        box-shadow: 0 0 40px -32px;
+        overflow: hidden;
+    }
+}
+
+.actionCard_title {
+    display: none;
+
+    @include media("above-tablet") {
+        display: flex;
+        align-items: center;
+        height: 72px;
+        background: $gray-0;
+
+        p {
+            margin-left: 4rem;
+        }
+    }
+}
+
+.actionCard_content {
+    @include media("above-tablet") {
+        margin: 1.5rem 4rem 4rem 4rem;
+    }
+}
+
+.actionCard_content:nth-child(1) {
+    @include media("above-tablet") {
+        margin-top: 3rem;
+    }
+}

@@ -147,8 +147,11 @@ class RegisterClasses extends Component {
 
     render() {
         return (
-            <div id="registerClasses">
-                <StepIndicator indicator={this.indicatorOutput()} />
+            <div id="registerClasses" className='actionCard'>
+                <div className='actionCard_title'>
+                    <p>報名</p>
+                </div>
+                <StepIndicator indicator={this.indicatorOutput()} className='actionCard_content'/>
                 {this.conditionalComponents()}
             </div>
         );

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const StepIndicator = ({indicator}) => {
+const StepIndicator = ({indicator, className}) => {
     return (
-        <div className='stepIndicator'>
+        <div className={`stepIndicator ${className}`}>
             <p>{indicator}</p>
         </div>
     )

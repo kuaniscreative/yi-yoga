@@ -11,7 +11,7 @@ class RegularCourseForm extends Component {
         const handleChange = this.props.handleChange;
         const courses = this.props.courses;
         return (
-             <form onSubmit={handleSubmit} className='regularCourseForm nextStepButtonsArea_parent'>
+             <form onSubmit={handleSubmit} className='regularCourseForm nextStepButtonsArea_parent actionCard_content'>
                     {
                         courses && courses.map((course, i) => {
                             return (
