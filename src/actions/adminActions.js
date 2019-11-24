@@ -27,9 +27,19 @@ export const registerSession = sessionInfo => {
             *  第二步： 新增資料到session
             */
             .then(() => {
+                const period = sessionInfo.period;
+                let span;
+                if (period.length === 2 && period[0].month === period[1].month && period[0].year === period[1].year) {
+                    span = [`${period[0].month}/${period[0].year}`]
+                } else {
+                    span = period.map((obj) => {
+                        return `${obj.month}/${obj.year}`
+                    })
+                }
                 return firestore.collection('session').add({
                     name: sessionInfo.name,
                     classes: sessionInfo.classes,
+                    span: span,
                     open: true
                 })
             })
