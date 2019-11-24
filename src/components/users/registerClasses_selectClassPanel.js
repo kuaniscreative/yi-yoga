@@ -2,9 +2,11 @@ import React, { Component } from "react";
 
 // components
 import StepIndicator from "../stepIndicator";
-import Calendar from '../ui/calendar';
+import Calendar from './registerClasses_calendar';
+import SelectTimeModal from './registerClasses_selectTimeModal';
 
 class SelectClassPanel extends Component {
+
     render() {
         return (
             <div id='selectClassPanel'>
@@ -17,9 +19,12 @@ class SelectClassPanel extends Component {
                     className="actionCard_content"
                 />
                 <Calendar classes={this.props.classes}/>
+                <SelectTimeModal />
             </div>
         );
     }
 }
+
+
 
 export default SelectClassPanel;

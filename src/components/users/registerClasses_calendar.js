@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+// components
+import CalendarCellWithClassInfo from './registerClasses_calendarCellWithClassInfo';
 
 class Calendar extends Component {
 
-    state = {
-
+    componentDidMount() {
+        const dateInfos = this.generateDateInfo(0, 2020);
+        const cellDatas = this.appendClassInfo(dateInfos, this.props.classes);
+        this.props.send(cellDatas);
     }
 
     generateDateInfo = (month, year) => {
@@ -59,7 +65,10 @@ class Calendar extends Component {
                 return {
                     ...info,
                     hasClass: matched.map((obj) => {
-                        return obj.date
+                        return {
+                            date: obj.date,
+                            selected: false
+                        }
                     })
                 }
             } else {
@@ -75,6 +84,7 @@ class Calendar extends Component {
     paintCalendar = (month, year, classes) => {
         const dateInfos = this.generateDateInfo(month, year);
         const cellDatas = this.appendClassInfo(dateInfos, classes);
+        console.log(cellDatas)
         return (
             <div className='calendar'>
                 <div className="weekDay calendarCellWrapper">
@@ -89,24 +99,24 @@ class Calendar extends Component {
                 <div className='calenderDay calendarCellWrapper'>
                     {
                         cellDatas.map((data, i) => {
+                            
                             if (!data.date) {
                                 return <div className='calendarCell' key={i}></div>
                             } else if (!data.hasClass) {
-                                let split = data.date.split('/');
-                                split = split.map((str) => {
+                                let split = data.date.split('/').map((str) => {
                                     return parseInt(str)
-                                })
+                                });
                                 const date = new Date(split[2], split[1] - 1, split [0]).getDate();
 
                                 return <div className='calendarCell inactive' key={i}>{date}</div>
                             } else {
-                                let split = data.date.split('/');
-                                split = split.map((str) => {
+                                let split = data.date.split('/').map((str) => {
                                     return parseInt(str)
-                                })
+                                });
                                 const date = new Date(split[2], split[1] - 1, split [0]).getDate();
 
-                                return <div className='calendarCell' key={i} data-date={data.date}>{date}</div>
+                                return <CalendarCellWithClassInfo data={data} date={date} index={i} key={i}/>
+                               
                             }
                         })
                     }
@@ -116,8 +126,9 @@ class Calendar extends Component {
     }
 
     render() {
+        console.log('infos: ', this.props.infos)
         const classes = this.props.classes;
-       return (
+        return (
             <div>
                 {this.paintCalendar(0, 2020, classes)}
             </div>
@@ -125,4 +136,19 @@ class Calendar extends Component {
     }
 }
 
-export default Calendar
+
+const mapStateToProps = (state) => {
+    return {
+        infos: state.registerClass.infos
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        send: (infos) => {
+            dispatch({type: 'SEND', infos})
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calendar)

@@ -7,6 +7,7 @@ import adminReducer from './adminReducer';
 import userReducer from './userReducer';
 import pageReducer from './pageReducer';
 import authReducer from './authReducer';
+import registerClassReducer from './registerClassReducer';
 
 
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     admin: adminReducer,
     user: userReducer,
     auth: authReducer,
+    registerClass: registerClassReducer,
     pageControl: pageReducer
 })
 

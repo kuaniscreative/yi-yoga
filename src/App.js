@@ -18,7 +18,6 @@ import LocationInfo from './components/locationInfo';
 import LeaveRule from './components/leaveRule';
 import RescheduleRule from './components/rescheduleRule';
 import Payment from './components/users/payment';
-import Calendar from './components/ui/calendar'
 
 // actions
 
@@ -55,7 +54,6 @@ class App extends Component {
                         <Route path="/leaveRule" component={LeaveRule} />
                         <Route path="/rescheduleRule" component={RescheduleRule} />
                         <Route path="/payment/:paymentId" component={Payment} />
-                        <Route path="/calendar" component={Calendar} />
                     </div>
                 </BrowserRouter>
             </div>

@@ -33,3 +33,40 @@
         font-size: 1em;
     }
 }
+
+
+
+
+/**
+ *
+ *      Select Time Modal
+ *
+ */
+
+
+.selectTimeModal {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(7, 7, 7, 0.1);
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 27;
+}
+
+.selectTimeModal.active{
+    display: block;
+}
+
+.selectTimeModal_form {
+    display: block;
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    box-shadow: 0 0 40px -12px;
+}
+

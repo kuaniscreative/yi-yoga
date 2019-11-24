@@ -23,6 +23,7 @@
 .calendarCell {
     margin: 8px;
     display: flex;
+    position: relative;
     width: 24px;
     flex-wrap: wrap;
     justify-content: center;
@@ -41,4 +42,6 @@
     padding-top: 128%;
 }
 
-
+.calenderCell_extraInfo {
+    font-size: 0.75em;
+}

@@ -7,7 +7,7 @@ import { firestoreConnect } from "react-redux-firebase";
 import RegularCourseForm from "./registerClasses_regularCourseForm";
 import Preview from "./registerClasses_preview";
 import RegisterClassSuccess from "./registerClasses_success";
-import SelectClassPanel from './registerClass_selectClassPanel';
+import SelectClassPanel from "./registerClasses_selectClassPanel";
 
 // actions
 import { registerToCourse } from "../../actions/userActions";
@@ -155,15 +155,18 @@ class RegisterClasses extends Component {
         return (
             <div id="registerClasses" className="actionCard titleWithInfoAbove">
                 {this.props.session ? (
-                    <div className="actionCard_title">
-                        <p className='titleWithInfoAbove_above'>報名表單</p>
-                        <p className='titleWithInfoAbove_title'>{this.props.session.name}</p>
+                    <div>
+                        <div className="actionCard_title">
+                            <p className="titleWithInfoAbove_above">報名表單</p>
+                            <p className="titleWithInfoAbove_title">
+                                {this.props.session.name}
+                            </p>
+                        </div>
+                        <SelectClassPanel
+                            classes={this.props.session.classes}
+                        />
                     </div>
                 ) : null}
-                {this.props.session ? (
-                    <SelectClassPanel classes={this.props.session.classes}/>
-                ) : null}
-                
             </div>
         );
     }
