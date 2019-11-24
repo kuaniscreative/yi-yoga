@@ -1,7 +1,7 @@
 export const registerSession = sessionInfo => {
     return (dispatch, getState, { getFirestore, getFirebase }) => {
         const firestore = getFirestore();
-
+        const firebase = getFirebase();
         /**
          *  第一步： 將目前開放報名的課程關掉
          */
@@ -38,7 +38,6 @@ export const registerSession = sessionInfo => {
                 }
                 return firestore.collection('session').add({
                     name: sessionInfo.name,
-                    classes: sessionInfo.classes,
                     span: span,
                     open: true
                 })
@@ -79,6 +78,11 @@ export const registerSession = sessionInfo => {
                 }
                 function addClassProfile() {
                     const promiseTasks = [];
+                    /**
+                     * 
+                     *      新增classProfile
+                     * 
+                     */
                     sessionInfo.classes.forEach((classDate) => {
                         const task = firestore.collection("classProfile").add({
                             classDate: classDate,
@@ -89,11 +93,32 @@ export const registerSession = sessionInfo => {
                         });
                         promiseTasks.push(task);
                     })
-                    return Promise.all(promiseTasks);
+                    return Promise.all(promiseTasks).then((res) => {
+                        /**
+                         * 
+                         *      將新增完的資料寫入session
+                         * 
+                         */
+                        const tasks = res.map((ref) => {
+                            return ref.get().then((snap) => {
+                                const id = snap.id;
+                                const date = snap.data().classDate;
+                                const data = {
+                                    id: id,
+                                    date: date
+                                }
+                                firestore.collection('session').doc(sessionId).update({
+                                    classes: firebase.firestore.FieldValue.arrayUnion(data)
+                                })
+                            }) 
+                        })
+
+                        return Promise.all(tasks);
+                    });
                 }
 
                 const promiseTasks = [addCourseProfile(), addClassProfile()]
-                return Promise.all(promiseTasks);
+                return Promise.all(promiseTasks)
             })
             .then(() => {
                 alert("新的課程現在可以報名囉！");

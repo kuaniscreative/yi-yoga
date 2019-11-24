@@ -69,10 +69,11 @@ class SelectClassPanel extends Component {
 
     appendClassInfo = (dateInfos, classes) => {
         const result = dateInfos.map(info => {
-            const mappedClasses = classes.map(timestamp => {
+            const mappedClasses = classes.map(classInfo => {
                 return {
-                    dateString: timestamp.toDate().toLocaleDateString(),
-                    date: timestamp.toDate()
+                    dateString: classInfo.date.toDate().toLocaleDateString(),
+                    date: classInfo.date.toDate(),
+                    id: classInfo.id
                 };
             });
             const matched = mappedClasses.filter(obj => {
@@ -84,6 +85,7 @@ class SelectClassPanel extends Component {
                     hasClass: matched.map(obj => {
                         return {
                             date: obj.date,
+                            id: obj.id,
                             selected: false
                         };
                     })
