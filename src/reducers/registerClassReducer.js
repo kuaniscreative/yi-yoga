@@ -7,7 +7,7 @@ const registerClassReducer = (state = initState, action) => {
             return {
                 ...state,
                 openSelectTimeModal: true,
-                openSelectTimeModal_options: action.options
+                openSelectTimeModal_data: action.data
             };
         case "CLOSE_SELECT_TIME_MODAL":
             return {

@@ -3,13 +3,36 @@ import { connect } from "react-redux";
 
 class SelectTimeModal extends Component {
 
+    state = {
+        selected: [] // array of classIds (string)
+    }
+
     handleClick = (e) => {
         if (e.target.classList.contains('selectTimeModal')) {
             this.props.closeSelectTimeModal()
         }
     }
+
+    handleChange = (e) => {
+        const classId = e.target.value;
+        const selected = this.state.selected;
+        if (selected.indexOf(classId) > -1) {
+            this.setState({
+                ...this.state,
+                selected: selected.filter((item) => {
+                    return item !== classId
+                })
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                selected: [...selected, classId]
+            })
+        }
+    }
+
     render() {
-        const modalOptions = this.props.modalOptions;
+        const data = this.props.data;
         return (
             <div
                 className={
@@ -20,7 +43,7 @@ class SelectTimeModal extends Component {
                 onClick={this.handleClick}
             >
                 <form className='selectTimeModal_form'>
-                    { modalOptions && modalOptions.map((classInfo, i)=> {
+                    { data && data.hasClass.map((classInfo, i)=> {
                         const hr = classInfo.date.getHours();
                         const min = classInfo.date.getMinutes();
                         const output = `${hr}:${min}`;
@@ -35,6 +58,8 @@ class SelectTimeModal extends Component {
                                     <div className="checkboxContainer_checkbox">
                                         <input
                                             type="checkbox"
+                                            value={classInfo.id}
+                                            onChange={this.handleChange}
                                         />
                                         <span className="checkmark"></span>
                                     </div>
@@ -50,7 +75,7 @@ class SelectTimeModal extends Component {
 const mapStateToProps = state => {
     return {
         openSelectTimeModal: state.registerClass.openSelectTimeModal,
-        modalOptions: state.registerClass.openSelectTimeModal_options
+        data: state.registerClass.openSelectTimeModal_data
     };
 };
 

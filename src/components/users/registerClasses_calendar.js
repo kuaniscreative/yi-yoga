@@ -50,7 +50,6 @@ class Calendar extends Component {
 
     render() {
         const calendarInfo = this.props.calendarInfo;
-        console.log(this.props.calendarInfo)
         return (
             <div>
                 {calendarInfo ? this.paintCalendar(calendarInfo) : null}

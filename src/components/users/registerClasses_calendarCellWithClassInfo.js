@@ -3,9 +3,18 @@ import { connect } from 'react-redux';
 
 class CalendarCellWithClassInfo extends Component {
     
+    handleClick = () => {
+        const indexOfCalendarInfo = this.props.index
+        const data = {
+            hasClass: this.props.data.hasClass,
+            indexOfCalendarInfo: indexOfCalendarInfo
+        }
+        this.props.openSelectTimeModal(data)
+    }
+
     render() {
         return (
-            <div className='calendarCell' data-date={this.props.data.date} onClick={() => {this.props.openSelectTimeModal(this.props.data.hasClass)}}>
+            <div className='calendarCell' data-date={this.props.data.date} onClick={this.handleClick}>
                 {this.props.date}
             </div>
         )
@@ -14,8 +23,8 @@ class CalendarCellWithClassInfo extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openSelectTimeModal: (options) => {
-            dispatch({type: 'OPEN_SELECT_TIME_MODAL', options: options})
+        openSelectTimeModal: (data) => {
+            dispatch({type: 'OPEN_SELECT_TIME_MODAL', data: data})
         }
     }
 }
