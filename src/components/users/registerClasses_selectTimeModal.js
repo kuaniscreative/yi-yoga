@@ -35,7 +35,6 @@ class SelectTimeModal extends Component {
                                     <div className="checkboxContainer_checkbox">
                                         <input
                                             type="checkbox"
-                                            value='123'
                                         />
                                         <span className="checkmark"></span>
                                     </div>
@@ -50,8 +49,8 @@ class SelectTimeModal extends Component {
 
 const mapStateToProps = state => {
     return {
-        openSelectTimeModal: state.user.openSelectTimeModal,
-        modalOptions: state.user.openSelectTimeModal_options
+        openSelectTimeModal: state.registerClass.openSelectTimeModal,
+        modalOptions: state.registerClass.openSelectTimeModal_options
     };
 };
 

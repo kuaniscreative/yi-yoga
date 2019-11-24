@@ -36,6 +36,20 @@
 
 
 
+/**
+ *
+ *      日曆
+ *
+ */
+
+.calendar {
+    display: none
+}
+.calendar.inView {
+    display: block;
+}
+
+
 
 /**
  *
@@ -68,5 +82,9 @@
     transform: translate(-50%, -50%);
     background: white;
     box-shadow: 0 0 40px -12px;
+}
+button.inView {
+    background: black;
+    color: white
 }
 

@@ -15,11 +15,10 @@ const registerClassReducer = (state = initState, action) => {
                 openSelectTimeModal: false,
                 openSelectTimeModal_options: null
             };
-        case "SEND":
-            console.log("in reducer");
+        case "CREATE_CALENDAR_INFO":
             return {
                 ...state,
-                infos: action.infos
+                calendarInfos: action.infos
             };
         default:
             return state;
