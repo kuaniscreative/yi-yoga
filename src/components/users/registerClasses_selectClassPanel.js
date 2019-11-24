@@ -152,7 +152,7 @@ class SelectClassPanel extends Component {
                             const key = date.toLocaleString("default", { month: "short" });
                             const calendarInfo = this.props.calendarInfos ? this.props.calendarInfos[key] : null;
                             const className = this.state.inView === i ? 'inView' : '';
-                            return  <Calendar calendarInfo={calendarInfo} month={month} year={year} key={i} className={className}/>
+                            return  <Calendar calendarInfo={calendarInfo} month={month} year={year} key={i} className={className} monthKey={key}/>
                         })
                     }
                 </div>

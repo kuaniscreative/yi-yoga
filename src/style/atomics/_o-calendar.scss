@@ -32,16 +32,30 @@
         display: flex;
         justify-content: center;
     }
-
+    span {
+        display: flex;
+        flex: 0 0 auto;
+        justify-content: center;
+        align-items: center;
+        width: 2em;
+        height: 2em;
+        border-radius: 2em;
+    }
 }
-.calendarCell:before {
+.calendarCell:after {
     content: '';
     display: block;
     position: relative;
     height: 0;
-    padding-top: 128%;
+    padding-top: 48%;
 }
 
 .calenderCell_extraInfo {
     font-size: 0.75em;
+}
+
+.calendarCell.selected {
+    span {
+        background: pink;
+    }
 }

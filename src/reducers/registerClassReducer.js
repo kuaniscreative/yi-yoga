@@ -1,9 +1,27 @@
-const initState = {};
+const initState = {
+    /**
+     * 
+     *      calendatInfos: {
+     *          Jan: [
+     *              {
+     *                  date: date obj or null,
+     *                  hasClass: [
+     *                      {
+     *                          date: date obj,
+     *                          id: string of classId,
+     *                          selected Boolean
+     *                      }
+     *                  ]
+     *              }
+     *          ]
+     *      }
+     * 
+     */
+};
 
 const registerClassReducer = (state = initState, action) => {
     switch (action.type) {
         case "OPEN_SELECT_TIME_MODAL":
-            console.log(action.options);
             return {
                 ...state,
                 openSelectTimeModal: true,
@@ -13,13 +31,41 @@ const registerClassReducer = (state = initState, action) => {
             return {
                 ...state,
                 openSelectTimeModal: false,
-                openSelectTimeModal_options: null
+                openSelectTimeModal_data: undefined
             };
         case "CREATE_CALENDAR_INFO":
             return {
                 ...state,
                 calendarInfos: action.infos
             };
+        case 'CLASS_SELECTED':
+            function returnSelectedResult(data) {
+                const calendarInfos = Object.assign({}, state.calendarInfos);
+                const key = data.key;
+                const index = data.index;
+                const selection = data.selection;
+                const hasClass = calendarInfos[key][index].hasClass;
+                const alteredHasClass = hasClass.map((classInfo) => {
+                    if (selection.indexOf(classInfo.id) < 0) {
+                        return {
+                            ...classInfo,
+                            selected: false
+                        }
+                    } else {
+                        return {
+                            ...classInfo,
+                            selected: true
+                        }
+                    }
+                })
+                calendarInfos[key][index].hasClass = alteredHasClass;
+                return calendarInfos
+            }
+
+            return {
+                ...state,
+                calendarInfos: returnSelectedResult(action.data)
+            }
         default:
             return state;
     }

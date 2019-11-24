@@ -3,19 +3,24 @@ import { connect } from 'react-redux';
 
 class CalendarCellWithClassInfo extends Component {
     
+    useClassNameToSetActive = () => {
+        return this.props.selected ? 'calendarCell selected' : 'calendarCell'
+    }
+    
     handleClick = () => {
         const indexOfCalendarInfo = this.props.index
         const data = {
             hasClass: this.props.data.hasClass,
-            indexOfCalendarInfo: indexOfCalendarInfo
+            indexOfCalendarInfo: indexOfCalendarInfo,
+            calendar: this.props.monthKey
         }
         this.props.openSelectTimeModal(data)
     }
 
     render() {
         return (
-            <div className='calendarCell' data-date={this.props.data.date} onClick={this.handleClick}>
-                {this.props.date}
+            <div className={this.useClassNameToSetActive()} data-date={this.props.data.date} onClick={this.handleClick}>
+                <span>{this.props.date}</span>
             </div>
         )
     }
