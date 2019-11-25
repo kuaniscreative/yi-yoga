@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 // components
 import StepIndicator from "../stepIndicator";
@@ -88,13 +90,14 @@ class SelectClassPanel extends Component {
                  *       按鈕
                  *
                  */}
-                 <NextStepButtonsArea action={this.finishSelecting} />
+                 <NextStepButtonsArea action={this.finishSelecting} cancel={() => {this.props.history.push('/')}}/>
             </div>
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log(state);
     return {
         calendarInfos: state.registerClass.calendarInfos,
         selection: state.registerClass.selection
@@ -102,4 +105,4 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 
-export default connect(mapStateToProps)(SelectClassPanel);
+export default withRouter(connect(mapStateToProps)(SelectClassPanel));
