@@ -309,13 +309,21 @@ class RegisterClasses extends Component {
                  *       第二步：確認表單
                  *
                  */}
-                {this.props.selection.length && this.state.enablePreview ? (
+                {this.props.selection.length && this.state.enablePreview && !this.props.registerClassSuccess ? (
                     <Preview
                         selection={this.props.selection}
                         cancelPreview={this.cancelPreview}
                         session={this.props.session}
                     />
                 ) : null}
+
+                {/**
+                 *
+                 *       第三步：報名結果
+                 *
+                 */}
+                {this.props.registerClassSuccess ? <RegisterClassSuccess /> : null}
+
             </div>
         );
     }

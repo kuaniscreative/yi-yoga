@@ -159,7 +159,7 @@ export const leaveApplication = (selectedDate, userId) => {
                         const resultAfterLeave = userClasses.filter(
                             classInfo => {
                                 return (
-                                    classInfo.toDate().valueOf() !==
+                                    classInfo.date.toDate().valueOf() !==
                                     selectedDate.toDate().valueOf()
                                 );
                             }
