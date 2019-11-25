@@ -78,6 +78,7 @@ class Preview extends Component {
                         />
                     );
                 })}
+                <NextStepButtonsArea cancel={this.props.cancelPreview} />
             </div>
         );
     }

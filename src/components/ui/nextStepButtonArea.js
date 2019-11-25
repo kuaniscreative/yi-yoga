@@ -1,15 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const NextStepButtonsArea = ({ action, back }) => {
+const NextStepButtonsArea = ({ action, cancel }) => {
     return (
         <div className="nextStepButtonsArea">
             <button className="outlineButton" onClick={action}>
                 確認
             </button>
-            <Link to="/" className="cancelGray">
+            <button className="cancelGray" onClick={cancel}>
                 取消
-            </Link>
+            </button>
         </div>
     );
 };

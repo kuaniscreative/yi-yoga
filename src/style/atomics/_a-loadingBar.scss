@@ -1,4 +1,5 @@
-#loadingBar {
+#loadingBar,
+.customLoadingBar {
     position: fixed;
     top: 0;
     left: 0;
@@ -13,7 +14,8 @@
     }
 }
 
-#loadingBar_bar {
+#loadingBar_bar,
+ .loadingBar_bar {
     display: block;
     width: 92%;
     height: 100%;

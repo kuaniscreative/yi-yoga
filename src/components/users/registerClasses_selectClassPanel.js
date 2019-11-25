@@ -13,93 +13,6 @@ class SelectClassPanel extends Component {
         inView: 0 // the viewing calendar
     }
 
-    componentDidMount() {
-        const session = this.props.session;
-        const span = session.span;
-        const calendarInfo = {};
-        span.forEach(stamp => {
-            const mm = stamp.split("/")[0];
-            const yyyy = stamp.split("/")[1];
-            const date = new Date(yyyy, mm - 1);
-            const key = date.toLocaleString("default", { month: "short" });
-            const dateInfos = this.generateDateInfo(mm - 1, yyyy);
-            const cellDatas = this.appendClassInfo(dateInfos, this.props.session.classes);
-
-            calendarInfo[key] = cellDatas;
-        });
-        this.props.createCalendarInfo(calendarInfo);
-    }
-
-    generateDateInfo = (month, year) => {
-        const date = new Date(year, month, 1);
-        const daysInMonth = () => {
-            return 32 - new Date(year, month, 32).getDate();
-        };
-        const howManyCell = () => {
-            const startDay = date.getDay();
-            const modulo = daysInMonth() % 7;
-            const base = parseInt(daysInMonth() / 7);
-            if (startDay === 0 && modulo === 0) {
-                return base * 7;
-            } else if (startDay > 0 && modulo + startDay > 7) {
-                return (base + 2) * 7;
-            } else {
-                return (base + 1) * 7;
-            }
-        };
-
-        const dateInfo = [];
-
-        for (let i = 0; i < howManyCell(); i++) {
-            const startpoint = date.getDay();
-            const dateOuput = i - startpoint + 1;
-            const newDate = new Date(year, month, dateOuput);
-            if (i < startpoint || dateOuput > daysInMonth()) {
-                dateInfo.push({
-                    date: null
-                });
-            } else {
-                dateInfo.push({
-                    date: newDate.toLocaleDateString()
-                });
-            }
-        }
-
-        return dateInfo;
-    };
-
-    appendClassInfo = (dateInfos, classes) => {
-        const result = dateInfos.map(info => {
-            const mappedClasses = classes.map(classInfo => {
-                return {
-                    dateString: classInfo.date.toDate().toLocaleDateString(),
-                    date: classInfo.date.toDate(),
-                    id: classInfo.id
-                };
-            });
-            const matched = mappedClasses.filter(obj => {
-                return obj.dateString === info.date;
-            });
-            if (matched.length) {
-                return {
-                    ...info,
-                    hasClass: matched.map(obj => {
-                        return {
-                            date: obj.date,
-                            id: obj.id,
-                            selected: false
-                        };
-                    })
-                };
-            } else {
-                return {
-                    ...info
-                };
-            }
-        });
-        return result;
-    };
-
     setViewingCalendar = (index) => {
         this.setState({
             ...this.state,
@@ -192,12 +105,5 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        createCalendarInfo: infos => {
-            dispatch({ type: "CREATE_CALENDAR_INFO", infos });
-        }
-    };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectClassPanel);
+export default connect(mapStateToProps)(SelectClassPanel);

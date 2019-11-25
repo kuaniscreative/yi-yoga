@@ -16,7 +16,8 @@ class RegisterClasses extends Component {
     state = {
         selected: [],
         enablePreview: false,
-        matchCourses: []
+        matchCourses: [],
+        calendarInitialed: false
     };
 
     // handleChange = e => {
@@ -152,15 +153,115 @@ class RegisterClasses extends Component {
     // };
 
     componentWillReceiveProps(nextProps) {
+        /**
+         *      設定日曆資料
+         */
+        const shouldSetState = {};
+        if (!this.state.calendarInitialed && nextProps.session) {
+            const session = nextProps.session;
+            const span = session.span;
+            const calendarInfo = {};
+            span.forEach(stamp => {
+                const mm = stamp.split("/")[0];
+                const yyyy = stamp.split("/")[1];
+                const date = new Date(yyyy, mm - 1);
+                const key = date.toLocaleString("default", { month: "short" });
+                const dateInfos = this.generateDateInfo(mm - 1, yyyy);
+                const cellDatas = this.appendClassInfo(
+                    dateInfos,
+                    nextProps.session.classes
+                );
+
+                calendarInfo[key] = cellDatas;
+            });
+            nextProps.createCalendarInfo(calendarInfo);
+
+            shouldSetState.calendarInitialed = true;
+        }
+
+        /**
+         *      如果在preview頁面把課程全部移除，以下設定可以跳轉回日曆畫面
+         */
         const selection = nextProps.selection;
         if (!selection.length) {
-            this.setState({
-                ...this.state,
-                enablePreview: false
-            })
+            shouldSetState.enablePreview = false;
         }
+        this.setState({
+            ...this.state,
+            ...shouldSetState
+        });
     }
-    
+
+    generateDateInfo = (month, year) => {
+        const date = new Date(year, month, 1);
+        const daysInMonth = () => {
+            return 32 - new Date(year, month, 32).getDate();
+        };
+        const howManyCell = () => {
+            const startDay = date.getDay();
+            const modulo = daysInMonth() % 7;
+            const base = parseInt(daysInMonth() / 7);
+            if (startDay === 0 && modulo === 0) {
+                return base * 7;
+            } else if (startDay > 0 && modulo + startDay > 7) {
+                return (base + 2) * 7;
+            } else {
+                return (base + 1) * 7;
+            }
+        };
+
+        const dateInfo = [];
+
+        for (let i = 0; i < howManyCell(); i++) {
+            const startpoint = date.getDay();
+            const dateOuput = i - startpoint + 1;
+            const newDate = new Date(year, month, dateOuput);
+            if (i < startpoint || dateOuput > daysInMonth()) {
+                dateInfo.push({
+                    date: null
+                });
+            } else {
+                dateInfo.push({
+                    date: newDate.toLocaleDateString()
+                });
+            }
+        }
+
+        return dateInfo;
+    };
+
+    appendClassInfo = (dateInfos, classes) => {
+        const result = dateInfos.map(info => {
+            const mappedClasses = classes.map(classInfo => {
+                return {
+                    dateString: classInfo.date.toDate().toLocaleDateString(),
+                    date: classInfo.date.toDate(),
+                    id: classInfo.id
+                };
+            });
+            const matched = mappedClasses.filter(obj => {
+                return obj.dateString === info.date;
+            });
+            if (matched.length) {
+                return {
+                    ...info,
+                    hasClass: matched.map(obj => {
+                        return {
+                            date: obj.date,
+                            id: obj.id,
+                            selected: false
+                        };
+                    })
+                };
+            } else {
+                return {
+                    ...info
+                };
+            }
+        });
+        return result;
+    };
+
     toPreview = () => {
         this.setState({
             ...this.state,
@@ -168,9 +269,21 @@ class RegisterClasses extends Component {
         });
     };
 
+    cancelPreview = () => {
+        this.setState({
+            ...this.state,
+            enablePreview: false
+        });
+    };
+
     render() {
         return (
             <div id="registerClasses" className="actionCard titleWithInfoAbove">
+                {!this.props.session ? (
+                    <div className="customLoadingBar active">
+                        <div className="loadingBar_bar"></div>
+                    </div>
+                ) : null}
                 {this.props.session ? (
                     <div className="actionCard_title">
                         <p className="titleWithInfoAbove_above">報名表單</p>
@@ -180,9 +293,9 @@ class RegisterClasses extends Component {
                     </div>
                 ) : null}
                 {/**
-                *
-                *       第一步：用日曆選取課程
-                *
+                 *
+                 *       第一步：用日曆選取課程
+                 *
                  */}
                 {this.props.session && !this.state.enablePreview ? (
                     <SelectClassPanel
@@ -192,15 +305,16 @@ class RegisterClasses extends Component {
                 ) : null}
 
                 {/**
-                *
-                *       第二步：確認表單
-                *
+                 *
+                 *       第二步：確認表單
+                 *
                  */}
-                {
-                    this.props.selection.length && this.state.enablePreview ? (
-                        <Preview selection={this.props.selection}/>
-                    ) : null
-                }
+                {this.props.selection.length && this.state.enablePreview ? (
+                    <Preview
+                        selection={this.props.selection}
+                        cancelPreview={this.cancelPreview}
+                    />
+                ) : null}
             </div>
         );
     }
@@ -221,8 +335,7 @@ const mapStateToProps = state => {
     let regularCourse = state.firestore.ordered.regularCourse
         ? state.firestore.ordered.regularCourse
         : null;
-    
-    
+
     return {
         userId: state.firebase.auth.uid,
         session: session,
@@ -242,6 +355,15 @@ const mapDispatchToProps = dispatch => {
         registerToCourse: (course, userId, courseName, amount) => {
             dispatch({ type: "LOADING" });
             dispatch(registerToCourse(course, userId, courseName, amount));
+        },
+        createCalendarInfo: infos => {
+            dispatch({ type: "CREATE_CALENDAR_INFO", infos });
+        },
+        loading: () => {
+            dispatch({ type: "LOADING" });
+        },
+        loaded: () => {
+            dispatch({ type: "LOADED" });
         }
     };
 };
@@ -252,6 +374,6 @@ export default compose(
         { collection: "session" },
         { collection: "course" },
         { collection: "regularCourse" },
-        { collection: 'classProfile' }
+        { collection: "classProfile" }
     ])
 )(RegisterClasses);
