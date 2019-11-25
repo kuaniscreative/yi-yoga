@@ -30,6 +30,7 @@ class SelectClassPanel extends Component {
     }
 
     render() {
+        console.log(this.props)
         const span = this.props.session.span;
         return (
             <div id="selectClassPanel">

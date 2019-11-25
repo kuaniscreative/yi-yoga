@@ -157,7 +157,7 @@ class RegisterClasses extends Component {
 
                 {/**
                  *
-                 *       報名表單title
+                 *       報名表單title & info
                  *
                  */}
                 {this.props.session ? (
@@ -172,6 +172,11 @@ class RegisterClasses extends Component {
                             <ul className="comfyList actionCard_content">
                                 <li>請在日曆上選取本期想要上課的所有課程</li>
                                 <li>你也可以透過下方的按鈕一次選取</li>
+                            </ul>
+                        ) : null}
+                        {this.state.enablePreview && !this.props.registerClassSuccess ? (
+                            <ul className="comfyList actionCard_content">
+                                <li>請確認選取的課程及費用</li>
                             </ul>
                         ) : null}
                     </div>
