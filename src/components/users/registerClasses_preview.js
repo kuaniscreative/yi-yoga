@@ -42,6 +42,10 @@ class Preview extends Component {
     //     );
     // };
 
+    componentDidMount() {
+        window.scrollTo(0, 0)
+    }
+
     returnPrice = (num) => {
         if (num >= 8) {
             return num * 250
@@ -78,7 +82,7 @@ class Preview extends Component {
                         />
                     );
                 })}
-                <NextStepButtonsArea cancel={this.props.cancelPreview} />
+                <NextStepButtonsArea cancel={this.props.cancelPreview} cancelName='上一步'/>
             </div>
         );
     }
