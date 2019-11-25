@@ -151,6 +151,16 @@ class RegisterClasses extends Component {
     //     });
     // };
 
+    componentWillReceiveProps(nextProps) {
+        const selection = nextProps.selection;
+        if (!selection.length) {
+            this.setState({
+                ...this.state,
+                enablePreview: false
+            })
+        }
+    }
+    
     toPreview = () => {
         this.setState({
             ...this.state,
@@ -187,7 +197,7 @@ class RegisterClasses extends Component {
                 *
                  */}
                 {
-                    this.props.selection && this.state.enablePreview ? (
+                    this.props.selection.length && this.state.enablePreview ? (
                         <Preview selection={this.props.selection}/>
                     ) : null
                 }

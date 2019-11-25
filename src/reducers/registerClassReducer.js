@@ -39,7 +39,7 @@ const registerClassReducer = (state = initState, action) => {
                 ...state,
                 calendarInfos: action.infos
             };
-        case "CLASS_SELECTED":
+        case "CLASS_SELECTED": {
             function returnSelectedResult(data) {
                 const calendarInfos = Object.assign({}, state.calendarInfos);
                 const key = data.key;
@@ -73,13 +73,13 @@ const registerClassReducer = (state = initState, action) => {
                         return deletionId === info.id;
                     });
                 });
-                data.selection.forEach(classId => {
+                data.selection.forEach(classInfo => {
                     if (
                         !selection.filter(info => {
-                            return info.id === classId;
+                            return info.id === classInfo.id;
                         }).length
                     ) {
-                        selection.push(classId);
+                        selection.push(classInfo);
                     }
                 });
 
@@ -91,6 +91,38 @@ const registerClassReducer = (state = initState, action) => {
                 calendarInfos: returnSelectedResult(action.data),
                 selection: resolvedSelection(action.data)
             };
+        }
+        case 'REMOVE_CLASS_WHEN_REGISTER_CLASS': {
+            function removeClassInCalendarInfo(info) {
+                const calendarInfos = Object.assign({}, state.calendarInfos);
+                const key = info.key;
+                const index = info.index;
+                const hasClass = calendarInfos[key][index].hasClass;
+                const alteredHasClass = hasClass.map((hasClassInfo) => {
+                    if (hasClassInfo.id === info.id) {
+                        return {
+                            ...hasClassInfo,
+                            selected: false
+                        }
+                    }
+                    return hasClassInfo
+                }) 
+                calendarInfos[key][index].hasClass = alteredHasClass
+                return calendarInfos
+            }
+            function removeClassInSelection(id) {
+                return state.selection.filter((info) => {
+                    return info.id !== id
+                })
+            }
+
+            return {
+                ...state,
+                calendarInfos: removeClassInCalendarInfo(action.info),
+                selection: removeClassInSelection(action.info.id)
+            }
+        }
+            
         default:
             return state;
     }
