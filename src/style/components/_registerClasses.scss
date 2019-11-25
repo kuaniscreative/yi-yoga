@@ -97,7 +97,7 @@
 
 .selectTimeModal_form {
     display: block;
-    width: 80%;
+    width: 88%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -120,7 +120,7 @@
     flex-direction: row-reverse;
 
     .checkboxContainer_checkbox {
-        flex: 0 0 64px;
+        flex: 0 0 60px;
     }
 }
 button.inView {
@@ -128,3 +128,30 @@ button.inView {
     color: white
 }
 
+#registerClass_previewOptions {
+    padding: 1em;
+
+    .checkboxContainer_message {
+        padding-right: 0
+    }
+}
+
+
+
+/**
+ *
+ *      Preview
+ *
+ */
+
+#registerClass_preview {
+    .stepIndicator {
+        margin-bottom: 2em;
+    }
+}
+
+#registerClass_preview_summary {
+    font-size: 0.9rem;
+    color: $gray-4;
+    margin-bottom: 2em;
+}

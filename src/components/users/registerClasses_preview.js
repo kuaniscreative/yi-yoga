@@ -47,9 +47,10 @@ class Preview extends Component {
         const cost = this.returnPrice(num);
 
         return (
-            <div className="preview nextStepButtonsArea_parent">
+            <div id='registerClass_preview'>
                 <StepIndicator indicator="step2. 確認表單" />
-                <p>{`選取了${num}堂課，共${cost}元`}</p>
+                <p id='registerClass_preview_summary'>{`選取了${num}堂課，共${cost}元`}</p>
+                <div id='registerClass_previewOptions'>
                 {this.props.selection.map((info, i) => {
                     return (
                         <ItemBarWithAction
@@ -68,6 +69,7 @@ class Preview extends Component {
                         />
                     );
                 })}
+                </div>
                 <NextStepButtonsArea action={this.registerToCourse} cancel={this.props.cancelPreview} cancelName='上一步'/>
             </div>
         );
