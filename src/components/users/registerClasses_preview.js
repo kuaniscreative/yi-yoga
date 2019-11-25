@@ -46,8 +46,8 @@ class Preview extends Component {
             <div className="preview nextStepButtonsArea_parent">
                 <StepIndicator indicator='step2. 確認表單'/>
                 {
-                    this.props.selection.map((id) => {
-                        return <p>{id}</p>
+                    this.props.selection.map((info, i) => {
+                        return <DateSingle date={info.date} key={i}/>
                     })
                 }
             </div>

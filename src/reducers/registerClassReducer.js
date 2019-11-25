@@ -1,6 +1,6 @@
 const initState = {
     /**
-     * 
+     *
      *      calendatInfos: {
      *          Jan: [
      *              {
@@ -15,7 +15,7 @@ const initState = {
      *              }
      *          ]
      *      }
-     * 
+     *
      */
     selection: []
 };
@@ -39,50 +39,58 @@ const registerClassReducer = (state = initState, action) => {
                 ...state,
                 calendarInfos: action.infos
             };
-        case 'CLASS_SELECTED':
+        case "CLASS_SELECTED":
             function returnSelectedResult(data) {
                 const calendarInfos = Object.assign({}, state.calendarInfos);
                 const key = data.key;
                 const index = data.index;
                 const selection = data.selection;
                 const hasClass = calendarInfos[key][index].hasClass;
-                const alteredHasClass = hasClass.map((classInfo) => {
-                    if (selection.indexOf(classInfo.id) < 0) {
+                const alteredHasClass = hasClass.map(classInfo => {
+                    if (
+                        !selection.filter(info => {
+                            return info.id === classInfo.id;
+                        }).length
+                    ) {
                         return {
                             ...classInfo,
                             selected: false
-                        }
+                        };
                     } else {
                         return {
                             ...classInfo,
                             selected: true
-                        }
+                        };
                     }
-                })
+                });
                 calendarInfos[key][index].hasClass = alteredHasClass;
-                return calendarInfos
+                return calendarInfos;
             }
 
             function resolvedSelection(data) {
-                const selection = state.selection.filter((id) => {
-                    return !data.deletion.some((deletionId) => {
-                        return deletionId === id
-                    })
-                })
-                data.selection.forEach((classId) => {
-                    if (selection.indexOf(classId) < 0) {
-                        selection.push(classId)
+                const selection = state.selection.filter(info => {
+                    return !data.deletion.some(deletionId => {
+                        return deletionId === info.id;
+                    });
+                });
+                data.selection.forEach(classId => {
+                    if (
+                        !selection.filter(info => {
+                            return info.id === classId;
+                        }).length
+                    ) {
+                        selection.push(classId);
                     }
-                })
-                
-                return selection
+                });
+
+                return selection;
             }
 
             return {
                 ...state,
                 calendarInfos: returnSelectedResult(action.data),
                 selection: resolvedSelection(action.data)
-            }
+            };
         default:
             return state;
     }

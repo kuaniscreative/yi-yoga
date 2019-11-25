@@ -53,7 +53,11 @@ class SelectTimeModal extends Component {
         const indexOfCalendarInfo = this.props.data.indexOfCalendarInfo;
         const calendar = this.props.data.calendar;
         const origin = this.state.originSelection;
-        const selected = this.state.selected;
+        const selected = this.state.selected.map((id) => {
+            return this.props.data.hasClass.find((classInfo) => {
+                return id === classInfo.id
+            })
+        });
         const deletion = origin.filter((classId) => {
             return origin.indexOf(classId) > -1 &&  selected.indexOf(classId) < 0
         })
