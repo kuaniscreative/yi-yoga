@@ -169,12 +169,28 @@ class RegisterClasses extends Component {
                         </p>
                     </div>
                 ) : null}
+                {/**
+                *
+                *       第一步：用日曆選取課程
+                *
+                 */}
                 {this.props.session && !this.state.enablePreview ? (
                     <SelectClassPanel
                         session={this.props.session}
                         setParentState={this.toPreview}
                     />
                 ) : null}
+
+                {/**
+                *
+                *       第二步：確認表單
+                *
+                 */}
+                {
+                    this.props.selection && this.state.enablePreview ? (
+                        <Preview selection={this.props.selection}/>
+                    ) : null
+                }
             </div>
         );
     }
@@ -195,7 +211,8 @@ const mapStateToProps = state => {
     let regularCourse = state.firestore.ordered.regularCourse
         ? state.firestore.ordered.regularCourse
         : null;
-
+    
+    
     return {
         userId: state.firebase.auth.uid,
         session: session,
@@ -205,7 +222,8 @@ const mapStateToProps = state => {
                   return a.reference.seconds - b.reference.seconds;
               })
             : null,
-        registerClassSuccess: state.user.registerClassSuccess
+        registerClassSuccess: state.user.registerClassSuccess,
+        selection: state.registerClass.selection
     };
 };
 
@@ -223,6 +241,7 @@ export default compose(
     firestoreConnect([
         { collection: "session" },
         { collection: "course" },
-        { collection: "regularCourse" }
+        { collection: "regularCourse" },
+        { collection: 'classProfile' }
     ])
 )(RegisterClasses);

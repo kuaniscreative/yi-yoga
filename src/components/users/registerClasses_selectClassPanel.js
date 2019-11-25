@@ -107,8 +107,13 @@ class SelectClassPanel extends Component {
         })
     }
 
-    finishSelection = () => {
-        this.props.setParentState();
+    finishSelecting = () => {
+        if (this.props.selection.length) {
+            this.props.setParentState();
+        } else {
+            alert('未選取任何課堂')
+        }
+        
     }
 
     render() {
@@ -174,7 +179,7 @@ class SelectClassPanel extends Component {
                  *       按鈕
                  *
                  */}
-                 <NextStepButtonsArea action={this.finishSelection} />
+                 <NextStepButtonsArea action={this.finishSelecting} />
             </div>
         );
     }
@@ -183,6 +188,7 @@ class SelectClassPanel extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         calendarInfos: state.registerClass.calendarInfos,
+        selection: state.registerClass.selection
     };
 };
 

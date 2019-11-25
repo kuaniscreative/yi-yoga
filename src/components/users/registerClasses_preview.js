@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 
 // components
+import StepIndicator from '../stepIndicator';
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
+import DateSingle from '../ui/dateSingle';
 
 class Preview extends Component {
     optionsList = (courses = []) => {
@@ -39,13 +41,15 @@ class Preview extends Component {
     };
 
     render() {
-        const courses = this.props.matchCourses;
+
         return (
             <div className="preview nextStepButtonsArea_parent">
-                <div className="options">
-                {this.optionsList(courses)}
-                </div>
-                <NextStepButtonsArea action={this.props.apply}/>
+                <StepIndicator indicator='step2. 確認表單'/>
+                {
+                    this.props.selection.map((id) => {
+                        return <p>{id}</p>
+                    })
+                }
             </div>
         );
     }
