@@ -13,7 +13,7 @@ class SelectTimeModal extends Component {
         })
     }
 
-    closeModal = (e) => {
+    closeModal = () => {
             this.props.closeSelectTimeModal();
             this.setState({
                 ...this.state,
@@ -57,10 +57,15 @@ class SelectTimeModal extends Component {
         };
 
         this.props.classSelected(data);
+        this.props.closeSelectTimeModal();
+        this.setState({
+            ...this.state,
+            selected: []
+        })
     };
 
     render() {
-        const data = this.props.data;
+        const data = this.props.data; 
         return (
             <div
                 className={
@@ -101,7 +106,7 @@ class SelectTimeModal extends Component {
                         })}
                     <div>
                         <button>確認</button>
-                        <button>取消</button>
+                        <button onClick={(e) => {e.preventDefault(); this.closeModal()}}>取消</button>
                     </div>
                 </form>
             </div>
