@@ -5,11 +5,12 @@ import { connect } from "react-redux";
 import StepIndicator from "../stepIndicator";
 import Calendar from "./registerClasses_calendar";
 import SelectTimeModal from "./registerClasses_selectTimeModal";
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
 class SelectClassPanel extends Component {
 
     state = {
-        inView: 0
+        inView: 0 // the viewing calendar
     }
 
     componentDidMount() {
@@ -106,6 +107,10 @@ class SelectClassPanel extends Component {
         })
     }
 
+    finishSelection = () => {
+        this.props.setParentState();
+    }
+
     render() {
         const span = this.props.session.span;
         return (
@@ -163,6 +168,13 @@ class SelectClassPanel extends Component {
                  *
                  */}
                 <SelectTimeModal />
+
+                {/**
+                 *
+                 *       按鈕
+                 *
+                 */}
+                 <NextStepButtonsArea action={this.finishSelection} />
             </div>
         );
     }

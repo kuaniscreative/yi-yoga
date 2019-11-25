@@ -17,6 +17,7 @@ const initState = {
      *      }
      * 
      */
+    selection: []
 };
 
 const registerClassReducer = (state = initState, action) => {
@@ -62,9 +63,25 @@ const registerClassReducer = (state = initState, action) => {
                 return calendarInfos
             }
 
+            function resolvedSelection(data) {
+                const selection = state.selection.filter((id) => {
+                    return !data.deletion.some((deletionId) => {
+                        return deletionId === id
+                    })
+                })
+                data.selection.forEach((classId) => {
+                    if (selection.indexOf(classId) < 0) {
+                        selection.push(classId)
+                    }
+                })
+                
+                return selection
+            }
+
             return {
                 ...state,
-                calendarInfos: returnSelectedResult(action.data)
+                calendarInfos: returnSelectedResult(action.data),
+                selection: resolvedSelection(action.data)
             }
         default:
             return state;

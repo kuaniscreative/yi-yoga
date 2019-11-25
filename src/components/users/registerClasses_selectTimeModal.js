@@ -3,13 +3,15 @@ import { connect } from "react-redux";
 
 class SelectTimeModal extends Component {
     state = {
-        selected: []// array of classIds (string)
+        selected: [],// array of classIds (string)
+        originSelection: []
     };
 
     componentWillReceiveProps(nextProps) {
         this.setState({
             ...this.state,
-            selected: nextProps.selected
+            selected: nextProps.selected,
+            originSelection: nextProps.selected
         })
     }
 
@@ -50,10 +52,16 @@ class SelectTimeModal extends Component {
         e.preventDefault();
         const indexOfCalendarInfo = this.props.data.indexOfCalendarInfo;
         const calendar = this.props.data.calendar;
+        const origin = this.state.originSelection;
+        const selected = this.state.selected;
+        const deletion = origin.filter((classId) => {
+            return origin.indexOf(classId) > -1 &&  selected.indexOf(classId) < 0
+        })
         const data = {
             index: indexOfCalendarInfo,
             key: calendar,
-            selection: this.state.selected
+            selection: selected,
+            deletion: deletion
         };
 
         this.props.classSelected(data);

@@ -19,135 +19,142 @@ class RegisterClasses extends Component {
         matchCourses: []
     };
 
-    handleChange = e => {
-        let selected = this.state.selected;
-        const inputValue = e.target.value;
-        if (selected.indexOf(inputValue) > -1) {
-            selected = selected.filter(item => {
-                return item !== inputValue;
-            });
-        } else {
-            selected.push(inputValue);
-        }
-        this.setState({
-            selected: selected
-        });
-    };
+    // handleChange = e => {
+    //     let selected = this.state.selected;
+    //     const inputValue = e.target.value;
+    //     if (selected.indexOf(inputValue) > -1) {
+    //         selected = selected.filter(item => {
+    //             return item !== inputValue;
+    //         });
+    //     } else {
+    //         selected.push(inputValue);
+    //     }
+    //     this.setState({
+    //         selected: selected
+    //     });
+    // };
 
-    courseSelected = e => {
-        e.preventDefault();
+    // courseSelected = e => {
+    //     e.preventDefault();
 
-        const matchCourses = [];
-        const course = this.props.course;
-        const selected = this.state.selected;
+    //     const matchCourses = [];
+    //     const course = this.props.course;
+    //     const selected = this.state.selected;
 
-        selected.forEach(selection => {
-            course.forEach(courseInfo => {
-                if (selection === courseInfo.name) {
-                    matchCourses.push(courseInfo);
-                }
-            });
-        });
-        let canApply = true;
-        let doubuled;
-        matchCourses.forEach(courseInfo => {
-            if (courseInfo.registeredStudents.indexOf(this.props.userId) >= 0) {
-                canApply = false;
-                doubuled = courseInfo;
-            }
-        });
+    //     selected.forEach(selection => {
+    //         course.forEach(courseInfo => {
+    //             if (selection === courseInfo.name) {
+    //                 matchCourses.push(courseInfo);
+    //             }
+    //         });
+    //     });
+    //     let canApply = true;
+    //     let doubuled;
+    //     matchCourses.forEach(courseInfo => {
+    //         if (courseInfo.registeredStudents.indexOf(this.props.userId) >= 0) {
+    //             canApply = false;
+    //             doubuled = courseInfo;
+    //         }
+    //     });
 
-        if (!canApply) {
-            alert(`${doubuled.name}已經報名過了`);
-        } else {
-            this.setState({
-                selected: [],
-                enablePreview: true,
-                matchCourses: matchCourses
-            });
-        }
-    };
+    //     if (!canApply) {
+    //         alert(`${doubuled.name}已經報名過了`);
+    //     } else {
+    //         this.setState({
+    //             selected: [],
+    //             enablePreview: true,
+    //             matchCourses: matchCourses
+    //         });
+    //     }
+    // };
 
-    deselect = course => {
-        const currentCourses = this.state.matchCourses;
-        const afterDeletion = currentCourses.filter(item => {
-            return item !== course;
-        });
+    // deselect = course => {
+    //     const currentCourses = this.state.matchCourses;
+    //     const afterDeletion = currentCourses.filter(item => {
+    //         return item !== course;
+    //     });
 
-        if (afterDeletion.length) {
-            this.setState({
-                ...this.state,
-                matchCourses: afterDeletion
-            });
-        } else {
-            this.setState(
-                {
-                    ...this.state,
-                    enablePreview: false,
-                    matchCourses: afterDeletion
-                },
-                () => {
-                    console.log(this.state);
-                }
-            );
-        }
-    };
+    //     if (afterDeletion.length) {
+    //         this.setState({
+    //             ...this.state,
+    //             matchCourses: afterDeletion
+    //         });
+    //     } else {
+    //         this.setState(
+    //             {
+    //                 ...this.state,
+    //                 enablePreview: false,
+    //                 matchCourses: afterDeletion
+    //             },
+    //             () => {
+    //                 console.log(this.state);
+    //             }
+    //         );
+    //     }
+    // };
 
-    apply = () => {
-        const selectedCourse = this.state.matchCourses;
-        const userId = this.props.userId;
-        const session = this.props.session;
-        const amount =
-            this.state.matchCourses.reduce((acc, cValue, cIndex) => {
-                return acc + cValue.length;
-            }, 0) * 250;
+    // apply = () => {
+    //     const selectedCourse = this.state.matchCourses;
+    //     const userId = this.props.userId;
+    //     const session = this.props.session;
+    //     const amount =
+    //         this.state.matchCourses.reduce((acc, cValue, cIndex) => {
+    //             return acc + cValue.length;
+    //         }, 0) * 250;
 
-        this.props.registerToCourse(
-            selectedCourse,
-            userId,
-            session.name,
-            amount
-        );
-    };
+    //     this.props.registerToCourse(
+    //         selectedCourse,
+    //         userId,
+    //         session.name,
+    //         amount
+    //     );
+    // };
 
-    indicatorOutput = () => {
-        if (this.state.enablePreview === false) {
-            return "選擇報名課堂";
-        } else if (this.state.enablePreview === true) {
-            return "確認表單";
-        }
-    };
+    // indicatorOutput = () => {
+    //     if (this.state.enablePreview === false) {
+    //         return "選擇報名課堂";
+    //     } else if (this.state.enablePreview === true) {
+    //         return "確認表單";
+    //     }
+    // };
 
-    conditionalComponents = () => {
-        const preview = this.state.enablePreview;
-        const success = this.props.registerClassSuccess;
+    // conditionalComponents = () => {
+    //     const preview = this.state.enablePreview;
+    //     const success = this.props.registerClassSuccess;
 
-        if (success) {
-            return <RegisterClassSuccess />;
-        } else if (preview) {
-            return (
-                <Preview
-                    matchCourses={this.state.matchCourses}
-                    deselect={this.deselect}
-                    apply={this.apply}
-                />
-            );
-        } else {
-            return (
-                <RegularCourseForm
-                    handleChange={this.handleChange}
-                    handleSubmit={this.courseSelected}
-                    courses={this.props.regularCourse}
-                />
-            );
-        }
-    };
+    //     if (success) {
+    //         return <RegisterClassSuccess />;
+    //     } else if (preview) {
+    //         return (
+    //             <Preview
+    //                 matchCourses={this.state.matchCourses}
+    //                 deselect={this.deselect}
+    //                 apply={this.apply}
+    //             />
+    //         );
+    //     } else {
+    //         return (
+    //             <RegularCourseForm
+    //                 handleChange={this.handleChange}
+    //                 handleSubmit={this.courseSelected}
+    //                 courses={this.props.regularCourse}
+    //             />
+    //         );
+    //     }
+    // };
 
-    selectSession = e => {
-        const sessionId = e.target.dataset.session;
+    // selectSession = e => {
+    //     const sessionId = e.target.dataset.session;
+    //     this.setState({
+    //         ...this.state,
+    //         session: sessionId
+    //     });
+    // };
+
+    toPreview = () => {
         this.setState({
             ...this.state,
-            session: sessionId
+            enablePreview: true
         });
     };
 
@@ -155,17 +162,18 @@ class RegisterClasses extends Component {
         return (
             <div id="registerClasses" className="actionCard titleWithInfoAbove">
                 {this.props.session ? (
-                    <div>
-                        <div className="actionCard_title">
-                            <p className="titleWithInfoAbove_above">報名表單</p>
-                            <p className="titleWithInfoAbove_title">
-                                {this.props.session.name}
-                            </p>
-                        </div>
-                        <SelectClassPanel
-                            session={this.props.session}
-                        />
+                    <div className="actionCard_title">
+                        <p className="titleWithInfoAbove_above">報名表單</p>
+                        <p className="titleWithInfoAbove_title">
+                            {this.props.session.name}
+                        </p>
                     </div>
+                ) : null}
+                {this.props.session && !this.state.enablePreview ? (
+                    <SelectClassPanel
+                        session={this.props.session}
+                        setParentState={this.toPreview}
+                    />
                 ) : null}
             </div>
         );
