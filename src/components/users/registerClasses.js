@@ -313,6 +313,7 @@ class RegisterClasses extends Component {
                     <Preview
                         selection={this.props.selection}
                         cancelPreview={this.cancelPreview}
+                        session={this.props.session}
                     />
                 ) : null}
             </div>

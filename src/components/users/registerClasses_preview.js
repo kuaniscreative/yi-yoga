@@ -8,39 +8,10 @@ import NextStepButtonsArea from "../ui/nextStepButtonArea";
 import DateSingle from "../ui/dateSingle";
 import ItemBarWithAction from "../ui/itemBarWithAction";
 
-class Preview extends Component {
-    // optionsList = (courses = []) => {
-    //     return (
-    //         courses.length &&
-    //         courses.map((course, i) => {
-    //             const day = course.name.split(" ", 1)[0];
-    //             const time = course.name.replace(`${day} `, "");
-    //             return (
-    //                 <div key={i} className="checkboxContainer noReverse">
-    //                     <div className="dayHero checkboxContainer_message">
-    //                         <span className="dayHero_day">{day}</span>
-    //                         <span className="dayHero_time">{time}</span>
-    //                         <div className="dayHero_message">
-    //                             {`${course.classes.length}堂課，金額${course.classes.length *
-    //                                 250}元`}
-    //                         </div>
-    //                     </div>
+// actions
+import { registerToCourse } from '../../actions/userActions';
 
-    //                     <div className="checkboxContainer_checkbox">
-    //                         <button
-    //                             className="cancelRed"
-    //                             onClick={() => {
-    //                                 this.props.deselect(course);
-    //                             }}
-    //                         >
-    //                             取消
-    //                         </button>
-    //                     </div>
-    //                 </div>
-    //             );
-    //         })
-    //     );
-    // };
+class Preview extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0)
@@ -56,6 +27,21 @@ class Preview extends Component {
         }
     }
 
+    registerToCourse = () => {
+        const classes = this.props.selection.map((info) => {
+            return {
+                date: info.date,
+                id: info.id
+            }
+        });
+        const userId = this.props.userId
+        const amount = this.returnPrice(classes.length);
+        const sessionName = this.props.session.name;
+        const sessionId = this.props.session.id;
+
+        this.props.registerToCourse(classes, userId, sessionName, sessionId, amount)
+    }
+
     render() {
         const num = this.props.selection.length;
         const cost = this.returnPrice(num);
@@ -63,7 +49,7 @@ class Preview extends Component {
         return (
             <div className="preview nextStepButtonsArea_parent">
                 <StepIndicator indicator="step2. 確認表單" />
-                <p>{`選取了${num}課，共${cost}元`}</p>
+                <p>{`選取了${num}堂課，共${cost}元`}</p>
                 {this.props.selection.map((info, i) => {
                     return (
                         <ItemBarWithAction
@@ -82,9 +68,15 @@ class Preview extends Component {
                         />
                     );
                 })}
-                <NextStepButtonsArea cancel={this.props.cancelPreview} cancelName='上一步'/>
+                <NextStepButtonsArea action={this.registerToCourse} cancel={this.props.cancelPreview} cancelName='上一步'/>
             </div>
         );
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        userId: state.firebase.auth.uid,
     }
 }
 
@@ -92,8 +84,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         removeClass: (info) => {
             dispatch({type:'REMOVE_CLASS_WHEN_REGISTER_CLASS', info})
+        },
+        registerToCourse: (classes, userId, sessionName, sessionId, amount) => {
+            dispatch(registerToCourse(classes, userId, sessionName, sessionId, amount))
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(Preview);
+export default connect(mapStateToProps, mapDispatchToProps)(Preview);
