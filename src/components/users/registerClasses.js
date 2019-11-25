@@ -144,19 +144,39 @@ class RegisterClasses extends Component {
     render() {
         return (
             <div id="registerClasses" className="actionCard titleWithInfoAbove">
+                {/**
+                 *
+                 *       loading bar
+                 *
+                 */}
                 {!this.props.session ? (
                     <div className="customLoadingBar active">
                         <div className="loadingBar_bar"></div>
                     </div>
                 ) : null}
+
+                {/**
+                 *
+                 *       報名表單title
+                 *
+                 */}
                 {this.props.session ? (
-                    <div className="actionCard_title">
-                        <p className="titleWithInfoAbove_above">報名表單</p>
-                        <p className="titleWithInfoAbove_title">
-                            {this.props.session.name}
-                        </p>
+                    <div id='registerClass_info'>
+                        <div className="actionCard_title">
+                            <p className="titleWithInfoAbove_above">報名表單</p>
+                            <p className="titleWithInfoAbove_title">
+                                {this.props.session.name}
+                            </p>
+                        </div>
+                        {!this.state.enablePreview ? (
+                            <ul className="comfyList actionCard_content">
+                                <li>請在日曆上選取本期想要上課的所有課程</li>
+                                <li>你也可以透過下方的按鈕一次選取</li>
+                            </ul>
+                        ) : null}
                     </div>
                 ) : null}
+
                 {/**
                  *
                  *       第一步：用日曆選取課程
@@ -174,7 +194,9 @@ class RegisterClasses extends Component {
                  *       第二步：確認表單
                  *
                  */}
-                {this.props.selection.length && this.state.enablePreview && !this.props.registerClassSuccess ? (
+                {this.props.selection.length &&
+                this.state.enablePreview &&
+                !this.props.registerClassSuccess ? (
                     <Preview
                         selection={this.props.selection}
                         cancelPreview={this.cancelPreview}
@@ -187,8 +209,9 @@ class RegisterClasses extends Component {
                  *       第三步：報名結果
                  *
                  */}
-                {this.props.registerClassSuccess ? <RegisterClassSuccess /> : null}
-
+                {this.props.registerClassSuccess ? (
+                    <RegisterClassSuccess />
+                ) : null}
             </div>
         );
     }

@@ -16,25 +16,26 @@ ol.comfyList {
 }
 
 ul.comfyList {
-    padding-left: 1.5em;
+    padding-left: 2em;
 
     li {
         position: relative;
+        font-size: 1em;
         line-height: 2em;
     }
     li:before {
-        width: 8px;
-        height: 8px;
         content: "";
+        width: 0.5em;
+        height: 0.5em;
         display: block;
-        margin-right: 15px;
-        margin-bottom: 3px;
+        margin-right: 0.5em;
+        margin-bottom: 0.5em;
         font-size: 1rem;
         background-color: #ff9a57;
-        border-radius: 8px;
+        border-radius: 1em;
         position: absolute;
-        left: -1rem;
-        top: 1em;
+        left: -1.2em;
+        top: 0.9em;
         transform: translateY(-50%);
     }
 }

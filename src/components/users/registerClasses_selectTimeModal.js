@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+// Cconponents
+import NextStepButtonsArea from "../ui/nextStepButtonArea";
 class SelectTimeModal extends Component {
     state = {
-        selected: [],// array of classIds (string)
+        selected: [], // array of classIds (string)
         originSelection: []
     };
 
@@ -12,23 +14,22 @@ class SelectTimeModal extends Component {
             ...this.state,
             selected: nextProps.selected,
             originSelection: nextProps.selected
-        })
+        });
     }
 
     closeModal = () => {
-            this.props.closeSelectTimeModal();
-            this.setState({
-                ...this.state,
-                selected: []
-            })
-
+        this.props.closeSelectTimeModal();
+        this.setState({
+            ...this.state,
+            selected: []
+        });
     };
 
-    closeModalWhenClickOutside = (e) => {
+    closeModalWhenClickOutside = e => {
         if (e.target.classList.contains("selectTimeModal")) {
-            this.closeModal()
+            this.closeModal();
         }
-    }
+    };
 
     handleChange = e => {
         const classId = e.target.value;
@@ -53,17 +54,19 @@ class SelectTimeModal extends Component {
         const indexOfCalendarInfo = this.props.data.indexOfCalendarInfo;
         const calendar = this.props.data.calendar;
         const origin = this.state.originSelection;
-        const selected = this.state.selected.map((id) => {
-            const classInfo = this.props.data.hasClass.find((classInfo) => {
-                return id === classInfo.id
-            })
+        const selected = this.state.selected.map(id => {
+            const classInfo = this.props.data.hasClass.find(classInfo => {
+                return id === classInfo.id;
+            });
             classInfo.index = indexOfCalendarInfo;
             classInfo.key = calendar;
-            return classInfo
+            return classInfo;
         });
-        const deletion = origin.filter((classId) => {
-            return origin.indexOf(classId) > -1 &&  selected.indexOf(classId) < 0
-        })
+        const deletion = origin.filter(classId => {
+            return (
+                origin.indexOf(classId) > -1 && selected.indexOf(classId) < 0
+            );
+        });
         const data = {
             index: indexOfCalendarInfo,
             key: calendar,
@@ -76,11 +79,19 @@ class SelectTimeModal extends Component {
         this.setState({
             ...this.state,
             selected: []
-        })
+        });
     };
 
     render() {
-        const data = this.props.data; 
+        const data = this.props.data;
+        const createTitle = date => {
+            const dateStrings = date.toLocaleDateString("zh").split("/");
+            const dd = dateStrings[2];
+            const mm = dateStrings[1];
+            const yyyy = dateStrings[0];
+
+            return `${yyyy}年${mm}月${dd}日`;
+        };
         return (
             <div
                 className={
@@ -94,13 +105,21 @@ class SelectTimeModal extends Component {
                     className="selectTimeModal_form"
                     onSubmit={this.handleSubmit}
                 >
+                    <div className="selectTimeModal_title">
+                        {this.props.data
+                            ? createTitle(this.props.data.hasClass[0].date)
+                            : null}
+                    </div>
                     {data &&
                         data.hasClass.map((classInfo, i) => {
                             const hr = classInfo.date.getHours();
                             const min = classInfo.date.getMinutes();
                             const output = `${hr}:${min}`;
                             return (
-                                <label key={i} className="checkboxContainer">
+                                <label
+                                    key={i}
+                                    className="checkboxContainer selectTimeModal_option"
+                                >
                                     <div className="dayHero checkboxContainer_message">
                                         <span className="dayHero_day">
                                             {output}
@@ -112,7 +131,13 @@ class SelectTimeModal extends Component {
                                             type="checkbox"
                                             value={classInfo.id}
                                             onChange={this.handleChange}
-                                            checked={this.state.selected.indexOf(classInfo.id) > -1 ? true : false}
+                                            checked={
+                                                this.state.selected.indexOf(
+                                                    classInfo.id
+                                                ) > -1
+                                                    ? true
+                                                    : false
+                                            }
                                         />
                                         <span className="checkmark"></span>
                                     </div>
@@ -120,8 +145,12 @@ class SelectTimeModal extends Component {
                             );
                         })}
                     <div>
-                        <button>確認</button>
-                        <button onClick={(e) => {e.preventDefault(); this.closeModal()}}>取消</button>
+                        <NextStepButtonsArea
+                            cancel={e => {
+                                e.preventDefault();
+                                this.closeModal();
+                            }}
+                        />
                     </div>
                 </form>
             </div>
@@ -131,11 +160,15 @@ class SelectTimeModal extends Component {
 
 const mapStateToProps = state => {
     const data = state.registerClass.openSelectTimeModal_data;
-    const selected = data && data.hasClass.filter((item) => {
-        return item.selected
-    }).map((item) => {
-        return item.id
-    })
+    const selected =
+        data &&
+        data.hasClass
+            .filter(item => {
+                return item.selected;
+            })
+            .map(item => {
+                return item.id;
+            });
     return {
         openSelectTimeModal: state.registerClass.openSelectTimeModal,
         data: state.registerClass.openSelectTimeModal_data,

@@ -8,7 +8,11 @@
 }
 
 .actionCard_title {
-    margin-bottom: 2em;
+    padding: 2em 2em;
+    margin-bottom: 3em;
+    border: 0.5px solid $gray-5;
+    border-radius: 1em;
+
     @include media("above-tablet") {
         display: flex;
         align-items: center;
@@ -23,6 +27,7 @@
 
 .actionCard_content {
     margin: 1em 0;
+    margin-bottom: 2em;
     @include media("above-tablet") {
         margin: 1.5rem 4rem 4rem 4rem;
     }
