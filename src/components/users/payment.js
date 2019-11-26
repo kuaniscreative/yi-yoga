@@ -23,7 +23,12 @@ class Payment extends Component {
         const method = this.state.method;
         const account = this.state.account;
         const date = this.state.date;
-        this.props.updatePaymentStatus(paymentId, method, account, date);
+        if (date && method && account) {
+            this.props.updatePaymentStatus(paymentId, method, account, date);
+        } else {
+            alert('每項欄位都必須輸入')
+        }
+        
     };
 
     handleChange = e => {

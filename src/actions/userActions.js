@@ -75,7 +75,7 @@ export const registerToCourse = (classes, userId, sessionName, sessionId, amount
 export const updatePaymentStatus = (paymentId, method, account, date) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
-        const firebase = getFirebase();
+
         firestore
             .collection("paymentStatus")
             .doc(paymentId)
