@@ -31,6 +31,7 @@ class Reschedule extends Component {
         });
     };
 
+
     // filter out the available classes after selectd which leaved class
     classFilter = (mm, yyyy) => {
         const selectedDate = new Date(yyyy, mm);
@@ -57,6 +58,13 @@ class Reschedule extends Component {
             timeTable: available
         });
     };
+
+    clearTimeTable = () => {
+        this.setState({
+            ...this.state,
+            timeTable: []
+        })
+    }
 
     // click will fire requestTimeTable and set the leave class to state.target
     handleClick = (mm, yyyy, date) => {
@@ -85,6 +93,7 @@ class Reschedule extends Component {
                     leaveRecord={this.props.leaveRecord}
                     classSelected={ this.state.timeTable.length ? true : false}
                     selectLeaveClass={this.handleClick}
+                    clearTimeTable={this.clearTimeTable}
                 />
             );
         } else {

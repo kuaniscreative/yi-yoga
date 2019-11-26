@@ -14,7 +14,7 @@ class Preview extends Component {
     conditionalComponents = () => {
         if (this.props.classSelected) {
             return (
-                <ClassList classes={this.props.classes} select={this.props.select} submit={this.props.submit}/>
+                <ClassList classes={this.props.classes} select={this.props.select} submit={this.props.submit} clearTimeTable={this.props.clearTimeTable}/>
             );
         } else {
             return <LeaveClassesList leaveRecord={this.props.leaveRecord} selectLeaveClass={this.props.selectLeaveClass}/>
@@ -22,7 +22,6 @@ class Preview extends Component {
     };
 
     render() {
-        console.log(this.props.classSelected)
         return (
             <div>
                 {this.conditionalComponents()}
