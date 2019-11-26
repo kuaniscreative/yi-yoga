@@ -36,8 +36,10 @@ class RegisterClasses extends Component {
                     dateInfos,
                     nextProps.session.classes
                 );
+                const cellDatasWithUserInfo = this.appendUserInfo(cellDatas, nextProps.userData.allClasses)
+                
 
-                calendarInfo[key] = cellDatas;
+                calendarInfo[key] = cellDatasWithUserInfo;
             });
             nextProps.createCalendarInfo(calendarInfo);
 
@@ -96,7 +98,7 @@ class RegisterClasses extends Component {
     };
 
     appendClassInfo = (dateInfos, classes) => {
-        const result = dateInfos.map(info => {
+        const result = dateInfos.map((info, i)=> {
             const mappedClasses = classes.map(classInfo => {
                 return {
                     dateString: classInfo.date.toDate().toLocaleDateString(),
@@ -114,7 +116,8 @@ class RegisterClasses extends Component {
                         return {
                             date: obj.date,
                             id: obj.id,
-                            selected: false
+                            selected: false,
+                            index: i
                         };
                     })
                 };
@@ -126,6 +129,44 @@ class RegisterClasses extends Component {
         });
         return result;
     };
+
+    appendUserInfo = (dateInfos, userClasses) => {
+        const userClassIds = userClasses.map((classInfo) => {
+            return classInfo.id
+        })
+        const dateInfosWhichHasClass = dateInfos.map((info, i) => {
+            return {
+                ...info,
+                index: i
+            }
+        }).filter((info) => {
+            return info.hasClass
+        })
+        const newData = dateInfosWhichHasClass.map((info) => {
+            const newHasClass = info.hasClass.map((classInfo) => {
+                if (userClassIds.indexOf(classInfo.id) > -1) {
+                    return {
+                        ...classInfo,
+                        userRegistered: true
+                    }
+                }
+                return classInfo
+            })
+            return {
+                ...info,
+                hasClass: newHasClass
+            }
+        })
+        // console.log(dateInfosWhichHasClass)
+        const newInfos = dateInfos.map((item) => {
+            return item
+        })
+        newData.forEach((data) => {
+            newInfos[data.index] = data
+        })
+        
+        return newInfos
+    }
 
     toPreview = () => {
         this.setState({
@@ -228,9 +269,13 @@ const mapStateToProps = state => {
               return item.open;
           })
         : null;
+    const userData = state.firestore.ordered.user ? state.firestore.ordered.user.find((profile) => {
+        return profile.id === state.firebase.auth.uid
+    }) : null
 
     return {
         userId: state.firebase.auth.uid,
+        userData: userData,
         session: session,
         registerClassSuccess: state.user.registerClassSuccess,
         selection: state.registerClass.selection

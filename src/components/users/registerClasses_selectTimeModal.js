@@ -82,6 +82,40 @@ class SelectTimeModal extends Component {
         });
     };
 
+    // UI
+    userRegisteredLabel = (text, i) => {
+        return (
+            <label key={i} className="checkboxContainer selectTimeModal_option disabled">
+                <div className="dayHero checkboxContainer_message">
+                    <span className="dayHero_day">{text}</span>
+                </div>
+                <div className="checkboxContainer_checkbox">
+                    <p>已報名</p>
+                </div>
+            </label>
+        );
+    };
+
+    normalLabel = (text, value, changeHandler, checked, i) => {
+        return (
+            <label key={i} className="checkboxContainer selectTimeModal_option">
+                <div className="dayHero checkboxContainer_message">
+                    <span className="dayHero_day">{text}</span>
+                </div>
+
+                <div className="checkboxContainer_checkbox">
+                    <input
+                        type="checkbox"
+                        value={value}
+                        onChange={changeHandler}
+                        checked={checked}
+                    />
+                    <span className="checkmark"></span>
+                </div>
+            </label>
+        );
+    };
+
     render() {
         const data = this.props.data;
         const createTitle = date => {
@@ -110,39 +144,32 @@ class SelectTimeModal extends Component {
                             ? createTitle(this.props.data.hasClass[0].date)
                             : null}
                     </div>
+                    
+                    {/**
+                    *
+                    *       modal選項
+                    *   
+                     */}
                     {data &&
                         data.hasClass.map((classInfo, i) => {
                             const hr = classInfo.date.getHours();
                             const min = classInfo.date.getMinutes();
                             const output = `${hr}:${min}`;
-                            return (
-                                <label
-                                    key={i}
-                                    className="checkboxContainer selectTimeModal_option"
-                                >
-                                    <div className="dayHero checkboxContainer_message">
-                                        <span className="dayHero_day">
-                                            {output}
-                                        </span>
-                                    </div>
-
-                                    <div className="checkboxContainer_checkbox">
-                                        <input
-                                            type="checkbox"
-                                            value={classInfo.id}
-                                            onChange={this.handleChange}
-                                            checked={
-                                                this.state.selected.indexOf(
-                                                    classInfo.id
-                                                ) > -1
-                                                    ? true
-                                                    : false
-                                            }
-                                        />
-                                        <span className="checkmark"></span>
-                                    </div>
-                                </label>
-                            );
+                            const value = classInfo.id;
+                            const handleChange = this.handleChange;
+                            const checked =
+                                this.state.selected.indexOf(classInfo.id) > -1
+                                    ? true
+                                    : false;
+                            return classInfo.userRegistered
+                                ? this.userRegisteredLabel(output, i)
+                                : this.normalLabel(
+                                      output,
+                                      value,
+                                      handleChange,
+                                      checked,
+                                      i
+                                  );
                         })}
                     <div>
                         <NextStepButtonsArea

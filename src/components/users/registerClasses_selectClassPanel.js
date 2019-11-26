@@ -32,7 +32,6 @@ class SelectClassPanel extends Component {
     }
 
     render() {
-        console.log(this.props)
         const span = this.props.session.span;
         return (
             <div id="selectClassPanel">
@@ -97,7 +96,6 @@ class SelectClassPanel extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state);
     return {
         calendarInfos: state.registerClass.calendarInfos,
         selection: state.registerClass.selection
