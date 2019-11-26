@@ -23,7 +23,7 @@ class ClassList extends Component {
                         />
                     );
                 })}
-                <NextStepButtonsArea action={this.handleClick} cancel={this.props.history.goBack()}/>
+                <NextStepButtonsArea action={this.handleClick} cancel={() => {this.props.history.goBack()}}/>
             </div>
         );
     }
