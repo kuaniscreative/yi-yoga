@@ -39,7 +39,7 @@ const PaymentSingle = ({ infos }) => {
 
     return (
         <div className="paymentSingle">
-            <p name="title">{infos.session}</p>
+            <p name="title">{infos.sessionName}</p>
             {statusOuput()}
         </div>
     );
