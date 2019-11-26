@@ -10,11 +10,7 @@ import StepIndicator from "../stepIndicator";
 import LeaveApplicationSuccess from "./leaveApplication_success";
 
 // actions
-import {
-    leaveApplication,
-    updateLeaveRecord_leave,
-    addPendingStudentToClass
-} from "../../actions/userActions";
+import { leaveApplication } from "../../actions/userActions";
 
 class LeaveApplication extends Component {
     checkLeaveRecord = date => {
@@ -28,17 +24,19 @@ class LeaveApplication extends Component {
         return true;
     };
 
-    submit = date => {
+    submit = info => {
+        const date = info.date; // timestamp
+        const id = info.id;
         const canApply = this.checkLeaveRecord(date.toDate());
-        const classId = this.props.classProfile.find(classInfo => {
-            return classInfo.classDate.seconds === date.seconds;
-        }).id;
+        const classInfo = {
+            id: id,
+            date: date
+        }
+
         if (canApply) {
-            this.props.leaveApplication(date, this.props.userId);
-            this.props.updateLeaveRecord(date.toDate(), this.props.userId);
-            this.props.addPendingStudentToClass(classId);
+            this.props.leaveApplication(this.props.userId, classInfo);
         } else {
-            console.log("you have already leave this month");
+            console.log("無法請假");
         }
     };
 
@@ -46,31 +44,37 @@ class LeaveApplication extends Component {
         const success = this.props.leaveApplicationSuccess;
         const classifyClassesByLeaveRecord =
             this.props.userClasses &&
-            this.props.userClasses.sort((a, b) => {
-                return a.date.seconds - b.date.seconds
-            }).map(info => {
-                const date = info.date.toDate();
-                const mm = date.getMonth();
-                const yyyy = date.getFullYear();
-                const leaveRecord = this.props.leaveRecord
-                    ? this.props.leaveRecord.stamps
-                    : null;
-                let canApply = true;
-                leaveRecord &&
-                    leaveRecord.forEach(record => {
-                        const recordMonth =
-                            parseInt(record.split("/")[1], 10) - 1;
-                        const recordYear = parseInt(record.split("/")[0], 10);
-                        if (recordMonth === mm && recordYear === yyyy) {
-                            canApply = false;
-                        }
-                    });
+            this.props.userClasses
+                .sort((a, b) => {
+                    return a.date.seconds - b.date.seconds;
+                })
+                .map(info => {
+                    const date = info.date.toDate();
+                    const mm = date.getMonth();
+                    const yyyy = date.getFullYear();
+                    const leaveRecord = this.props.leaveRecord
+                        ? this.props.leaveRecord.stamps
+                        : null;
+                    let canApply = true;
+                    leaveRecord &&
+                        leaveRecord.forEach(record => {
+                            const recordMonth =
+                                parseInt(record.split("/")[1], 10) - 1;
+                            const recordYear = parseInt(
+                                record.split("/")[0],
+                                10
+                            );
+                            if (recordMonth === mm && recordYear === yyyy) {
+                                canApply = false;
+                            }
+                        });
 
-                return {
-                    date: info.date,
-                    canApply
-                };
-            });
+                    return {
+                        date: info.date,
+                        id: info.id,
+                        canApply
+                    };
+                });
 
         if (success) {
             return <LeaveApplicationSuccess />;
@@ -140,26 +144,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        leaveApplication: (date, userId) => {
-            dispatch(leaveApplication(date, userId));
-        },
-        updateLeaveRecord: (date, userId) => {
-            dispatch(updateLeaveRecord_leave(date, userId));
+        leaveApplication: (userId, classInfo) => {
+            dispatch(leaveApplication(userId, classInfo));
         },
         clearSuccessMessage: () => {
             dispatch({ type: "CLEAR_SUCCESS_MESSAGE_LEAVE" });
-        },
-        addPendingStudentToClass: classId => {
-            dispatch(addPendingStudentToClass(classId));
         }
     };
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: "classProfile" },
         { collection: "user" },

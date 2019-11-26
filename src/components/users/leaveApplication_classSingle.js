@@ -7,7 +7,10 @@ class DateSingle extends Component {
 
     handleSelect = () => {
         if (this.props.canApply) {
-            this.props.select(this.props.classSingle);
+            this.props.select({
+                date: this.props.classSingle,
+                id: this.props.id
+            });
         }
     };
 
