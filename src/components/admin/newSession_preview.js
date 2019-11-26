@@ -7,17 +7,17 @@ class NewSessionPreview extends Component {
     render() {
         // props received from newSession.js 
         const classes = this.props.classes;
-        const classesMon = classes.filter((classDate) => {
-            return classDate.getDay() === 1
+        const classesMon = classes.filter((classInfo) => {
+            return classInfo.date.getDay() === 1
         });
-        const classesTue = classes.filter((classDate) => {
-            return classDate.getDay() === 2
+        const classesTue = classes.filter((classInfo) => {
+            return classInfo.date.getDay() === 2
         });
-        const classesThu = classes.filter((classDate) => {
-            return classDate.getDay() === 4
+        const classesThu = classes.filter((classInfo) => {
+            return classInfo.date.getDay() === 4
         });
-        const classesFri = classes.filter((classDate) => {
-            return classDate.getDay() === 5
+        const classesFri = classes.filter((classInfo) => {
+            return classInfo.date.getDay() === 5
         });
 
         const dayList = (arr, day) => {

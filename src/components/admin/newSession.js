@@ -39,7 +39,12 @@ class NewSession extends Component {
                         course.reference.toDate().getHours(),
                         course.reference.toDate().getMinutes()
                     );
-                    targets.push(d);
+                    targets.push({
+                        date: d,
+                        capacity: course.capacity,
+                        name: course.name,
+                        
+                    });
                 })
             }
 
@@ -79,7 +84,7 @@ class NewSession extends Component {
         const name = `${period[0].year}年 ${period[0].month}月 - ${period[1].month}月`;
         const sessionInfo = {
             name: name,
-            classes: this.state.classes,
+            classInfos: this.state.classes,
             period: period
         };
         this.props.registerSession(sessionInfo);

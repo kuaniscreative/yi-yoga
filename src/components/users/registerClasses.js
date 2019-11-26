@@ -36,10 +36,13 @@ class RegisterClasses extends Component {
                     dateInfos,
                     nextProps.session.classes
                 );
-                const cellDatasWithUserInfo = this.appendUserInfo(cellDatas, nextProps.userData.allClasses)
+                if (nextProps.userData.allClasses && nextProps.userData.allClasses.length) {
+                    const cellDatasWithUserInfo = this.appendUserInfo(cellDatas, nextProps.userData.allClasses);
+                    calendarInfo[key] = cellDatasWithUserInfo;
+                } else {
+                    calendarInfo[key] = cellDatas;
+                }
                 
-
-                calendarInfo[key] = cellDatasWithUserInfo;
             });
             nextProps.createCalendarInfo(calendarInfo);
 

@@ -43,10 +43,10 @@ export const registerSession = sessionInfo => {
                 })
             })
             /**
-            *  第三步： 新增couse & classProfile的資料
+            *  第三步： 新增course & classProfile的資料
             */
             .then((res) => {
-                const classes = sessionInfo.classes;
+                const classInfos = sessionInfo.classInfos;
                 const sessionId = res.id;
                 
                 function addCourseProfile() {
@@ -57,9 +57,9 @@ export const registerSession = sessionInfo => {
                         const promiseTasks = []
     
                         data.forEach((regularCourse) => {
-                            const matchClasses = classes.filter((classDate) => {
-                                const classDay = classDate.getDay();
-                                const classHour = classDate.getHours();
+                            const matchClasses = classInfos.filter((classInfo) => {
+                                const classDay = classInfo.date.getDay();
+                                const classHour = classInfo.date.getHours();
                                 const regularCourseDay = regularCourse.reference.toDate().getDay();
                                 const regularCourseHour = regularCourse.reference.toDate().getHours();
                                 return classDay === regularCourseDay && classHour === regularCourseHour
@@ -83,9 +83,11 @@ export const registerSession = sessionInfo => {
                      *      新增classProfile
                      * 
                      */
-                    sessionInfo.classes.forEach((classDate) => {
+                    classInfos.forEach((classInfo) => {
                         const task = firestore.collection("classProfile").add({
-                            classDate: classDate,
+                            classDate: classInfo.date,
+                            capacity: classInfo.capacity,
+                            name: classInfo.name,
                             absence: [],
                             pendingStudents: [],
                             rescheduleStudents: [],

@@ -29,9 +29,9 @@ class DayList extends Component {
             <div>
                 <h3>{ title(day) }</h3>
                 {
-                    classes.length ? classes.map((date, i) => {
+                    classes.length ? classes.map((info, i) => {
                         return (
-                            <ClassSingle class={date} deleteClassWhenPreview={this.props.deleteClassWhenPreview} key={i} />
+                            <ClassSingle class={info.date} deleteClassWhenPreview={this.props.deleteClassWhenPreview} key={i} />
                         )
                     }) : null
                 }
