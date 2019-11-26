@@ -22,7 +22,9 @@ class RegisterClasses extends Component {
          *      設定日曆資料
          */
         const shouldSetState = {};
-        if (!this.state.calendarInitialed && nextProps.session) {
+
+        if (!this.state.calendarInitialed && nextProps.session && nextProps.classProfile) {
+            const classProfile = nextProps.classProfile;
             const session = nextProps.session;
             const span = session.span;
             const calendarInfo = {};
@@ -32,17 +34,33 @@ class RegisterClasses extends Component {
                 const date = new Date(yyyy, mm - 1);
                 const key = date.toLocaleString("default", { month: "short" });
                 const dateInfos = this.generateDateInfo(mm - 1, yyyy);
+                const mappedClasses = session.classes.map(classInfo => {
+                    const matchInClassProfile = classProfile.find(profile => {
+                        return profile.id === classInfo.id;
+                    });
+
+                    return {
+                        ...classInfo,
+                        capacity: matchInClassProfile.capacity,
+                        numOfStudent: matchInClassProfile.students.length
+                    };
+                });
                 const cellDatas = this.appendClassInfo(
                     dateInfos,
-                    nextProps.session.classes
+                    mappedClasses
                 );
-                if (nextProps.userData.allClasses && nextProps.userData.allClasses.length) {
-                    const cellDatasWithUserInfo = this.appendUserInfo(cellDatas, nextProps.userData.allClasses);
+                if (
+                    nextProps.userData.allClasses &&
+                    nextProps.userData.allClasses.length
+                ) {
+                    const cellDatasWithUserInfo = this.appendUserInfo(
+                        cellDatas,
+                        nextProps.userData.allClasses
+                    );
                     calendarInfo[key] = cellDatasWithUserInfo;
                 } else {
                     calendarInfo[key] = cellDatas;
                 }
-                
             });
             nextProps.createCalendarInfo(calendarInfo);
 
@@ -101,12 +119,14 @@ class RegisterClasses extends Component {
     };
 
     appendClassInfo = (dateInfos, classes) => {
-        const result = dateInfos.map((info, i)=> {
+        const result = dateInfos.map((info, i) => {
             const mappedClasses = classes.map(classInfo => {
                 return {
                     dateString: classInfo.date.toDate().toLocaleDateString(),
                     date: classInfo.date.toDate(),
-                    id: classInfo.id
+                    id: classInfo.id,
+                    capacity: classInfo.capacity,
+                    numOfStudent: classInfo.numOfStudent
                 };
             });
             const matched = mappedClasses.filter(obj => {
@@ -119,6 +139,8 @@ class RegisterClasses extends Component {
                         return {
                             date: obj.date,
                             id: obj.id,
+                            capacity: obj.capacity,
+                            numOfStudent: obj.numOfStudent,
                             selected: false,
                             index: i
                         };
@@ -134,42 +156,43 @@ class RegisterClasses extends Component {
     };
 
     appendUserInfo = (dateInfos, userClasses) => {
-        const userClassIds = userClasses.map((classInfo) => {
-            return classInfo.id
-        })
-        const dateInfosWhichHasClass = dateInfos.map((info, i) => {
-            return {
-                ...info,
-                index: i
-            }
-        }).filter((info) => {
-            return info.hasClass
-        })
-        const newData = dateInfosWhichHasClass.map((info) => {
-            const newHasClass = info.hasClass.map((classInfo) => {
+        const userClassIds = userClasses.map(classInfo => {
+            return classInfo.id;
+        });
+        const dateInfosWhichHasClass = dateInfos
+            .map((info, i) => {
+                return {
+                    ...info,
+                    index: i
+                };
+            })
+            .filter(info => {
+                return info.hasClass;
+            });
+        const newData = dateInfosWhichHasClass.map(info => {
+            const newHasClass = info.hasClass.map(classInfo => {
                 if (userClassIds.indexOf(classInfo.id) > -1) {
                     return {
                         ...classInfo,
                         userRegistered: true
-                    }
+                    };
                 }
-                return classInfo
-            })
+                return classInfo;
+            });
             return {
                 ...info,
                 hasClass: newHasClass
-            }
-        })
-        // console.log(dateInfosWhichHasClass)
-        const newInfos = dateInfos.map((item) => {
-            return item
-        })
-        newData.forEach((data) => {
-            newInfos[data.index] = data
-        })
-        
-        return newInfos
-    }
+            };
+        });
+        const newInfos = dateInfos.map(item => {
+            return item;
+        });
+        newData.forEach(data => {
+            newInfos[data.index] = data;
+        });
+
+        return newInfos;
+    };
 
     toPreview = () => {
         this.setState({
@@ -205,7 +228,7 @@ class RegisterClasses extends Component {
                  *
                  */}
                 {this.props.session ? (
-                    <div id='registerClass_info'>
+                    <div id="registerClass_info">
                         <div className="actionCard_title">
                             <p className="titleWithInfoAbove_above">報名表單</p>
                             <p className="titleWithInfoAbove_title">
@@ -218,7 +241,8 @@ class RegisterClasses extends Component {
                                 <li>你也可以透過下方的按鈕一次選取</li>
                             </ul>
                         ) : null}
-                        {this.state.enablePreview && !this.props.registerClassSuccess ? (
+                        {this.state.enablePreview &&
+                        !this.props.registerClassSuccess ? (
                             <ul className="comfyList actionCard_content">
                                 <li>請確認選取的課程及費用</li>
                             </ul>
@@ -272,16 +296,19 @@ const mapStateToProps = state => {
               return item.open;
           })
         : null;
-    const userData = state.firestore.ordered.user ? state.firestore.ordered.user.find((profile) => {
-        return profile.id === state.firebase.auth.uid
-    }) : null
+    const userData = state.firestore.ordered.user
+        ? state.firestore.ordered.user.find(profile => {
+              return profile.id === state.firebase.auth.uid;
+          })
+        : null;
 
     return {
         userId: state.firebase.auth.uid,
         userData: userData,
         session: session,
         registerClassSuccess: state.user.registerClassSuccess,
-        selection: state.registerClass.selection
+        selection: state.registerClass.selection,
+        classProfile: state.firestore.ordered.classProfile
     };
 };
 

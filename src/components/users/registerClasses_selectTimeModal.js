@@ -85,12 +85,31 @@ class SelectTimeModal extends Component {
     // UI
     userRegisteredLabel = (text, i) => {
         return (
-            <label key={i} className="checkboxContainer selectTimeModal_option disabled">
+            <label
+                key={i}
+                className="checkboxContainer selectTimeModal_option disabled"
+            >
                 <div className="dayHero checkboxContainer_message">
                     <span className="dayHero_day">{text}</span>
                 </div>
                 <div className="checkboxContainer_checkbox">
                     <p>已報名</p>
+                </div>
+            </label>
+        );
+    };
+
+    isFullLabel = (text, i) => {
+        return (
+            <label
+                key={i}
+                className="checkboxContainer selectTimeModal_option disabled"
+            >
+                <div className="dayHero checkboxContainer_message">
+                    <span className="dayHero_day">{text}</span>
+                </div>
+                <div className="checkboxContainer_checkbox">
+                    <p>已額滿</p>
                 </div>
             </label>
         );
@@ -144,11 +163,11 @@ class SelectTimeModal extends Component {
                             ? createTitle(this.props.data.hasClass[0].date)
                             : null}
                     </div>
-                    
+
                     {/**
-                    *
-                    *       modal選項
-                    *   
+                     *
+                     *       modal選項
+                     *
                      */}
                     {data &&
                         data.hasClass.map((classInfo, i) => {
@@ -163,6 +182,8 @@ class SelectTimeModal extends Component {
                                     : false;
                             return classInfo.userRegistered
                                 ? this.userRegisteredLabel(output, i)
+                                : classInfo.numOfStudent >= classInfo.capacity
+                                ? this.isFullLabel(output, i)
                                 : this.normalLabel(
                                       output,
                                       value,
