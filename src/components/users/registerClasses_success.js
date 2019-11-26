@@ -1,11 +1,20 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+
+// comopnent
+import StepIndicator from '../stepIndicator';
 class RegisterClassSuccess extends Component {
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     render() {
         const id = this.props.paymentId;
         return (
-            <div className="innerContent success">
+            <div className="success">
+                <StepIndicator indicator='報名結果'/>
                 <p className="resultMessage_title">報名成功</p>
                 <ul className="comfyList">
                     <li>

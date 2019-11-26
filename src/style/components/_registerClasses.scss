@@ -12,6 +12,7 @@
     .resultMessage_text,
     .resultMessage_action {
         margin-bottom: 0.5em;
+        font-size: 1rem;
         font-weight: 400;
     }
     .comfyList {
@@ -23,9 +24,6 @@
         @include media('above-tablet') {
             margin-bottom: 6em;
         }
-    }
-    .success .nextStepButtonsArea--notFixed {
-        margin-top: 6em;
     }
 }
 
