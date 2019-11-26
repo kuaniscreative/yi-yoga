@@ -1,62 +1,77 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 // components
-import StepIndicator from '../stepIndicator';
-import NextStepButtonsArea from '../ui/nextStepButtonArea';
+import StepIndicator from "../stepIndicator";
+import NextStepButtonsArea from "../ui/nextStepButtonArea";
 
 // actions
-import { signIn } from '../../actions/authActions';
+import { signIn } from "../../actions/authActions";
 
 class LogIn extends Component {
-
     state = {
         email: null,
         password: null
-    }
+    };
 
-    handleChange = (e) => {
+    handleChange = e => {
         e.preventDefault();
         this.setState({
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
-        this.props.signIn(this.state)
-    }
+        this.props.signIn(this.state);
+    };
 
     render() {
         return (
             <div>
-                <StepIndicator indicator='登入'/>
-                <form className='comfyForm innerContent' onSubmit={this.handleSubmit}>
+                <StepIndicator indicator="登入" />
+                <form
+                    className="comfyForm innerContent"
+                    onSubmit={this.handleSubmit}
+                >
                     <label>帳號</label>
-                    <input name='email' type="text" onChange={this.handleChange} />
+                    <input
+                        name="email"
+                        type="text"
+                        onChange={this.handleChange}
+                    />
                     <label>密碼</label>
-                    <input name='password' type="password" onChange={this.handleChange} />
-                    <NextStepButtonsArea />
+                    <input
+                        name="password"
+                        type="password"
+                        onChange={this.handleChange}
+                    />
+                    <NextStepButtonsArea
+                        cancel={e => {
+                            e.preventDefault();
+                            this.props.history.push("/");
+                        }}
+                    />
                 </form>
             </div>
-        )
+        );
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
         test: state.firebase
-    }
-}
+    };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
-        signIn: (cred) => {
-            dispatch({type: 'LOADING'});
-            dispatch(signIn(cred))
-        } 
-    }
-}
+        signIn: cred => {
+            dispatch({ type: "LOADING" });
+            dispatch(signIn(cred));
+        }
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogIn)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LogIn));

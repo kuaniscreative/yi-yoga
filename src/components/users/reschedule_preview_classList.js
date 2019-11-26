@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 // components
 import ClassSingle from "./reschedule_preview_classSingle";
@@ -23,10 +23,10 @@ class ClassList extends Component {
                         />
                     );
                 })}
-                <NextStepButtonsArea action={this.handleClick}/>
+                <NextStepButtonsArea action={this.handleClick} cancel={this.props.history.goBack()}/>
             </div>
         );
     }
 }
 
-export default ClassList;
+export default withRouter(ClassList);

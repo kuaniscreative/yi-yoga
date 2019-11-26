@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 // components
 import DateSingle from './leaveApplication_classSingle';
@@ -33,10 +33,10 @@ class ClassList extends Component {
                         return <DateSingle classSingle={classInfo.date} key={i} select={this.select} canApply={classInfo.canApply} />
                     })
                 }
-                <NextStepButtonsArea action={this.submit}/>
+                <NextStepButtonsArea action={this.submit} cancel={() => {this.props.history.push('/')}}/>
             </div>
         )
     }
 }
 
-export default ClassList 
+export default withRouter(ClassList) 

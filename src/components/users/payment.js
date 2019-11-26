@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
+import { withRouter } from "react-router-dom";
 
 // components
 import NextStepButtonsArea from "../ui/nextStepButtonArea";
 import StepIndicator from "../stepIndicator";
-import PaymentSuccess from './payment_success';
+import PaymentSuccess from "./payment_success";
 
 // actions
 import { updatePaymentStatus } from "../../actions/userActions";
@@ -35,9 +36,7 @@ class Payment extends Component {
 
     conditionalComponent = () => {
         if (this.props.updatePaymentSuccess) {
-            return (
-                <PaymentSuccess />
-            )
+            return <PaymentSuccess />;
         } else {
             return (
                 <div>
@@ -70,7 +69,12 @@ class Payment extends Component {
                                 onChange={this.handleChange}
                                 placeholder="2019/10/20"
                             />
-                            <NextStepButtonsArea />
+                            <NextStepButtonsArea
+                                cancel={e => {
+                                    e.preventDefault();
+                                    this.props.history.goBack();
+                                }}
+                            />
                         </form>
                     ) : null}
                 </div>
@@ -80,17 +84,17 @@ class Payment extends Component {
 
     indicator = () => {
         if (this.props.updatePaymentSuccess) {
-            return '付款結果'
+            return "付款結果";
         } else {
-            return '輸入付款資訊'
+            return "輸入付款資訊";
         }
-    }
+    };
 
     render() {
         return (
             <div id="payment">
                 <StepIndicator indicator={this.indicator()} />
-                { this.conditionalComponent() }
+                {this.conditionalComponent()}
             </div>
         );
     }
@@ -118,7 +122,12 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([{ collection: "paymentStatus" }, { collection: "user" }])
-)(Payment);
+export default withRouter(
+    compose(
+        connect(mapStateToProps, mapDispatchToProps),
+        firestoreConnect([
+            { collection: "paymentStatus" },
+            { collection: "user" }
+        ])
+    )(Payment)
+);
