@@ -23,6 +23,8 @@ class DayList extends Component {
                     return '星期五'
                 case 6 :
                     return '星期六'
+                default:
+                    return ''
             }
         }
         return (

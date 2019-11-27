@@ -39,6 +39,8 @@ const RescheduleSuccess = ({ status }) => {
             return successOutput()
             case 'pending':
                 return pendingOutput()
+            default: 
+                break
         }
     }
     return <div>{output()}</div>;

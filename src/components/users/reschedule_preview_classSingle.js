@@ -3,9 +3,6 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
-// functions
-import { dateOutput } from "../../functions/dateFunctions";
-
 class ClassSingle extends Component {
     handleChange = e => {
         this.props.select(e.target.value);
