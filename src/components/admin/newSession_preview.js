@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 // components
 import DayList from './newSession_preview--dayList';
+import StepIndicator from '../stepIndicator';
+import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
 class NewSessionPreview extends Component {
     render() {
@@ -26,13 +28,16 @@ class NewSessionPreview extends Component {
             )
         }
         return (
-            <div>
-                <h2>預覽</h2>
+            <div id='newSession_preview'>
+                <StepIndicator indicator='課程預覽' />
+                <ul className='comfyList'>
+                    <li>如果有特定日期不開放課程，可以在這裡移除</li>
+                </ul>
                 { dayList(classesMon, 1) }
                 { dayList(classesTue, 2) }
                 { dayList(classesThu, 4) }
                 { dayList(classesFri, 5) }
-                <button onClick={this.props.addSession}>送出</button>
+                <NextStepButtonsArea actionName='報名開放' action={this.props.addSession} cancelName='上一步' cancel={this.props.clearSessionInfo}/>
             </div>
         )
     }

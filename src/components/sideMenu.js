@@ -19,9 +19,13 @@ class SideMenu extends Component {
         }
     };
 
-    render() {
+    /**
+     *      UI
+     */
+
+    userOptions = () => {
         return (
-            <div id="sideMenu">
+            <div>
                 {this.props.uid ? (
                     <div id="sideMenu_actions">
                         <p className="sideMenu_division">課程管理</p>
@@ -115,6 +119,34 @@ class SideMenu extends Component {
                 </div>
             </div>
         );
+    };
+
+    adminOptions = () => {
+        return (
+            <div>
+                <div id="sideMenu_actions">
+                    <p className="sideMenu_division">課程管理</p>
+                    <Link
+                        to="/admin/new-session"
+                        className=""
+                        onClick={this.handleClick}
+                    >
+                        <p className="rectButton_text">報名開放</p>
+                    </Link>
+                </div>
+            </div>
+        );
+    };
+
+    render() {
+        const userData = this.props.userData;
+        const isAdmin = userData ? userData.isAdmin : false;
+
+        return (
+            <div id="sideMenu">
+                {isAdmin ? this.adminOptions() : this.userOptions()}
+            </div>
+        );
     }
 }
 
@@ -141,9 +173,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([{ collection: "user" }, { collection: "newSession" }])
 )(SideMenu);

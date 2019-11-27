@@ -26,12 +26,12 @@ class NewSession extends Component {
         // get the classes and push them to targets
         while (startDate.valueOf() !== endDate.valueOf()) {
             const day = startDate.getDay();
-            const match = regularCourse.filter((course) => {
-                return course.dayNum === day
-            })
+            const match = regularCourse.filter(course => {
+                return course.dayNum === day;
+            });
 
             if (match.length) {
-                match.forEach((course) => {
+                match.forEach(course => {
                     const d = new Date(
                         startDate.getFullYear(),
                         startDate.getMonth(),
@@ -42,10 +42,9 @@ class NewSession extends Component {
                     targets.push({
                         date: d,
                         capacity: course.capacity,
-                        name: course.name,
-                        
+                        name: course.name
                     });
-                })
+                });
             }
 
             startDate.setDate(startDate.getDate() + 1);
@@ -69,6 +68,14 @@ class NewSession extends Component {
         }
     };
 
+    clearSessionInfo = () => {
+        this.setState({
+            ...this.state,
+            classes: [],
+            period: []
+        })
+    }
+
     deleteClassWhenPreview = id => {
         const classes = this.state.classes.filter(classSingle => {
             return classSingle.id !== id;
@@ -91,27 +98,30 @@ class NewSession extends Component {
     };
 
     render() {
-        const newSessionProcesser = this.state.classes.length ? (
-            <NewSessionPreview
-                classes={this.state.classes}
-                deleteClassWhenPreview={this.deleteClassWhenPreview}
-                addSession={this.addSession}
-            />
-        ) : (
-            <NewSessionForm
-                setSessionPeriod={this.setSessionPeriod}
-                validPeriod={this.state.periodInputIsValid}
-            />
+        return (
+            <div id='newSession'>
+                {this.state.classes.length ? (
+                    <NewSessionPreview
+                        classes={this.state.classes}
+                        deleteClassWhenPreview={this.deleteClassWhenPreview}
+                        addSession={this.addSession}
+                        clearSessionInfo={this.clearSessionInfo}
+                    />
+                ) : (
+                    <NewSessionForm
+                        setSessionPeriod={this.setSessionPeriod}
+                        validPeriod={this.state.periodInputIsValid}
+                    />
+                )}
+            </div>
         );
-
-        return <div>{newSessionProcesser}</div>;
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
         regularCourse: state.firestore.ordered.regularCourse,
-        newSessionIsAdded: state.admin.newSessionIsAdded,
+        newSessionIsAdded: state.admin.newSessionIsAdded
     };
 };
 
@@ -125,7 +135,5 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    firestoreConnect([
-        { collection: "regularCourse" }
-    ])
+    firestoreConnect([{ collection: "regularCourse" }])
 )(NewSession);

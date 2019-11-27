@@ -2,6 +2,7 @@ export const registerSession = sessionInfo => {
     return (dispatch, getState, { getFirestore, getFirebase }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
+        dispatch({type: 'LOADING'})
         /**
          *  第一步： 將目前開放報名的課程關掉
          */
@@ -124,6 +125,7 @@ export const registerSession = sessionInfo => {
             })
             .then(() => {
                 alert("新的課程現在可以報名囉！");
+                dispatch({type: 'LOADED'})
                 dispatch({ type: "ADDED_NEW_SESSION"});
             })
             .catch((err) => {

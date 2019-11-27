@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+// components
+import StepIndicator from '../stepIndicator';
+
 class NewSessionForm extends Component {
     
     state = {
@@ -61,7 +64,7 @@ class NewSessionForm extends Component {
             }
             return (
                 <select name="year" data-point={point} onChange={this.handleChange}>
-                    <option value="">----</option>
+                    <option value="">yyyy</option>
                     {
                         options.map((option) => {
                             return (
@@ -77,7 +80,7 @@ class NewSessionForm extends Component {
             const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             return (
                 <select name="month" data-point={point} onChange={this.handleChange}>
-                    <option value="">--</option>
+                    <option value="">mm</option>
                     {
                         options.map((option) => {
                             return (
@@ -92,15 +95,23 @@ class NewSessionForm extends Component {
 
         return (
             <div>
+                <StepIndicator indicator='設定課程期間' />
                 { this.props.validPeriod ? null : (<p>時間重複</p>) }
-                <form action="" onSubmit={this.handleSubmit}>
+                <form action="" onSubmit={this.handleSubmit} className='comfyForm'>
+                    
                     <label htmlFor="start">開始月份</label>
+                    <div className='periodSetter'>
                     { yearOptionList('start') }
+                    <div className='seperator'>/</div>
                     { monthOptionList('start') }
+                    </div>
                     <label htmlFor="end">結束月份</label>
+                    <div className='periodSetter'>
                     { yearOptionList('end') }
+                    <div className='seperator'>/</div>
                     { monthOptionList('end') }
-                    <button>確認</button>
+                    </div>
+                    <button className='outlineButton'>確認</button>
                     { this.state.validPeriod ? null : (
                         <div>時間設定有誤</div>
                     ) }

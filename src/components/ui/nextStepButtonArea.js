@@ -4,7 +4,7 @@ const NextStepButtonsArea = ({ action, cancel, actionName, cancelName }) => {
     return (
         <div className="nextStepButtonsArea">
             <button className="outlineButton" onClick={action}>
-                確認
+                { actionName ? actionName : '確認' }
             </button>
             <button className="cancelGray" onClick={cancel}>
                 {cancelName ? cancelName : '取消'}
