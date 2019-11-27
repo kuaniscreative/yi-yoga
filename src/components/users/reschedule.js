@@ -130,7 +130,7 @@ class Reschedule extends Component {
             return classInfo.id === classId;
         });
         const avalible =
-            15 -
+            selectedClassInfo.capacity -
             selectedClassInfo.students.length -
             selectedClassInfo.rescheduleStudents.length;
         if (avalible > 0) {

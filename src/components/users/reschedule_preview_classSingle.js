@@ -27,7 +27,7 @@ class ClassSingle extends Component {
         let availableNum;
         if (classInfo) {
             pendingNum = classInfo.pendingStudents ? classInfo.pendingStudents.length : 0;
-            availableNum = classInfo.students ? 15 - classInfo.students.length : 0;
+            availableNum = classInfo.students ? classInfo.capacity - classInfo.students.length - classInfo.rescheduleStudents.length : 0;
         }
 
         return (
