@@ -10,12 +10,7 @@ import StepIndicator from "../stepIndicator";
 import RescheduleSuccess from "./reschedule_success";
 
 // actions
-import {
-    reschedulePending,
-    rescheduleAdd,
-    updateLeaveRecord_rescheduleAdd,
-    updateLeaveRecord_reschedulePending
-} from "../../actions/userActions";
+import { reschedulePending, rescheduleAdd } from "../../actions/userActions";
 
 class Reschedule extends Component {
     state = {
@@ -30,7 +25,6 @@ class Reschedule extends Component {
             selected: classId
         });
     };
-
 
     // filter out the available classes after selectd which leaved class
     classFilter = (mm, yyyy) => {
@@ -63,8 +57,8 @@ class Reschedule extends Component {
         this.setState({
             ...this.state,
             timeTable: []
-        })
-    }
+        });
+    };
 
     // click will fire requestTimeTable and set the leave class to state.target
     handleClick = (mm, yyyy, date) => {
@@ -76,22 +70,27 @@ class Reschedule extends Component {
 
     // controlling which component should show during different stage
     conditionalComponents = () => {
-        const sortedTimeTable = this.state.timeTable && this.state.timeTable.sort((a, b) => {
-            return a.classDate.seconds - b.classDate.seconds
-        })
+        const sortedTimeTable =
+            this.state.timeTable &&
+            this.state.timeTable.sort((a, b) => {
+                return a.classDate.seconds - b.classDate.seconds;
+            });
         if (this.props.addSuccess || this.props.pendingSuccess) {
             if (this.props.addSuccess) {
                 return <RescheduleSuccess status="success" />;
             }
             return <RescheduleSuccess status="pending" />;
-        } else if (this.props.leaveRecord && this.props.leaveRecord.reschedulable.length) {
+        } else if (
+            this.props.leaveRecord &&
+            this.props.leaveRecord.reschedulable.length
+        ) {
             return (
                 <Preview
                     classes={sortedTimeTable}
                     select={this.select}
                     submit={this.submit}
                     leaveRecord={this.props.leaveRecord}
-                    classSelected={ this.state.timeTable.length ? true : false}
+                    classSelected={this.state.timeTable.length ? true : false}
                     selectLeaveClass={this.handleClick}
                     clearTimeTable={this.clearTimeTable}
                 />
@@ -106,7 +105,7 @@ class Reschedule extends Component {
                         </Link>
                     </div>
                 </div>
-            )
+            );
         }
     };
 
@@ -135,11 +134,9 @@ class Reschedule extends Component {
             selectedClassInfo.students.length -
             selectedClassInfo.rescheduleStudents.length;
         if (avalible > 0) {
-            this.props.rescheduleAdd(classId, userId);
-            this.props.updateLeaveRecord_add(userId, rescheduleDate, classId);
+            this.props.rescheduleAdd(classId, userId, rescheduleDate);
         } else {
-            this.props.reschedulePending(classId, userId);
-            this.props.updateLeaveRecord_pending(userId, rescheduleDate, classId);
+            this.props.reschedulePending(classId, userId, rescheduleDate);
         }
     };
 
@@ -176,26 +173,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        reschedulePending: (classId, userId) => {
-            dispatch(reschedulePending(classId, userId));
+        reschedulePending: (classId, userId, rescheduleDate) => {
+            dispatch(reschedulePending(classId, userId, rescheduleDate));
         },
-        rescheduleAdd: (classId, userId) => {
-            dispatch(rescheduleAdd(classId, userId));
-        },
-        updateLeaveRecord_add: (userId, rescheduleDate, classId) => {
-            dispatch(updateLeaveRecord_rescheduleAdd(userId, rescheduleDate, classId));
-        },
-        updateLeaveRecord_pending: (userId, rescheduleDate, classId) => {
-            dispatch(updateLeaveRecord_reschedulePending(userId, rescheduleDate, classId));
+        rescheduleAdd: (classId, userId, rescheduleDate) => {
+            dispatch(rescheduleAdd(classId, userId, rescheduleDate));
         }
     };
 };
 
 export default compose(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    ),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect([
         { collection: "user" },
         { collection: "classProfile" },

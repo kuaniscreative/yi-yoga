@@ -119,7 +119,7 @@ export const leaveApplication = (userId, classInfo) => {
          *      3. 更新leaveRecord
          *
          */
-        dispatch({type: 'LOADING'})
+        dispatch({ type: "LOADING" });
         function updateUserDate(userId, classInfo) {
             return firestore
                 .collection("user")
@@ -141,36 +141,35 @@ export const leaveApplication = (userId, classInfo) => {
                     const thePendingStudent = data.pendingStudents[0];
                     if (thePendingStudent) {
                         return firestore
-                        .collection("classProfile")
-                        .doc(classInfo.id)
-                        .update({
-                            pendingStudents: firebase.firestore.FieldValue.arrayRemove(
-                                thePendingStudent
-                            ),
-                            rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
-                                thePendingStudent
-                            ),
-                            students: firebase.firestore.FieldValue.arrayRemove(
-                                userId
-                            ),
-                            absence: firebase.firestore.FieldValue.arrayUnion(
-                                userId
-                            )
-                        });
+                            .collection("classProfile")
+                            .doc(classInfo.id)
+                            .update({
+                                pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                                    thePendingStudent
+                                ),
+                                rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                                    thePendingStudent
+                                ),
+                                students: firebase.firestore.FieldValue.arrayRemove(
+                                    userId
+                                ),
+                                absence: firebase.firestore.FieldValue.arrayUnion(
+                                    userId
+                                )
+                            });
                     } else {
                         return firestore
-                        .collection("classProfile")
-                        .doc(classInfo.id)
-                        .update({
-                            students: firebase.firestore.FieldValue.arrayRemove(
-                                userId
-                            ),
-                            absence: firebase.firestore.FieldValue.arrayUnion(
-                                userId
-                            )
-                        });
+                            .collection("classProfile")
+                            .doc(classInfo.id)
+                            .update({
+                                students: firebase.firestore.FieldValue.arrayRemove(
+                                    userId
+                                ),
+                                absence: firebase.firestore.FieldValue.arrayUnion(
+                                    userId
+                                )
+                            });
                     }
-                   
                 });
         }
         function updateLeaveRecord(userId, classInfo) {
@@ -185,114 +184,114 @@ export const leaveApplication = (userId, classInfo) => {
                     ),
                     records: firebase.firestore.FieldValue.arrayUnion(date),
                     stamps: firebase.firestore.FieldValue.arrayUnion(stamp)
-                })
+                });
         }
 
         const tasks = [
             updateUserDate(userId, classInfo),
             updateClassProfile(userId, classInfo),
             updateLeaveRecord(userId, classInfo)
-        ]
-        
+        ];
+
         Promise.all(tasks).then(() => {
-            dispatch({type: 'LOADED'});
-            dispatch({type: 'LEAVE_APPLICATION_SUCCESS'});
-        })
+            dispatch({ type: "LOADED" });
+            dispatch({ type: "LEAVE_APPLICATION_SUCCESS" });
+        });
     };
 };
 
 // reschedule
-export const reschedulePending = (classId, userId) => {
+export const reschedulePending = (classId, userId, rescheduleDate) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
+        
+        dispatch({type: 'LOADING'});
 
-        firestore
-            .collection("classProfile")
-            .doc(classId)
-            .update({
-                pendingStudents: firebase.firestore.FieldValue.arrayUnion(
-                    userId
-                )
-            })
-            .then(() => {
-                dispatch({ type: "RESCHEDULE_PENDING_SUCCESS" });
-            });
+        function updateClassProfile(classId, userId) {
+            return firestore
+                .collection("classProfile")
+                .doc(classId)
+                .update({
+                    pendingStudents: firebase.firestore.FieldValue.arrayUnion(
+                        userId
+                    )
+                });
+        }
+        function updateLeaveRecord(classId, userId, rescheduleDate) {
+            const pendingInfo = {
+                leaveDate: rescheduleDate,
+                pendingClassId: classId
+            };
+
+            return firestore
+                .collection("leaveRecord")
+                .doc(userId)
+                .update({
+                    reschedulable: firebase.firestore.FieldValue.arrayRemove(
+                        rescheduleDate
+                    ),
+                    reschedulePending: firebase.firestore.FieldValue.arrayUnion(
+                        pendingInfo
+                    )
+                });
+        }
+
+        const tasks = [updateClassProfile(classId, userId), updateLeaveRecord(classId, userId, rescheduleDate)];
+
+        Promise.all(tasks)
+        .then(() => {
+            dispatch({type: 'LOADED'});
+            dispatch({ type: "RESCHEDULE_PENDING_SUCCESS" });
+        });
     };
 };
 
-export const rescheduleAdd = (classId, userId) => {
+export const rescheduleAdd = (classId, userId, rescheduleDate) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
-        firestore
-            .collection("classProfile")
-            .doc(classId)
-            .update({
-                rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
-                    userId
-                )
-            })
-            .then(() => {
-                dispatch({ type: "RESCHEDULE_ADD_SUCCESS" });
-            });
-    };
-};
+        dispatch({type: 'LOADING'});
 
-export const updateLeaveRecord_rescheduleAdd = (
-    userId,
-    rescheduleDate,
-    classId
-) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        const firebase = getFirebase();
+        function updateClassProfile(classId, userId) {
+            return firestore
+                .collection("classProfile")
+                .doc(classId)
+                .update({
+                    rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                        userId
+                    )
+                });
+        }
+        function updateLeaveRecord(classId, userId, rescheduleDate) {
+            const rescheduleInfo = {
+                leaveDate: rescheduleDate,
+                rescheduleClassId: classId
+            };
 
-        const rescheduleInfo = {
-            leaveDate: rescheduleDate,
-            rescheduleClassId: classId
-        };
+            return firestore
+                .collection("leaveRecord")
+                .doc(userId)
+                .update({
+                    reschedulable: firebase.firestore.FieldValue.arrayRemove(
+                        rescheduleDate
+                    ),
+                    rescheduled: firebase.firestore.FieldValue.arrayUnion(
+                        rescheduleInfo
+                    )
+                });
+        }
 
-        firestore
-            .collection("leaveRecord")
-            .doc(userId)
-            .update({
-                reschedulable: firebase.firestore.FieldValue.arrayRemove(
-                    rescheduleDate
-                ),
-                rescheduled: firebase.firestore.FieldValue.arrayUnion(
-                    rescheduleInfo
-                )
-            });
-    };
-};
+        const tasks = [
+            updateClassProfile(classId, userId),
+            updateLeaveRecord(classId, userId, rescheduleDate)
+        ];
 
-export const updateLeaveRecord_reschedulePending = (
-    userId,
-    rescheduleDate,
-    classId
-) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
-        const firestore = getFirestore();
-        const firebase = getFirebase();
-
-        const pendingInfo = {
-            leaveDate: rescheduleDate,
-            pendingClassId: classId
-        };
-
-        firestore
-            .collection("leaveRecord")
-            .doc(userId)
-            .update({
-                reschedulable: firebase.firestore.FieldValue.arrayRemove(
-                    rescheduleDate
-                ),
-                reschedulePending: firebase.firestore.FieldValue.arrayUnion(
-                    pendingInfo
-                )
-            });
+        Promise.all(tasks).then(() => {
+            dispatch({type: 'LOADED'});
+            dispatch({ type: "RESCHEDULE_ADD_SUCCESS" });
+        });
     };
 };
 
