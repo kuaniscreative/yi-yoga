@@ -237,8 +237,7 @@ class RegisterClasses extends Component {
                         </div>
                         {!this.state.enablePreview ? (
                             <ul className="comfyList actionCard_content">
-                                <li>請在日曆上選取本期想要上課的所有課程</li>
-                                <li>你也可以透過下方的按鈕一次選取</li>
+                                <li>請由下方日曆選取本期想要參加的所有課程</li>
                             </ul>
                         ) : null}
                         {this.state.enablePreview &&
