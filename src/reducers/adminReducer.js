@@ -9,6 +9,11 @@ const adminReducer = (state = initState, action) => {
                 ...state,
                 newSessionIsAdded: true
             }
+        case 'CLEAR_SUCCESS_MESSAGE_NEW_SESSION':
+            return {
+                ...state,
+                newSessionIsAdded: false
+            }
         default:
             return state
     }

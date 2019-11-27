@@ -6,6 +6,7 @@ import { firestoreConnect } from "react-redux-firebase";
 // components
 import NewSessionForm from "./newSession_form";
 import NewSessionPreview from "./newSession_preview";
+import Success from "./newSession_success";
 
 // actions
 import { registerSession } from "../../actions/adminActions";
@@ -73,8 +74,8 @@ class NewSession extends Component {
             ...this.state,
             classes: [],
             period: []
-        })
-    }
+        });
+    };
 
     deleteClassWhenPreview = id => {
         const classes = this.state.classes.filter(classSingle => {
@@ -99,8 +100,10 @@ class NewSession extends Component {
 
     render() {
         return (
-            <div id='newSession'>
-                {this.state.classes.length ? (
+            <div id="newSession">
+                {this.props.newSessionIsAdded ? (
+                    <Success />
+                ) : this.state.classes.length ? (
                     <NewSessionPreview
                         classes={this.state.classes}
                         deleteClassWhenPreview={this.deleteClassWhenPreview}

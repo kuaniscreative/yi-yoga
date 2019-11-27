@@ -22,7 +22,6 @@ class SideMenu extends Component {
     /**
      *      UI
      */
-
     userOptions = () => {
         return (
             <div>
@@ -129,7 +128,7 @@ class SideMenu extends Component {
                     <Link
                         to="/admin/new-session"
                         className=""
-                        onClick={this.handleClick}
+                        onClick={() => {this.handleClick('NEW_SESSION')}}
                     >
                         <p className="rectButton_text">報名開放</p>
                     </Link>
