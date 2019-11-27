@@ -13,7 +13,7 @@ class RegisterClassSuccess extends Component {
     render() {
         const id = this.props.paymentId;
         return (
-            <div className="success">
+            <div className="success actionCard_content">
                 <StepIndicator indicator='報名結果'/>
                 <p className="resultMessage_title">報名成功</p>
                 <ul className="comfyList">

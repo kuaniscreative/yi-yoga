@@ -1,6 +1,6 @@
 .actionCard {
     @include media("above-tablet") {
-        max-width: 720px;
+        max-width: 960px;
         border-radius: 1em;
         box-shadow: 0 0 40px -32px;
         overflow: hidden;
@@ -14,13 +14,10 @@
     border-radius: 1em;
 
     @include media("above-tablet") {
-        display: flex;
-        align-items: center;
-        height: 72px;
-        background: $gray-0;
-
+        border: 0;
+        border-bottom: 1px solid $gray-0;
         p {
-            margin-left: 4rem;
+            margin-left: 2rem;
         }
     }
 }

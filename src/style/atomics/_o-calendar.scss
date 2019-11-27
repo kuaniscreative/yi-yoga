@@ -1,6 +1,9 @@
 .calendar {
-    width: 320px;
-
+    width: 100%;
+    max-width: 480px;
+    @include media('below-iphoneSE') {
+        font-size: 0.9rem;
+    }
     .inactive {
         color: $gray-2;
     }
@@ -40,6 +43,10 @@
         width: 2em;
         height: 2em;
         border-radius: 2em;
+        @include media('below-iphoneSE') {
+            width: 1.5em;
+        height: 1.5em;
+        }
     }
 }
 .calendarCell:after {
@@ -48,6 +55,9 @@
     position: relative;
     height: 0;
     padding-top: 36%;
+    @include media('below-iphoneSE') {
+        padding-top: 112%;
+    }
 }
 
 .calenderCell_extraInfo {

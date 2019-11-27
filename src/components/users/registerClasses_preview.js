@@ -47,7 +47,7 @@ class Preview extends Component {
         const cost = this.returnPrice(num);
 
         return (
-            <div id='registerClass_preview'>
+            <div id='registerClass_preview' className="actionCard_content">
                 <StepIndicator indicator="step2. 確認表單" />
                 <p id='registerClass_preview_summary'>{`選取了${num}堂課，共${cost}元`}</p>
                 <div id='registerClass_previewOptions'>
