@@ -19,6 +19,8 @@ import LeaveRule from './components/leaveRule';
 import RescheduleRule from './components/rescheduleRule';
 import Payment from './components/users/payment';
 
+// import Testing from './components/ui/testing';
+
 // actions
 
 class App extends Component {
@@ -54,6 +56,8 @@ class App extends Component {
                         <Route path="/leaveRule" component={LeaveRule} />
                         <Route path="/rescheduleRule" component={RescheduleRule} />
                         <Route path="/payment/:paymentId" component={Payment} />
+
+                        
                     </div>
                 </BrowserRouter>
             </div>
