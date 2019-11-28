@@ -16,11 +16,11 @@ ol.comfyList {
 }
 
 ul.comfyList {
-    padding-left: 2em;
+    padding-left: 16px;
 
     li {
         position: relative;
-        font-size: 1em;
+        font-size: 1rem;
         line-height: 2em;
     }
     li:before {
@@ -30,12 +30,12 @@ ul.comfyList {
         display: block;
         margin-right: 0.5em;
         margin-bottom: 0.5em;
-        font-size: 1rem;
+        font-size: 1em;
         background-color: #ff9a57;
         border-radius: 1em;
         position: absolute;
-        left: -1.2em;
-        top: 0.9em;
+        left: -16px; // 根據ul的padding
+        top: 1em;
         transform: translateY(-50%);
     }
 }

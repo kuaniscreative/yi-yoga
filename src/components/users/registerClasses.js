@@ -23,7 +23,11 @@ class RegisterClasses extends Component {
          */
         const shouldSetState = {};
 
-        if (!this.state.calendarInitialed && nextProps.session && nextProps.classProfile) {
+        if (
+            !this.state.calendarInitialed &&
+            nextProps.session &&
+            nextProps.classProfile
+        ) {
             const classProfile = nextProps.classProfile;
             const session = nextProps.session;
             const span = session.span;
@@ -210,7 +214,7 @@ class RegisterClasses extends Component {
 
     render() {
         return (
-            <div id="registerClasses" className="actionCard titleWithInfoAbove">
+            <div id="registerClasses">
                 {/**
                  *
                  *       loading bar
@@ -229,13 +233,13 @@ class RegisterClasses extends Component {
                  */}
                 {this.props.session ? (
                     <div id="registerClass_info">
-                        <div className="actionCard_title">
-                            <p className="titleWithInfoAbove_above">報名表單</p>
-                            <p className="titleWithInfoAbove_title">
-                                {this.props.session.name}
-                            </p>
+                        <div className="layout_pageTitle">
+                            <div className="wrapper">
+                                <h1>報名表單</h1>
+                                <p>{this.props.session.name}</p>
+                            </div>
                         </div>
-                        {!this.state.enablePreview ? (
+                        {/* {!this.state.enablePreview ? (
                             <ul className="comfyList actionCard_content">
                                 <li>請由下方日曆選取本期想要參加的所有課程</li>
                             </ul>
@@ -245,7 +249,7 @@ class RegisterClasses extends Component {
                             <ul className="comfyList actionCard_content">
                                 <li>請確認選取的課程及費用</li>
                             </ul>
-                        ) : null}
+                        ) : null} */}
                     </div>
                 ) : null}
 

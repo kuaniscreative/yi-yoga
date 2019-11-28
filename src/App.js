@@ -36,7 +36,6 @@ class App extends Component {
                 <BrowserRouter>
                     <Header />
                     <SideMenu />
-                    <div className="mainContentWrapper">
                         <Route exact path="/" component={Main} />
                         <Route path="/log-in" component={LogIn} />
                         <Route path="/register" component={Register} />
@@ -56,9 +55,6 @@ class App extends Component {
                         <Route path="/leaveRule" component={LeaveRule} />
                         <Route path="/rescheduleRule" component={RescheduleRule} />
                         <Route path="/payment/:paymentId" component={Payment} />
-
-                        
-                    </div>
                 </BrowserRouter>
             </div>
         );

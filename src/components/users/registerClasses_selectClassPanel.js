@@ -33,11 +33,15 @@ class SelectClassPanel extends Component {
     render() {
         const span = this.props.session.span;
         return (
-            <div id="selectClassPanel">
+            <div id="selectClassPanel" className='layout_contentBlock'>
+                <div id='selectClassPanel_instruction'>
                 <StepIndicator
                     indicator="step.1 選取課堂"
-                    className="actionCard_content"
                 />
+                <ul className='comfyList'>
+                    <li>請由下方日曆選取本期想上的所有課堂</li>
+                </ul>
+                </div>
                 {/**
                  *
                  *       月份按鈕
