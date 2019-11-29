@@ -37,13 +37,18 @@ class Preview extends Component {
         const sessionName = this.props.session.name;
         const sessionId = this.props.session.id;
 
-        this.props.registerToCourse(
-            classes,
-            userId,
-            sessionName,
-            sessionId,
-            amount
-        );
+        if (!classes.length) {
+            alert('未選取任何課程')
+        } else {
+            this.props.registerToCourse(
+                classes,
+                userId,
+                sessionName,
+                sessionId,
+                amount
+            );
+        }
+        
     };
 
     dateOutput = date => {

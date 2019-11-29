@@ -31,7 +31,7 @@ class RegisterClassSuccess extends Component {
                     </li>
                 </ul>
                 <div className="nextStepButtonsArea--notFixed">
-                    <Link to="/" className="outlineButton">
+                    <Link to="/" className="outlineButton" onClick={this.props.clearSuccessMessage}>
                         回首頁
                     </Link>
                 </div>
@@ -46,4 +46,12 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(RegisterClassSuccess);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clearSuccessMessage: () => {
+            dispatch({type: 'CLEAR_SUCCESS_MESSAGE_REGISTER_CLASS'})
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterClassSuccess);
