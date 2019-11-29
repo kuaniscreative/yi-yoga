@@ -239,17 +239,6 @@ class RegisterClasses extends Component {
                                 <p>{this.props.session.name}</p>
                             </div>
                         </div>
-                        {/* {!this.state.enablePreview ? (
-                            <ul className="comfyList actionCard_content">
-                                <li>請由下方日曆選取本期想要參加的所有課程</li>
-                            </ul>
-                        ) : null}
-                        {this.state.enablePreview &&
-                        !this.props.registerClassSuccess ? (
-                            <ul className="comfyList actionCard_content">
-                                <li>請確認選取的課程及費用</li>
-                            </ul>
-                        ) : null} */}
                     </div>
                 ) : null}
 

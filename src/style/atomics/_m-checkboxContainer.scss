@@ -1,20 +1,17 @@
+
 /**
  *
- *  Using flex for composition
- *  Usage: 1. add checkboxContainer to your label element
- *         2. create a element with checkboxContainer_message class for your option text.
- *         3. create a element with checkboxContainer_checkbox class for your checkbox.
- *         4. create a element with checkmark class inside checkboxContainer_checkbox for styleing your checkmark 
- * 
+ *      客製化checkbox
+ *      使用方式：
+ *      1. 在input的父元素加上checkboxContainer這個class
+ *      2. 在input之後創建class為checkmark的元素
  *
  */
 
+
 /* Customize the label (the checkboxContainer) */
 .checkboxContainer {
-    display: flex;
-    width: 100%;
     position: relative;
-    margin-bottom: 2.5em;
     cursor: pointer;
     user-select: none;
 }
@@ -85,22 +82,4 @@
     }
 }
 
-/* compositions */
-.checkboxContainer_message {
-    flex: 1 0;
-    padding-right: 24px;
-    @include media("below-iphoneSE") {
-        padding-right: 0;
-    }
-}
-.checkboxContainer_checkbox {
-    flex: 0 0 80px;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75em;
-    @include media("below-iphoneSE") {
-        font-size: 0.6em;
-    }
-}
+

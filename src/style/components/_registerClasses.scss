@@ -30,7 +30,6 @@
 
 #selectClassPanel {
     li {
-        color: $gray-4;
         font-size: 1em;
     }
 }
@@ -111,53 +110,54 @@ button.inView {
 .selectTimeModal_form {
     display: block;
     width: 88%;
+    max-width: 560px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
     box-shadow: 0 0 40px -32px;
+
+    .disabled {
+        color: $gray-2;
+    }
+    li {
+        padding-bottom: 0; 
+        margin-bottom: 0;
+    }
+    li:last-child {
+        margin-bottom: 8px;
+    }
+    ul {
+        margin-bottom: 0;
+    }
+    label {
+        display: flex;
+        width: 100%;
+    }
+
+
+    .itemBarWithAction_action {
+        flex: 0 0 56px;
+        margin-right: 16px;
+        display: flex;
+    }
 }
 .selectTimeModal_title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 400;
-    padding: 1em;
+    padding: 16px;
     padding-top: 1.5em;
     background: black;
     color: white;
 }
 .selectTimeModal_option {
-    font-size: 1rem;
-    padding: 1em 0;
-    margin: 0.5em 0;
-    flex-direction: row-reverse;
+    min-height: 56px;
+    font-size: 1.5rem;
+    margin: 4px 0;
 
-    .checkboxContainer_checkbox {
-        flex: 0 0 72px;
-        padding-right: 16px;
-        p {
-            font-size: 0.75rem;
-        }
-    }
 }
 
-
-
-// 
-.selectTimeModal_form {
-    max-width: 560px;
-    .disabled {
-        color: $gray-2;
-    }
-}
-
-#registerClass_previewOptions {
-    padding: 1em;
-
-    .checkboxContainer_message {
-        padding-right: 0;
-    }
-}
 
 /**
  *
@@ -165,12 +165,35 @@ button.inView {
  *
  */
 
-#registerClass_preview_summary {
-    font-size: 0.9rem;
-    color: $gray-4;
-    margin-bottom: 2em;
+#registerClass_previewSummary {
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 24px 16px;
 }
 
+#registerClass_previewOptions {
+    padding: 16px;
+    padding-top: 0;
+    ul {
+        box-shadow: 0 0 20px -18px;
+    }
+    
+}
+
+.registerClass_preview_date {
+    span {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5rem;
+    }
+    span:nth-child(1) {
+        margin-right: 16px;
+    }
+    span:nth-child(2) {
+        font-size: 0.75rem;
+        color: $gray-4;
+    }
+}
 
 
 /**
@@ -181,6 +204,9 @@ button.inView {
 
 
  #registerClass_success {
+    ul {
+        margin-bottom: 32px;
+    } 
     li {
         font-size: 0.75rem;
     }

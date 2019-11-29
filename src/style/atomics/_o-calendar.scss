@@ -66,6 +66,7 @@
 
 .calendarCell.selected {
     span {
-        background: pink;
+        background: $green;
+        color: white;
     }
 }
