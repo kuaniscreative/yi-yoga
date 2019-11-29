@@ -7,11 +7,16 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 registerClassSuccess: true
             };
-        case 'ADD_PAYMENT_SUCCESS':
+        case "CLEAR_SUCCESS_MESSAGE_REGISTER_CLASS":
+            return {
+                ...state,
+                registerClassSuccess: false
+            };
+        case "ADD_PAYMENT_SUCCESS":
             return {
                 ...state,
                 paymentId: action.id
-            }
+            };
         case "LEAVE_APPLICATION_SUCCESS":
             return {
                 ...state,
@@ -38,11 +43,11 @@ const userReducer = (state = initState, action) => {
                 reacheduleAddSuccess: false,
                 reachedulePendingSuccess: false
             };
-        case "UPDATE_PAYMENT_SUCCESS": 
+        case "UPDATE_PAYMENT_SUCCESS":
             return {
                 ...state,
                 updatePaymentSuccess: true
-            }
+            };
         default:
             return state;
     }

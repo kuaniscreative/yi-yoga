@@ -55,7 +55,7 @@ class SideMenu extends Component {
                             }
                             className=""
                             onClick={() => {
-                                this.handleClick("NEWSESSION");
+                                this.handleClick("REGISTER_CLASS");
                             }}
                         >
                             <p className="rectButton_text">報名</p>
