@@ -97,7 +97,7 @@ class Reschedule extends Component {
             );
         } else {
             return (
-                <div className="innerContent nextStepButtonsArea_parent">
+                <div className="">
                     沒有可以補課的課堂
                     <div className="nextStepButtonsArea">
                         <Link to="/" className="cancelGray">
@@ -107,16 +107,6 @@ class Reschedule extends Component {
                 </div>
             );
         }
-    };
-
-    // controlling the indicator ouput
-    indicatorOutput = () => {
-        if (this.props.addSuccess || this.props.pendingSuccess) {
-            return "補課結果";
-        } else if (this.state.timeTable.length) {
-            return "選擇補課日期";
-        }
-        return "選擇已請假課堂";
     };
 
     // send the data to middleware
@@ -143,8 +133,13 @@ class Reschedule extends Component {
     render() {
         return (
             <div id="reschedule">
-                <StepIndicator indicator={this.indicatorOutput()} />
-                <div className="innerContent">
+                <div className="layout_pageTitle">
+                    <div className="wrapper">
+                        <h1>補課</h1>
+                    </div>
+                </div>
+
+                <div className="layout_contentBlock">
                     {this.conditionalComponents()}
                 </div>
             </div>
