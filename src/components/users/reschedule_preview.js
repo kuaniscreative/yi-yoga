@@ -41,9 +41,11 @@ class Preview extends Component {
             <div id="reschedule_preview">
                 <div id="reschedule_instruction">
                     <StepIndicator indicator={this.indicatorOutput()} />
-                    <ul className="comfyList">
-                        <li>點選後將會顯示可補課的課程</li>
-                    </ul>
+                    {this.props.classSelected ? null : (
+                        <ul className="comfyList">
+                            <li>點選後將會顯示可補課的課程</li>
+                        </ul>
+                    )}
                 </div>
 
                 {this.conditionalComponents()}
