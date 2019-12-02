@@ -43,4 +43,15 @@
     .extraPadding {
         padding-right: 16px;
     }
+    .itemBarWithAction {
+        @include media('above-desktop') {
+            flex-direction: row-reverse;
+        }
+    }
+    .itemBarWithAction_action {
+        @include media('above-desktop') {
+            margin-right: 16px;
+        }
+    }
+    
 }
