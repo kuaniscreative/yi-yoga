@@ -87,7 +87,7 @@ class LeaveApplication extends Component {
             );
         } else {
             return (
-                <div className="innerContent nextStepButtonsArea_parent">
+                <div className="layout_contentBlock nextStepButtonsArea_parent">
                     還沒有報名任何課程
                     <div className="nextStepButtonsArea">
                         <Link to="/" className="cancelGray">
