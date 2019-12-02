@@ -37,16 +37,15 @@ class ClassSingle extends Component {
         }
 
         return (
-            <label className="checkboxContainer">
+            <label className="checkboxContainer reschedule_preview_options">
                 <ItemBarWithAction
                     message={
-                        <div className="dateHero">
-                            <span name="date">{`${dd}`}</span>
-                            <span name="monthYear">{`${mm +
-                                1}月 ${yyyy}`}</span>
-                            <span name="seperator"> | </span>
-                            <span name="dayTime">{`${dayOutput} ${startAt}`}</span>
-                            <div className="dateHero_message">
+                        <div>
+                            <div className="date">
+                                <span>{`${yyyy}年${mm + 1}月${dd}日`}</span>
+                                <span>{`${startAt}`}</span>
+                            </div>
+                            <div className="message">
                                 <span>{`空位： ${availableNum}`}</span>
                                 <span name="seperator"> | </span>
                                 <span>{`等待人數： ${pendingNum}`}</span>

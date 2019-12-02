@@ -38,7 +38,7 @@ class ClassList extends Component {
         this.setState({
             ...this.state,
             [key]: value
-        })
+        });
     };
 
     handleClick = () => {
@@ -51,13 +51,24 @@ class ClassList extends Component {
         const monthOptions = [startMonth, startMonth + 1];
 
         return (
-            <div className="nextStepButtonsArea_parent">
-                <div id="reschedule_preview_monthOptions">
+            <div
+                id="reschedule_classList"
+                className="nextStepButtonsArea_parent"
+            >
+                {/**
+                 *      月份按鈕
+                 */}
+                <div className="buttonArea">
                     {this.state.viewingMonth > -1 &&
                         monthOptions.map((monthNum, i) => {
+                            const active = monthNum === this.state.viewingMonth;
                             return (
                                 <button
-                                    className="outlineButton"
+                                    className={
+                                        active
+                                            ? "outlineButton active"
+                                            : "outlineButton"
+                                    }
                                     key={i}
                                     name="viewingMonth"
                                     data-setter={monthNum}
@@ -66,13 +77,22 @@ class ClassList extends Component {
                             );
                         })}
                 </div>
-                <div id="reschedule_preview_courseOptions">
+
+                {/**
+                 *      星期按鈕
+                 */}
+                <div className="buttonArea">
                     {this.state.viewingDay > -1 &&
                         courseOptions &&
                         courseOptions.map((dayNum, i) => {
+                            const active = dayNum === this.state.viewingDay;
                             return (
                                 <button
-                                    className="outlineButton"
+                                    className={
+                                        active
+                                            ? "outlineButton active"
+                                            : "outlineButton"
+                                    }
                                     key={i}
                                     name="viewingDay"
                                     data-setter={dayNum}
@@ -83,29 +103,37 @@ class ClassList extends Component {
                             );
                         })}
                 </div>
-                {this.filteredClass(
-                    this.props.classes,
-                    this.state.viewingMonth,
-                    this.state.viewingDay
-                ).length
-                    ? this.filteredClass(
-                          this.props.classes,
-                          this.state.viewingMonth,
-                          this.state.viewingDay
-                      ).map((classSingle, i) => {
-                          return (
-                              <ClassSingle
-                                  classSingle={classSingle}
-                                  key={i}
-                                  select={this.props.select}
-                              />
-                          );
-                      })
-                    : "沒有課程"}
-                <NextStepButtonsArea
-                    action={this.handleClick}
-                    cancel={this.props.clearTimeTable}
-                />
+
+                {/**
+                 *      課程選項
+                 */}
+                <ul className="borderBottomList">
+                    {this.filteredClass(
+                        this.props.classes,
+                        this.state.viewingMonth,
+                        this.state.viewingDay
+                    ).length
+                        ? this.filteredClass(
+                              this.props.classes,
+                              this.state.viewingMonth,
+                              this.state.viewingDay
+                          ).map((classSingle, i) => {
+                              return (
+                                  <li>
+                                      <ClassSingle
+                                          classSingle={classSingle}
+                                          key={i}
+                                          select={this.props.select}
+                                      />
+                                  </li>
+                              );
+                          })
+                        : "沒有課程"}
+                    <NextStepButtonsArea
+                        action={this.handleClick}
+                        cancel={this.props.clearTimeTable}
+                    />
+                </ul>
             </div>
         );
     }
