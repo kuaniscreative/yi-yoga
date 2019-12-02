@@ -30,7 +30,12 @@ class LogIn extends Component {
     render() {
         return (
             <div>
-                <StepIndicator indicator="登入" />
+                <div className="layout_pageTitle">
+                    <div className="wrapper">
+                        <h1>登入</h1>
+                    </div>
+                </div>
+                <div className='layout_contentBlock'>
                 <form
                     className="comfyForm innerContent"
                     onSubmit={this.handleSubmit}
@@ -54,6 +59,7 @@ class LogIn extends Component {
                         }}
                     />
                 </form>
+                </div>
             </div>
         );
     }
