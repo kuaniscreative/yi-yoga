@@ -129,10 +129,15 @@ class SideMenu extends Component {
                     <p className="sideMenu_division">課程管理</p>
                     <Link
                         to="/admin/new-session"
-                        className=""
                         onClick={() => {this.handleClick('NEW_SESSION')}}
                     >
                         <p className="rectButton_text">開放報名</p>
+                    </Link>
+                    <Link
+                        to="/admin/classList"
+                        onClick={() => {this.handleClick()}}
+                    >
+                        <p className="rectButton_text">查看課表</p>
                     </Link>
                     <p className="sideMenu_division">帳號管理</p>
                     <button onClick={this.props.signOut}><p className="rectButton_text">登出管理者</p></button>
