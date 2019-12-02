@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
 
+import { signOut } from '../actions/authActions';
+
 class SideMenu extends Component {
     clearSuccessMessage = (target = "") => {
         const output = `CLEAR_SUCCESS_MESSAGE_${target}`;
@@ -130,8 +132,10 @@ class SideMenu extends Component {
                         className=""
                         onClick={() => {this.handleClick('NEW_SESSION')}}
                     >
-                        <p className="rectButton_text">報名開放</p>
+                        <p className="rectButton_text">開放報名</p>
                     </Link>
+                    <p className="sideMenu_division">帳號管理</p>
+                    <button onClick={this.props.signOut}><p className="rectButton_text">登出管理者</p></button>
                 </div>
             </div>
         );
@@ -167,6 +171,9 @@ const mapDispatchToProps = dispatch => {
     return {
         clearSuccessMessage: dispatchType => {
             dispatch({ type: dispatchType });
+        },
+        signOut: () => {
+            dispatch(signOut());
         }
     };
 };
