@@ -8,6 +8,9 @@
     background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
     position: relative;
     @include media('above-tablet') {
+        padding: 0 40px;
+    }
+    @include media('above-desktop') {
         padding: 0 216px;
     }
 
@@ -32,6 +35,12 @@
 .layout_contentBlock {
     padding: 0 32px;
     margin-bottom: 40px;
+    @include media('above-tablet') {
+        padding: 0 72px;
+    }
+    @include media('above-desktop') {
+        padding: 0 248px;
+    }
 }
 
 

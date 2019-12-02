@@ -65,7 +65,7 @@ class SelectClassPanel extends Component {
                  *       日曆
                  *
                  */}
-                <div id="selectClass_calendars" className='actionCard_content'>
+                <div id="selectClass_calendars">
                     {
                         span.map((stamp, i) => {
                             const dateInfo = stamp.split('/');
