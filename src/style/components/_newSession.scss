@@ -1,6 +1,6 @@
 #newSession {
     .periodSetter {
-        margin-bottom: 4em;
+        margin-bottom: 32px;
         display: flex;
 
         select[name="year"] {
@@ -19,22 +19,37 @@
             padding: 1em 0 0.5em 0;
         }
     }
-
-    .comfyList {
-        li {
-            font-size: 0.9rem;
-        }
-    }
+    .newSession_instruction {
+        margin-bottom: 32px;
+    } 
 }
 
 #newSession_preview {
-    .stepIndicator {
-        margin-bottom: 2em;
-    }
     .comfyList {
         margin-bottom: 2em;
         li {
             color: $gray-4;
         }
+    }
+    .borderBottomList {
+        margin: 0 16px;
+        box-shadow: 0 0 20px -12px;
+        margin-bottom: 24px;
+        li {
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+        .contentWrapper {
+            padding: 8px;
+        }
+    }
+}
+
+.newSession_instruction {
+    .stepIndicator {
+        margin-bottom: 16px;
+    }
+    ul li {
+        font-size: 0.75rem;
     }
 }

@@ -1,45 +1,55 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 // components
-import StepIndicator from '../stepIndicator';
+import StepIndicator from "../stepIndicator";
 
 class NewSessionForm extends Component {
-    
     state = {
         start: {
-            month: '',
-            year: ''
+            month: "",
+            year: ""
         },
         end: {
-            month: '',
-            year: ''
-        }, 
+            month: "",
+            year: ""
+        },
         validPeriod: true
-    }
+    };
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
         // check if the input date is valid
-        const sMonth = typeof this.state.start.month === 'number' ? this.state.start.month : null;
-        const eMonth = typeof this.state.end.month === 'number' ? this.state.end.month : null;
-        const sYear = typeof this.state.start.year === 'number' ? this.state.start.year : null;
-        const eYear = typeof this.state.end.year === 'number' ? this.state.end.year : null;
+        const sMonth =
+            typeof this.state.start.month === "number"
+                ? this.state.start.month
+                : null;
+        const eMonth =
+            typeof this.state.end.month === "number"
+                ? this.state.end.month
+                : null;
+        const sYear =
+            typeof this.state.start.year === "number"
+                ? this.state.start.year
+                : null;
+        const eYear =
+            typeof this.state.end.year === "number"
+                ? this.state.end.year
+                : null;
         const validYear = eYear >= sYear ? true : false;
         const validPeriod = validYear && eMonth >= sMonth ? true : false;
-        
-        // excute setSessionPeriod from props passed from newSession.js 
+
+        // excute setSessionPeriod from props passed from newSession.js
         if (validPeriod) {
-            this.props.setSessionPeriod(this.state.start, this.state.end)
+            this.props.setSessionPeriod(this.state.start, this.state.end);
         } else {
             this.setState({
                 ...this.state,
                 validPeriod: false
-            })
+            });
         }
-        
-    }
+    };
 
-    handleChange = (e) => {
+    handleChange = e => {
         // start or end
         const point = e.target.dataset.point;
         // year or month
@@ -51,11 +61,11 @@ class NewSessionForm extends Component {
                 ...this.state[point],
                 [name]: parseInt(value, 10)
             }
-        })
-    }
+        });
+    };
 
     render() {
-        const yearOptionList = (point) => {
+        const yearOptionList = point => {
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
             const options = [];
@@ -63,61 +73,71 @@ class NewSessionForm extends Component {
                 options.push(currentYear + i);
             }
             return (
-                <select name="year" data-point={point} onChange={this.handleChange}>
+                <select
+                    name="year"
+                    data-point={point}
+                    onChange={this.handleChange}
+                >
                     <option value="">yyyy</option>
-                    {
-                        options.map((option) => {
-                            return (
-                                <option value={option} key={option}>{option}</option>
-                            )
-                        })
-                    }
+                    {options.map(option => {
+                        return (
+                            <option value={option} key={option}>
+                                {option}
+                            </option>
+                        );
+                    })}
                 </select>
-            )
-        }
+            );
+        };
 
-        const monthOptionList = (point) => {
+        const monthOptionList = point => {
             const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             return (
-                <select name="month" data-point={point} onChange={this.handleChange}>
+                <select
+                    name="month"
+                    data-point={point}
+                    onChange={this.handleChange}
+                >
                     <option value="">mm</option>
-                    {
-                        options.map((option) => {
-                            return (
-                                <option value={option} key={option}>{option}</option>
-                            )
-                        })
-                    }
+                    {options.map(option => {
+                        return (
+                            <option value={option} key={option}>
+                                {option}
+                            </option>
+                        );
+                    })}
                 </select>
-            )
-            
-        }
+            );
+        };
 
         return (
-            <div>
-                <StepIndicator indicator='設定課程期間' />
-                { this.props.validPeriod ? null : (<p>時間重複</p>) }
-                <form action="" onSubmit={this.handleSubmit} className='comfyForm'>
-                    
+            <div className='layout_contentBlock'>
+                <div className="newSession_instruction">
+                    <StepIndicator indicator="設定課程期間" />
+                </div>
+                {this.props.validPeriod ? null : <p>時間重複</p>}
+                <form
+                    action=""
+                    onSubmit={this.handleSubmit}
+                    className="comfyForm"
+                >
                     <label htmlFor="start">開始月份</label>
-                    <div className='periodSetter'>
-                    { yearOptionList('start') }
-                    <div className='seperator'>/</div>
-                    { monthOptionList('start') }
+                    <div className="periodSetter">
+                        {yearOptionList("start")}
+                        <div className="seperator">/</div>
+                        {monthOptionList("start")}
                     </div>
                     <label htmlFor="end">結束月份</label>
-                    <div className='periodSetter'>
-                    { yearOptionList('end') }
-                    <div className='seperator'>/</div>
-                    { monthOptionList('end') }
+                    <div className="periodSetter">
+                        {yearOptionList("end")}
+                        <div className="seperator">/</div>
+                        {monthOptionList("end")}
                     </div>
-                    <button className='outlineButton'>確認</button>
-                    { this.state.validPeriod ? null : (
-                        <div>時間設定有誤</div>
-                    ) }
+                    <button className="outlineButton">確認</button>
+                    {this.state.validPeriod ? null : <div>時間設定有誤</div>}
                 </form>
             </div>
-        )
+        );
     }
 }
 

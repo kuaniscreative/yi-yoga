@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 const Success = ({clearSuccessMessage}) => {
     return (
-        <div className="innerContent">
+        <div className="layout_contentBlock">
             <p className="resultMessage_title">課程新增成功</p>
             <p className="resultMessage_message">
                 同學現在可以報名課程了

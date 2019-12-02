@@ -101,6 +101,11 @@ class NewSession extends Component {
     render() {
         return (
             <div id="newSession">
+                <div className="layout_pageTitle">
+                    <div className="wrapper">
+                        <h1>開放報名</h1>
+                    </div>
+                </div>
                 {this.props.newSessionIsAdded ? (
                     <Success />
                 ) : this.state.classes.length ? (
