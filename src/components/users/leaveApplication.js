@@ -111,7 +111,11 @@ class LeaveApplication extends Component {
     render() {
         return (
             <div id="leaveApplication">
-                <StepIndicator indicator={this.indicatorOutput()} />
+                <div className='layout_pageTitle'>
+                    <div className="wrapper">
+                        <h1>請假</h1>
+                    </div>
+                </div>
                 {this.conditionalComponents()}
             </div>
         );
