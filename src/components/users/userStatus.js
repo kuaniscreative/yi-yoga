@@ -12,12 +12,17 @@ import PaymentSingle from './userStatus_paymentSingle';
 const UserStatus = ({ uid, leaveRecord, classProfile, payments }) => {
     return (
         <div id="userStatus" className="innerContent">
+            <div className='layout_pageTitle'>
+                <div className="wrapper">
+                    <h1>課程狀態</h1>
+                </div>
+            </div>
             {/**
              *
              *   報名
              *
              */}
-            <div className="contentBlock">
+            <div className="layout_contentBlock">
                 <StepIndicator indicator="報名狀態" />
                 { payments && payments.map((payment, i) => {
                     return <PaymentSingle infos={payment} key={i}/>
@@ -36,7 +41,7 @@ const UserStatus = ({ uid, leaveRecord, classProfile, payments }) => {
              *   請假
              *
              */}
-            <div className="contentBlock">
+            <div className="layout_contentBlock">
                 <StepIndicator indicator="請假狀態" />
                 {leaveRecord &&
                     leaveRecord.reschedulable.map((date, i) => {
@@ -95,7 +100,7 @@ const UserStatus = ({ uid, leaveRecord, classProfile, payments }) => {
              *   補課
              *
              */}
-            <div className="contentBlock">
+            <div className="layout_contentBlock">
                 <StepIndicator indicator="補課狀態" />
                 {leaveRecord &&
                     leaveRecord.reschedulePending.map((date, i) => {
