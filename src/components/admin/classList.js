@@ -118,7 +118,11 @@ class ClassList extends Component {
                         <h1>查看課表</h1>
                     </div>
                 </div>
-                class list
+                <div className='layout_contentBlock'>
+                    <ul className='comfyList'>
+                        <li>與芝依確認如何呈現</li>
+                    </ul>
+                </div>
             </div>
         );
     }
