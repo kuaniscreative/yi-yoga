@@ -13,9 +13,24 @@
     display: block;
 }
 
+#adminPaymentStatus_session {
+    p {
+        margin-bottom: 8px;
+    }
+    button {
+        font-size: 0.8rem;
+        color: $gray-4; 
+        margin-right: 16px;
+        span {
+            text-decoration: underline;
+        }
+    }
+}
+
 #paymentModal {
     display: block;
     width: 92%;
+    max-width: 720px;
     max-height: 92%;
     position: absolute;
     top: 50%;
@@ -24,9 +39,12 @@
     background: white;
     box-shadow: 0 0 40px -32px;
 
+    .itemBarWithAction_message {
+        padding-right: 40px;
+    }
     .borderBottomList {
         max-height: 320px;
-        overflow: scroll;
+        overflow-y: scroll;
         margin-bottom: 12px;
     }
 
@@ -37,21 +55,28 @@
         }
     }
     .paymentModal_owner {
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
     span[name='nickName'] {
         font-size: 1.2rem;
         padding-right: 0.5em;
     }
     span[name='name'] {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
-    span[name='amount'] {
-        font-size: 0.75rem;
+    span[name='amount'],
+    span[name='method'] {
+        font-size: 0.7rem;
         font-weight: 400;
         margin-top: auto;
+        line-height: 1.5em;
+        color: $gray-3;
     }
-
+    span[name='seperator'] {
+        font-size: 0.75rem;
+        padding: 0 8px;
+        color: $gray-3;
+    }
 }
 
 #paymentModal_btnArea {

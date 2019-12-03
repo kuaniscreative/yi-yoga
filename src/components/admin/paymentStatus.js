@@ -3,6 +3,9 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 
+// components
+import ItemBarWithAction from "../ui/itemBarWithAction";
+
 class PaymentStatus extends Component {
     state = {
         modalData: null
@@ -44,13 +47,16 @@ class PaymentStatus extends Component {
     render() {
         const data = this.props.data;
         return (
-            <div>
+            <div id="adminPaymentStatus">
                 <div className="layout_pageTitle">
                     <div className="wrapper">
                         <h1>付款狀況</h1>
                     </div>
                 </div>
-                <div className="layout_contentBlock">
+                <div
+                    id="adminPaymentStatus_session"
+                    className="layout_contentBlock"
+                >
                     {data
                         ? data.map((sessionInfo, i) => {
                               return (
@@ -103,6 +109,7 @@ class PaymentStatus extends Component {
                           })
                         : null}
                 </div>
+
                 {/**
                  *       燈箱
                  */}
@@ -135,22 +142,50 @@ class PaymentStatus extends Component {
                                             </li>
                                         ) : key === "待確認" ? (
                                             <li key={i}>
-                                                <div className="paymentModal_owner">
-                                                    <span name="nickName">
-                                                        {payment.owner.nickName}
-                                                    </span>
-                                                    <span name="name">
-                                                        {payment.owner.name}
-                                                    </span>
-                                                </div>
-                                                <div className="paymentModal_infos">
-                                                    <span name="amount">
-                                                        金額：{payment.amount}
-                                                    </span>
-                                                    <span name="method">
-                                                        {payment.method === 'transaction' ? `已匯款，帳號末四碼：${payment.account}}` : '當面繳交學費'}
-                                                    </span>
-                                                </div>
+                                                <ItemBarWithAction
+                                                    message={
+                                                        <div>
+                                                            <div className="paymentModal_owner">
+                                                                <span name="nickName">
+                                                                    {
+                                                                        payment
+                                                                            .owner
+                                                                            .nickName
+                                                                    }
+                                                                </span>
+                                                                <span name="name">
+                                                                    {
+                                                                        payment
+                                                                            .owner
+                                                                            .name
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="paymentModal_infos">
+                                                                <span name="amount">
+                                                                    金額：
+                                                                    {
+                                                                        payment.amount
+                                                                    }
+                                                                </span>
+                                                                <span name="seperator">
+                                                                    ｜
+                                                                </span>
+                                                                <span name="method">
+                                                                    {payment.method ===
+                                                                    "transaction"
+                                                                        ? `${payment.date}已匯款，帳號末四碼：${payment.account}`
+                                                                        : `於${payment.date}當面繳交學費`}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    action={
+                                                        <button className="outlineButton">
+                                                            已收款
+                                                        </button>
+                                                    }
+                                                />
                                             </li>
                                         ) : (
                                             <li key={i}>
@@ -167,7 +202,10 @@ class PaymentStatus extends Component {
                                                         金額：{payment.amount}
                                                     </span>
                                                     <span name="method">
-                                                        {payment.method === 'transaction' ? `確認收到款項，帳號末四碼${payment.account}}` : '已當面收到學費'}
+                                                        {payment.method ===
+                                                        "transaction"
+                                                            ? `確認收到款項，帳號末四碼${payment.account}`
+                                                            : "已當面收到學費"}
                                                     </span>
                                                 </div>
                                             </li>
