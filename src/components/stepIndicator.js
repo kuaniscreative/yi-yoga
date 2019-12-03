@@ -2,7 +2,7 @@ import React from 'react';
 
 const StepIndicator = ({indicator, className}) => {
     return (
-        <div className={`stepIndicator ${className}`}>
+        <div className={className ? `stepIndicator ${className}` : 'stepIndicator'}>
             <p>{indicator}</p>
         </div>
     )
