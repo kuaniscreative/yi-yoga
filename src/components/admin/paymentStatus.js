@@ -116,21 +116,74 @@ class PaymentStatus extends Component {
                             <ul className="borderBottomList">
                                 {this.state.modalData.payments.map(
                                     (payment, i) => {
-                                        return (
+                                        const key = this.state.modalData.key;
+                                        return key === "未付款" ? (
                                             <li key={i}>
-                                                {payment.owner.nickName}
+                                                <div className="paymentModal_owner">
+                                                    <span name="nickName">
+                                                        {payment.owner.nickName}
+                                                    </span>
+                                                    <span name="name">
+                                                        {payment.owner.name}
+                                                    </span>
+                                                </div>
+                                                <div className="paymentModal_infos">
+                                                    <span name="amount">
+                                                        金額：{payment.amount}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        ) : key === "待確認" ? (
+                                            <li key={i}>
+                                                <div className="paymentModal_owner">
+                                                    <span name="nickName">
+                                                        {payment.owner.nickName}
+                                                    </span>
+                                                    <span name="name">
+                                                        {payment.owner.name}
+                                                    </span>
+                                                </div>
+                                                <div className="paymentModal_infos">
+                                                    <span name="amount">
+                                                        金額：{payment.amount}
+                                                    </span>
+                                                    <span name="method">
+                                                        {payment.method === 'transaction' ? `已匯款，帳號末四碼：${payment.account}}` : '當面繳交學費'}
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        ) : (
+                                            <li key={i}>
+                                                <div className="paymentModal_owner">
+                                                    <span name="nickName">
+                                                        {payment.owner.nickName}
+                                                    </span>
+                                                    <span name="name">
+                                                        {payment.owner.name}
+                                                    </span>
+                                                </div>
+                                                <div className="paymentModal_infos">
+                                                    <span name="amount">
+                                                        金額：{payment.amount}
+                                                    </span>
+                                                    <span name="method">
+                                                        {payment.method === 'transaction' ? `確認收到款項，帳號末四碼${payment.account}}` : '已當面收到學費'}
+                                                    </span>
+                                                </div>
                                             </li>
                                         );
                                     }
                                 )}
                             </ul>
-                            <button
-                                id="paymentModal_closeBtn"
-                                className="outlineButton"
-                                onClick={this.closeModal}
-                            >
-                                關閉
-                            </button>
+                            <div id="paymentModal_btnArea">
+                                <button
+                                    id="paymentModal_closeBtn"
+                                    className="outlineButton"
+                                    onClick={this.closeModal}
+                                >
+                                    關閉
+                                </button>
+                            </div>
                         </div>
                     ) : null}
                 </div>
