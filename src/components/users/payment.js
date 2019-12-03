@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 
 // components
 import NextStepButtonsArea from "../ui/nextStepButtonArea";
-import StepIndicator from "../stepIndicator";
 import PaymentSuccess from "./payment_success";
 
 // actions
@@ -14,7 +13,8 @@ import { updatePaymentStatus } from "../../actions/userActions";
 
 class Payment extends Component {
     state = {
-        amount: ""
+        amount: "",
+        account: 'N/A'
     };
 
     handleSubmit = e => {
@@ -26,9 +26,8 @@ class Payment extends Component {
         if (date && method && account) {
             this.props.updatePaymentStatus(paymentId, method, account, date);
         } else {
-            alert('每項欄位都必須輸入')
+            alert("每項欄位都必須輸入");
         }
-        
     };
 
     handleChange = e => {
@@ -44,7 +43,7 @@ class Payment extends Component {
             return <PaymentSuccess />;
         } else {
             return (
-                <div>
+                <div className="layout_contentBlock">
                     {this.props.payment ? (
                         <form
                             className="comfyForm innerContent"
@@ -60,13 +59,18 @@ class Payment extends Component {
                                 <option value="transaction">匯款</option>
                                 <option value="f2f">面交</option>
                             </select>
-                            <label>帳號末四碼</label>
-                            <input
-                                name="account"
-                                type="text"
-                                onChange={this.handleChange}
-                                placeholder="XXXX"
-                            />
+                            {this.state.method === "transaction" ? (
+                                <div>
+                                    <label>帳號末四碼</label>
+                                    <input
+                                        name="account"
+                                        type="text"
+                                        onChange={this.handleChange}
+                                        placeholder="XXXX"
+                                    />
+                                </div>
+                            ) : null}
+
                             <label>匯款日期</label>
                             <input
                                 name="date"
@@ -98,7 +102,15 @@ class Payment extends Component {
     render() {
         return (
             <div id="payment">
-                <StepIndicator indicator={this.indicator()} />
+                <div className="layout_pageTitle">
+                    <div className="wrapper">
+                        <h1>填寫繳費資訊</h1>
+                        <p>
+                            {this.props.payment &&
+                                this.props.payment.sessionName}
+                        </p>
+                    </div>
+                </div>
                 {this.conditionalComponent()}
             </div>
         );

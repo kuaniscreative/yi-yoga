@@ -2,9 +2,13 @@
     .amount {
         display: block;
         padding: 0.5em 0;
-        margin-bottom: 2.5em;
+        margin-bottom: 1.5em;
         font-size:1.5em;
         font-weight: 400;
+    }
+    select,
+    input {
+        margin-bottom: 1.5em;
     }
     .nextStepButtonsArea--notFixed {
         justify-content: flex-start;
