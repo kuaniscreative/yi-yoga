@@ -6,7 +6,6 @@ import { firestoreConnect } from "react-redux-firebase";
 
 // components
 import Preview from "./reschedule_preview";
-import StepIndicator from "../stepIndicator";
 import RescheduleSuccess from "./reschedule_success";
 
 // actions

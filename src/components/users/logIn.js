@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 // components
-import StepIndicator from "../stepIndicator";
 import NextStepButtonsArea from "../ui/nextStepButtonArea";
 
 // actions

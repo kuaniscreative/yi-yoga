@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 // components
 import StepIndicator from "../stepIndicator";
 import NextStepButtonsArea from "../ui/nextStepButtonArea";
-import DateSingle from "../ui/dateSingle";
 import ItemBarWithAction from "../ui/itemBarWithAction";
 
 // actions

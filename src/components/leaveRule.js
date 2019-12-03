@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// components
-import StepIndicator from "./stepIndicator";
-
 const LeaveRule = () => {
     return (
         <div id="leaveRule">

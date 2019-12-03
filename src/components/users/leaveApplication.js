@@ -6,7 +6,6 @@ import { firestoreConnect } from "react-redux-firebase";
 
 // components
 import ClassList from "./leaveApplication_classList";
-import StepIndicator from "../stepIndicator";
 import LeaveApplicationSuccess from "./leaveApplication_success";
 
 // actions

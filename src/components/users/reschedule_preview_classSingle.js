@@ -21,8 +21,6 @@ class ClassSingle extends Component {
         const hr = date.getHours();
         const min = date.getMinutes();
         const startAt = `${hr}:${min}`;
-        const day = date.getDay();
-        const dayOutput = `週${day.toLocaleString("zh-u-nu-hanidec")}`;
         let pendingNum;
         let availableNum;
         if (classInfo) {
