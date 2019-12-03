@@ -87,7 +87,6 @@ class SelectTimeModal extends Component {
     userRegisteredLabel = (text, i) => {
         return (
             <ItemBarWithAction
-                key={i}
                 message={text}
                 parentClass="selectTimeModal_option disabled reverse"
                 action={
@@ -102,7 +101,6 @@ class SelectTimeModal extends Component {
     isFullLabel = (text, i) => {
         return (
             <ItemBarWithAction
-                key={i}
                 message={text}
                 parentClass="selectTimeModal_option disabled reverse"
                 action={
@@ -118,7 +116,6 @@ class SelectTimeModal extends Component {
         return (
             <label className='checkboxContainer'>
             <ItemBarWithAction
-                key={i}
                 message={text}
                 parentClass="selectTimeModal_option reverse"
                 actionClass="checkboxContainer"
@@ -186,7 +183,7 @@ class SelectTimeModal extends Component {
                                         ? true
                                         : false;
                                 return (
-                                    <li>
+                                    <li key={i}>
                                         {classInfo.userRegistered
                                             ? this.userRegisteredLabel(
                                                   output,
