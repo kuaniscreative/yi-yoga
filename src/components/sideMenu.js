@@ -31,6 +31,19 @@ class SideMenu extends Component {
                     <div id="sideMenu_actions">
                         <p className="sideMenu_division">課程管理</p>
                         <Link
+                            to={
+                                this.props.newSession
+                                    ? "/register-classes"
+                                    : "/"
+                            }
+                            className=""
+                            onClick={() => {
+                                this.handleClick("REGISTER_CLASS");
+                            }}
+                        >
+                            <p className="rectButton_text">報名</p>
+                        </Link>
+                        <Link
                             to="/leave-application"
                             className=""
                             onClick={() => {
@@ -48,19 +61,6 @@ class SideMenu extends Component {
                             }}
                         >
                             <p className="rectButton_text">補課</p>
-                        </Link>
-                        <Link
-                            to={
-                                this.props.newSession
-                                    ? "/register-classes"
-                                    : "/"
-                            }
-                            className=""
-                            onClick={() => {
-                                this.handleClick("REGISTER_CLASS");
-                            }}
-                        >
-                            <p className="rectButton_text">報名</p>
                         </Link>
                     </div>
                 ) : null}

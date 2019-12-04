@@ -87,7 +87,7 @@ class Preview extends Component {
                         <div className="borderBottomList_title">已選取課堂</div>
                         {this.props.selection.map((info, i) => {
                             return (
-                                <li>
+                                <li key={i}>
                                     <ItemBarWithAction
                                         message={this.dateOutput(info.date)}
                                         action={
@@ -100,7 +100,6 @@ class Preview extends Component {
                                                 }}
                                             ></button>
                                         }
-                                        key={i}
                                     />
                                 </li>
                             );
