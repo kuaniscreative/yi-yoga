@@ -5,6 +5,7 @@ import CalendarCellWithClassInfo from "./registerClasses_calendarCellWithClassIn
 
 class Calendar extends Component {
     paintCalendar = calendarInfo => {
+        console.log('calendar painting', calendarInfo);
         const className = `calendar ${this.props.className}`;
         return (
             <div className={className}>
@@ -33,6 +34,7 @@ class Calendar extends Component {
                 </div>
                 <div className="calenderDay calendarCellWrapper">
                     {calendarInfo.map((data, i) => {
+                        console.log('cell mapping，data整體' , data);
                         if (!data.date) {
                             return (
                                 <div className="calendarCell" key={i}>
@@ -48,7 +50,9 @@ class Calendar extends Component {
                                 split[1] - 1,
                                 split[0]
                             ).getDate();
-
+                            console.log('cell mapping，data解析');
+                            console.log('解析＿split', split);
+                            console.log('解析＿date', date);
                             return (
                                 <div className="calendarCell inactive" key={i}>
                                     <span>{date}</span>
@@ -86,6 +90,7 @@ class Calendar extends Component {
 
     render() {
         const calendarInfo = this.props.calendarInfo;
+        console.log('calendar render, calendar props', calendarInfo);
         return (
             <div>{calendarInfo ? this.paintCalendar(calendarInfo) : null}</div>
         );

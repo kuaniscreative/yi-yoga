@@ -11,6 +11,10 @@
             margin-left: 2.5em;
             margin-right: 2.5em;
         } 
+        @include media("below-iphoneSE") {
+            font-size: 0.75rem;
+            margin: 8px auto;
+        }
     }
 
 }
