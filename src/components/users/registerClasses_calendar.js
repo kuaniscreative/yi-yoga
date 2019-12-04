@@ -5,7 +5,6 @@ import CalendarCellWithClassInfo from "./registerClasses_calendarCellWithClassIn
 
 class Calendar extends Component {
     paintCalendar = calendarInfo => {
-        console.log('calendar painting', calendarInfo);
         const className = `calendar ${this.props.className}`;
         return (
             <div className={className}>
@@ -34,7 +33,6 @@ class Calendar extends Component {
                 </div>
                 <div className="calenderDay calendarCellWrapper">
                     {calendarInfo.map((data, i) => {
-                        console.log('cell mapping，data整體' , data);
                         if (!data.date) {
                             return (
                                 <div className="calendarCell" key={i}>
@@ -46,13 +44,10 @@ class Calendar extends Component {
                                 return parseInt(str);
                             });
                             const date = new Date(
-                                split[2],
+                                split[0],
                                 split[1] - 1,
-                                split[0]
+                                split[2]
                             ).getDate();
-                            console.log('cell mapping，data解析');
-                            console.log('解析＿split', split);
-                            console.log('解析＿date', date);
                             return (
                                 <div className="calendarCell inactive" key={i}>
                                     <span>{date}</span>
@@ -63,14 +58,18 @@ class Calendar extends Component {
                                 return parseInt(str);
                             });
                             const date = new Date(
-                                split[2],
+                                split[0],
                                 split[1] - 1,
-                                split[0]
+                                split[2]
                             ).getDate();
-                            const hasClassHasSelected = data.hasClass.filter(info => {
-                                return info.selected;
-                            });
-                            const selected = hasClassHasSelected.length ? true : false;
+                            const hasClassHasSelected = data.hasClass.filter(
+                                info => {
+                                    return info.selected;
+                                }
+                            );
+                            const selected = hasClassHasSelected.length
+                                ? true
+                                : false;
                             return (
                                 <CalendarCellWithClassInfo
                                     data={data}
@@ -90,7 +89,6 @@ class Calendar extends Component {
 
     render() {
         const calendarInfo = this.props.calendarInfo;
-        console.log('calendar render, calendar props', calendarInfo);
         return (
             <div>{calendarInfo ? this.paintCalendar(calendarInfo) : null}</div>
         );

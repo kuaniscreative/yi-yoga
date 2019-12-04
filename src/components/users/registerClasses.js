@@ -114,7 +114,7 @@ class RegisterClasses extends Component {
                 });
             } else {
                 dateInfo.push({
-                    date: newDate.toLocaleDateString()
+                    date: newDate.toLocaleDateString('zh')
                 });
             }
         }
@@ -126,7 +126,7 @@ class RegisterClasses extends Component {
         const result = dateInfos.map((info, i) => {
             const mappedClasses = classes.map(classInfo => {
                 return {
-                    dateString: classInfo.date.toDate().toLocaleDateString(),
+                    dateString: classInfo.date.toDate().toLocaleDateString('zh'),
                     date: classInfo.date.toDate(),
                     id: classInfo.id,
                     capacity: classInfo.capacity,
