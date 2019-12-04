@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, HashRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Components
@@ -33,7 +33,7 @@ class App extends Component {
                 <div id='loadingBar' className={this.props.loading ? "active" : ""}>
                     <div id='loadingBar_bar'></div>
                 </div>
-                <BrowserRouter>
+                <HashRouter basename='/'>
                     <Header />
                     <SideMenu />
                         <Route exact path="/" component={Main} />
@@ -57,7 +57,7 @@ class App extends Component {
                         <Route path="/payment/:paymentId" component={Payment} />
                         {/** test */}
                         <Route path="/testing" component={Testing} />
-                </BrowserRouter>
+                </HashRouter>
             </div>
         );
     }
