@@ -19,6 +19,9 @@ class RegisterClassSuccess extends Component {
                 <p className="resultMessage_title">報名成功</p>
                 <ul className="comfyList">
                     <li>
+                        這個程式沒有線上付款服務，請在繳交學費後填寫繳費資料並等候芝伊確認款項
+                    </li>
+                    <li>
                             <Link to={`/payment/${id}`}>
                                 如果你已經付款，
                                 <span className="underline">
@@ -27,7 +30,7 @@ class RegisterClassSuccess extends Component {
                             </Link>
                     </li>
                     <li>
-                            之後你也可以在 選單>課程狀態 執行此動作
+                            你也可以在 「選單 > 課程狀態」 填寫付款資料
                     </li>
                 </ul>
                 <div className="nextStepButtonsArea--notFixed">
