@@ -75,6 +75,7 @@ export const registerToCourse = (
         Promise.all(tasks)
             .then(() => {
                 dispatch({ type: "REGISTERED_TO_COURSE" });
+                dispatch({ type: 'CLEAR_SELECTION_WHEN_REGISTER_TO_CLASS_SUCCESS'})
                 dispatch({ type: "LOADED" });
             })
             .catch(err => {

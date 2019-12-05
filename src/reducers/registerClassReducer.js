@@ -122,7 +122,11 @@ const registerClassReducer = (state = initState, action) => {
                 selection: removeClassInSelection(action.info.id)
             }
         }
-            
+         case 'CLEAR_SELECTION_WHEN_REGISTER_TO_CLASS_SUCCESS':
+             return {
+                 ...state,
+                 selection: []
+             }   
         default:
             return state;
     }

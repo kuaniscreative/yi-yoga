@@ -247,7 +247,7 @@ class RegisterClasses extends Component {
                  *       第一步：用日曆選取課程
                  *
                  */}
-                {this.props.session && !this.state.enablePreview ? (
+                {this.props.session && !this.state.enablePreview && !this.props.registerClassSuccess ? (
                     <SelectClassPanel
                         session={this.props.session}
                         setParentState={this.toPreview}

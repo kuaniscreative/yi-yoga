@@ -44,6 +44,10 @@ class PaymentStatus extends Component {
         }
     };
 
+    paymentConfirmed = () => {
+        alert('預計在按下按鈕後更改繳費狀況。學生的面板會顯示老師已經確認收款')
+    }
+
     render() {
         const data = this.props.data;
         return (
@@ -174,14 +178,14 @@ class PaymentStatus extends Component {
                                                                 <span name="method">
                                                                     {payment.method ===
                                                                     "transaction"
-                                                                        ? `${payment.date}已匯款，帳號末四碼：${payment.account}`
+                                                                        ? `於${payment.date}匯款，帳號末四碼：${payment.account}`
                                                                         : `於${payment.date}當面繳交學費`}
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     }
                                                     action={
-                                                        <button className="outlineButton">
+                                                        <button className="outlineButton" onClick={this.paymentConfirmed}>
                                                             已收款
                                                         </button>
                                                     }
