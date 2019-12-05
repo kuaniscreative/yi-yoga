@@ -42,3 +42,34 @@
         color: $gray-2;
     }
 }
+
+.userStatus_classState[name='leave'] {
+    color: $gray-4;
+    &:before {
+        background: $gray-4;
+    }
+}
+
+.userStatus_classState[name='rescheduled'] {
+    color: $green;
+    &:before {
+        background: $green;
+    }
+}
+.userStatus_classState[name='reschedulePending'],
+.userStatus_classState[name='reschedulable'] {
+    color: $orange;
+    &:before {
+        background: $orange;
+    }
+}
+
+
+.userStatus_classState:before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 8px;
+    border-radius: 4px;
+}
