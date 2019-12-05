@@ -9,177 +9,180 @@ import LeaveSingle from "./userStatus_leaveSingle";
 import RescheduleSingle from "./userStatus_rescheduleSingle";
 import PaymentSingle from "./userStatus_paymentSingle";
 import ItemBarWithAction from "../ui/itemBarWithAction";
-import ClassSingle from './userStatus_classSingle';
+import ClassSingle from "./userStatus_classSingle";
 
-const UserStatus = ({
-    uid,
-    leaveRecord,
-    classProfile,
-    payments,
-    userClasses
-}) => {
+class UserStatus extends Component {
+    render() {
+        const uid = this.props.uid;
+        const leaveRecord = this.props.leaveRecord;
+        const classProfile = this.props.classProfile;
+        const payments = this.props.payments;
+        const userClasses = this.props.userClasses;
 
-
-    return (
-        <div id="userStatus" className="innerContent">
-            <div className="layout_pageTitle">
-                <div className="wrapper">
-                    <h1>課程狀態</h1>
+        return (
+            <div id="userStatus" className="innerContent">
+                <div className="layout_pageTitle">
+                    <div className="wrapper">
+                        <h1>課程狀態</h1>
+                    </div>
                 </div>
-            </div>
 
-            <div id='userStatus_menu'>
-                <div>
-                    <button>所有課程</button>
+                <div id="userStatus_menu">
+                    <div>
+                        <button>所有課程</button>
+                    </div>
+                    <div>
+                        <button>繳費狀態</button>
+                    </div>
+                    <div>
+                        <button>請假 & 補課</button>
+                    </div>
                 </div>
-                <div>
-                    <button>繳費狀態</button>
+                {/**
+                 *
+                 *   報名
+                 *
+                 */}
+                <div className="layout_contentBlock">
+                    <StepIndicator indicator="報名狀態" />
+                    {payments &&
+                        payments.map((payment, i) => {
+                            return <PaymentSingle infos={payment} key={i} />;
+                        })}
+                    {/** default*/
+                    payments && !payments.length ? (
+                        <p name="default">沒有任何報名資訊</p>
+                    ) : null}
                 </div>
-                <div>
-                    <button>請假 & 補課</button>
-                </div>
-            </div>
-            {/**
-             *
-             *   報名
-             *
-             */}
-            <div className="layout_contentBlock">
-                <StepIndicator indicator="報名狀態" />
-                {payments &&
-                    payments.map((payment, i) => {
-                        return <PaymentSingle infos={payment} key={i} />;
-                    })}
-                {/** default*/
-                payments && !payments.length ? (
-                    <p name="default">沒有任何報名資訊</p>
-                ) : null}
-            </div>
-
-            {/**
-             *
-             *   請假
-             *
-             */}
-            <div className="layout_contentBlock">
-                <StepIndicator indicator="請假狀態" />
-                {leaveRecord &&
-                    leaveRecord.reschedulable.map((date, i) => {
-                        return (
-                            <LeaveSingle
-                                status="reschedulable"
-                                date={date}
-                                key={i}
-                            />
-                        );
-                    })}
-                {leaveRecord &&
-                    leaveRecord.reschedulePending.map((date, i) => {
-                        const pendingClassInfo =
-                            classProfile &&
-                            classProfile.find(profile => {
-                                return profile.id === date.pendingClassId;
-                            });
-                        return (
-                            <LeaveSingle
-                                status="reschedulePending"
-                                date={date.leaveDate}
-                                pendingClassInfo={pendingClassInfo}
-                                uid={uid}
-                                key={i}
-                            />
-                        );
-                    })}
-                {leaveRecord &&
-                    leaveRecord.rescheduled.map((date, i) => {
-                        const rescheduleClassInfo =
-                            classProfile &&
-                            classProfile.find(profile => {
-                                return profile.id === date.rescheduleClassId;
-                            });
-                        return (
-                            <LeaveSingle
-                                status="rescheduled"
-                                date={date.leaveDate}
-                                rescheduleClassInfo={rescheduleClassInfo}
-                                key={i}
-                            />
-                        );
-                    })}
-                {/** default*/
-                leaveRecord &&
-                !leaveRecord.rescheduled.length &&
-                !leaveRecord.reschedulePending.length &&
-                !leaveRecord.reschedulable.length ? (
-                    <p name="default">沒有任何請假資訊</p>
-                ) : null}
-            </div>
-
-            {/**
-             *
-             *   補課
-             *
-             */}
-            <div className="layout_contentBlock">
-                <StepIndicator indicator="補課狀態" />
-                {leaveRecord &&
-                    leaveRecord.reschedulePending.map((date, i) => {
-                        const pendingClassInfo =
-                            classProfile &&
-                            classProfile.find(profile => {
-                                return profile.id === date.pendingClassId;
-                            });
-                        return (
-                            <RescheduleSingle
-                                pendingClassInfo={pendingClassInfo}
-                                uid={uid}
-                                key={i}
-                            />
-                        );
-                    })}
-                {leaveRecord &&
-                    leaveRecord.rescheduled.map((date, i) => {
-                        const rescheduleClassInfo =
-                            classProfile &&
-                            classProfile.find(profile => {
-                                return profile.id === date.rescheduleClassId;
-                            });
-                        return (
-                            <RescheduleSingle
-                                rescheduleClassInfo={rescheduleClassInfo}
-                                key={i}
-                            />
-                        );
-                    })}
-                {/** default*/
-                leaveRecord &&
-                !leaveRecord.rescheduled.length &&
-                !leaveRecord.reschedulePending.length ? (
-                    <p name="default">沒有任何補課資訊</p>
-                ) : null}
 
                 {/**
                  *
-                 *   所有課程
+                 *   請假
                  *
                  */}
+                <div className="layout_contentBlock">
+                    <StepIndicator indicator="請假狀態" />
+                    {leaveRecord &&
+                        leaveRecord.reschedulable.map((date, i) => {
+                            return (
+                                <LeaveSingle
+                                    status="reschedulable"
+                                    date={date}
+                                    key={i}
+                                />
+                            );
+                        })}
+                    {leaveRecord &&
+                        leaveRecord.reschedulePending.map((date, i) => {
+                            const pendingClassInfo =
+                                classProfile &&
+                                classProfile.find(profile => {
+                                    return profile.id === date.pendingClassId;
+                                });
+                            return (
+                                <LeaveSingle
+                                    status="reschedulePending"
+                                    date={date.leaveDate}
+                                    pendingClassInfo={pendingClassInfo}
+                                    uid={uid}
+                                    key={i}
+                                />
+                            );
+                        })}
+                    {leaveRecord &&
+                        leaveRecord.rescheduled.map((date, i) => {
+                            const rescheduleClassInfo =
+                                classProfile &&
+                                classProfile.find(profile => {
+                                    return (
+                                        profile.id === date.rescheduleClassId
+                                    );
+                                });
+                            return (
+                                <LeaveSingle
+                                    status="rescheduled"
+                                    date={date.leaveDate}
+                                    rescheduleClassInfo={rescheduleClassInfo}
+                                    key={i}
+                                />
+                            );
+                        })}
+                    {/** default*/
+                    leaveRecord &&
+                    !leaveRecord.rescheduled.length &&
+                    !leaveRecord.reschedulePending.length &&
+                    !leaveRecord.reschedulable.length ? (
+                        <p name="default">沒有任何請假資訊</p>
+                    ) : null}
+                </div>
+
+                {/**
+                 *
+                 *   補課
+                 *
+                 */}
+                <div className="layout_contentBlock">
+                    <StepIndicator indicator="補課狀態" />
+                    {leaveRecord &&
+                        leaveRecord.reschedulePending.map((date, i) => {
+                            const pendingClassInfo =
+                                classProfile &&
+                                classProfile.find(profile => {
+                                    return profile.id === date.pendingClassId;
+                                });
+                            return (
+                                <RescheduleSingle
+                                    pendingClassInfo={pendingClassInfo}
+                                    uid={uid}
+                                    key={i}
+                                />
+                            );
+                        })}
+                    {leaveRecord &&
+                        leaveRecord.rescheduled.map((date, i) => {
+                            const rescheduleClassInfo =
+                                classProfile &&
+                                classProfile.find(profile => {
+                                    return (
+                                        profile.id === date.rescheduleClassId
+                                    );
+                                });
+                            return (
+                                <RescheduleSingle
+                                    rescheduleClassInfo={rescheduleClassInfo}
+                                    key={i}
+                                />
+                            );
+                        })}
+                    {/** default*/
+                    leaveRecord &&
+                    !leaveRecord.rescheduled.length &&
+                    !leaveRecord.reschedulePending.length ? (
+                        <p name="default">沒有任何補課資訊</p>
+                    ) : null}
+
+                    {/**
+                     *
+                     *   所有課程
+                     *
+                     */}
+                </div>
+                <div className="layout_contentBlock">
+                    <StepIndicator indicator="所有課程" />
+                    <ul className="borderBottomList">
+                        {userClasses.map(classInfo => {
+                            return (
+                                <li>
+                                    <ClassSingle classInfo={classInfo} />
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </div>
             </div>
-            <div className="layout_contentBlock">
-                <StepIndicator indicator="所有課程" />
-                <ul className="borderBottomList">
-                    {userClasses.map(classInfo => {
-                        
-                        return (
-                            <li>
-                                <ClassSingle classInfo={classInfo}/>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 const mapStateToProps = state => {
     const uid = state.firebase.auth.uid;
