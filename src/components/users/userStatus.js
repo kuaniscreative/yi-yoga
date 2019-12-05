@@ -269,7 +269,6 @@ const mapStateToProps = state => {
 
     const processedData = () => {
         const allClasses = userData ? userData.allClasses : null;
-        const leaveClasses = userData ? userData.leave : null;
         const reschedulable = leaveRecord ? leaveRecord.reschedulable : null;
         const rescheduled = leaveRecord ? leaveRecord.rescheduled : null;
         const reschedulePending = leaveRecord
@@ -339,7 +338,9 @@ const mapStateToProps = state => {
                 }
             });
 
-        return classes;
+        return classes.sort((a, b) => {
+            return a.date.valueOf() - b.date.valueOf();
+        });
     };
 
     return {
