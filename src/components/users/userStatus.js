@@ -8,7 +8,6 @@ import StepIndicator from "../stepIndicator";
 import LeaveSingle from "./userStatus_leaveSingle";
 import RescheduleSingle from "./userStatus_rescheduleSingle";
 import PaymentSingle from "./userStatus_paymentSingle";
-import ItemBarWithAction from "../ui/itemBarWithAction";
 import ClassSingle from "./userStatus_classSingle";
 
 class UserStatus extends Component {
