@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { firestoreConnect } from "react-redux-firebase";
@@ -18,11 +18,25 @@ const UserStatus = ({
     payments,
     userClasses
 }) => {
+
+
     return (
         <div id="userStatus" className="innerContent">
             <div className="layout_pageTitle">
                 <div className="wrapper">
                     <h1>課程狀態</h1>
+                </div>
+            </div>
+
+            <div id='userStatus_menu'>
+                <div>
+                    <button>所有課程</button>
+                </div>
+                <div>
+                    <button>繳費狀態</button>
+                </div>
+                <div>
+                    <button>請假 & 補課</button>
                 </div>
             </div>
             {/**

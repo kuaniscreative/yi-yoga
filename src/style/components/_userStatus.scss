@@ -73,3 +73,27 @@
     margin-right: 8px;
     border-radius: 4px;
 }
+
+#userStatus_menu {
+    display: flex;
+    margin: 0 24px;
+    border: 1px solid $gray-6;
+    border-radius: 8px;
+    
+    & > div {
+        flex: 1 0 33%;
+    }
+
+    div:nth-child(2) {
+        border-left: 1px solid $gray-6;
+        border-right: 1px solid $gray-6;
+    }
+
+    button {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 40px;
+        font-size: 0.75rem;
+    }
+}
