@@ -4,6 +4,10 @@
         margin-bottom: 2em;
     }
     .nextStepButtonsArea {
+        button {
+            margin-right: 2.5em;
+            margin-left: 2.5em;
+        }
         @include media('below-small') {
             position: fixed;
             bottom: 0;
@@ -44,6 +48,11 @@
 
     .buttonArea {
         margin-bottom: 8px;
+        button {
+            @include media('below-iphoneSE') {
+                font-size: 10px;
+            }
+        }
     }
     .buttonArea:nth-child(2) {
         margin-bottom: 16px;
@@ -58,7 +67,7 @@
 
 .reschedule_preview_options {
     width: 100%;
-    font-weight: 400;
+    font-weight: 500;
     .date {
         margin-bottom: 12px;
         span:nth-child(1) {
