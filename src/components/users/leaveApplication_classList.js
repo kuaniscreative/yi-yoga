@@ -29,19 +29,22 @@ class ClassList extends Component {
         return (
             <div className="layout_contentBlock nextStepButtonsArea_parent">
                 <StepIndicator indicator="選擇請假日期" />
-                <div id='leaveApplication_classList'>
-                    {this.props.classes &&
-                        this.props.classes.map((classInfo, i) => {
-                            return (
-                                <DateSingle
-                                    classSingle={classInfo.date}
-                                    key={i}
-                                    select={this.select}
-                                    canApply={classInfo.canApply}
-                                    id={classInfo.id}
-                                />
-                            );
-                        })}
+                <div id="leaveApplication_classList">
+                    <ul className="borderBottomList">
+                        {this.props.classes &&
+                            this.props.classes.map((classInfo, i) => {
+                                return (
+                                    <li key={i}>
+                                        <DateSingle
+                                            classSingle={classInfo.date}
+                                            select={this.select}
+                                            canApply={classInfo.canApply}
+                                            id={classInfo.id}
+                                        />
+                                    </li>
+                                );
+                            })}
+                    </ul>
                 </div>
 
                 <NextStepButtonsArea
