@@ -42,6 +42,20 @@
     .layout_contentBlock {
         padding-bottom: 56px;
     }
+
+    @include media('below-iphoneSE') {
+        .borderBottomList li {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
+    
+}
+
+.userStatus_classState {
+    @include media('below-iphoneSE') {
+        font-size: 10px;
+    }
 }
 
 .userStatus_classState[name='leave'] {
@@ -110,6 +124,11 @@
         color: $gray-2;
         .dateSingle_other {
             color: $gray-2;
+        }
+    }
+    .dateSingle_date {
+        @include media('below-iphoneSE') {
+            font-size: 14px;
         }
     }
 }

@@ -9,4 +9,7 @@
         font-size: 0.75rem;
         padding: 1em 0;
     }
+    @include media('below-iphoneSE') {
+        width: auto;
+    }
 }
