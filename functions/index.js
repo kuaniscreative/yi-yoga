@@ -20,30 +20,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// exports.sendMail = functions.https.onRequest((req, res) => {
-//     // for gmail usage, you need to enable 2 step secure and generate specific password
-//     // checkout: https://stackoverflow.com/a/49306726
-
-//     // getting dest email by query string
-//     const dest = req.query.dest;
-
-//     const mailOptions = {
-//         from: "yiyoga.official@gmail.com", // Something like: Jane Doe <janedoe@gmail.com>
-//         to: "benben19911020@gmail.com",
-//         subject: "I'M A PICKLE!!!", // email subject
-//         html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
-//                 <br />
-//             ` // email content in HTML
-//     };
-
-//     // returning result
-//     return transporter.sendMail(mailOptions, (erro, info) => {
-//         if (erro) {
-//             return res.send(erro.toString());
-//         }
-//         return res.send("Sended");
-//     });
-// });
+//
 
 // exports.sendEmail = functions.firestore
 //     .document("classProfile/{classId}")
@@ -103,45 +80,102 @@ const transporter = nodemailer.createTransport({
 
 // }
 
-exports.rescheduleSuccessNotification = functions.firestore
-    .document("classProfile/{classId}")
-    .onUpdate((change, context) => {
-        const classId = context.params.classId;
-        const data = change.after.data();
-        const dataBefore = change.before.data();
-        const pendingStudentArranged =
-            dataBefore.pendingStudents.length > data.pendingStudents.length;
-        const targetStudent = data.rescheduleStudents.find(student => {
-            return (
-                dataBefore.pendingStudents.indexOf(student) > -1 &&
-                dataBefore.rescheduleStudents.indexOf(student) < 0
-            );
-        });
+// exports.rescheduleSuccessNotification = functions.firestore
+//     .document("classProfile/{classId}")
+//     .onUpdate((change, context) => {
+//         const classId = context.params.classId;
+//         const data = change.after.data();
+//         const dataBefore = change.before.data();
+//         const pendingStudentArranged =
+//             dataBefore.pendingStudents.length > data.pendingStudents.length;
+//         const targetStudent = data.rescheduleStudents.find(student => {
+//             return (
+//                 dataBefore.pendingStudents.indexOf(student) > -1 &&
+//                 dataBefore.rescheduleStudents.indexOf(student) < 0
+//             );
+//         });
+//         const currentTime = new Date();
+//         const classTime = data.classDate.toDate();
+//         const classStartInTwoHour = classTime - currentTime < 7200000;
 
-        if (pendingStudentArranged) {
-            admin
-                .firestore()
-                .collection("user")
-                .doc(targetStudent)
-                .get()
-                .then(snap => {
-                    const userInfo = snap.data();
-                    const email = userInfo.email;
-                    const mailOptions = {
-                        from: "yiyoga.official@gmail.com",
-                        to: email,
-                        subject: "補課通知",
-                        html: `<p style="font-size: 16px;">補課成功囉！</p>`
-                    };
+//         if (pendingStudentArranged) {
+//             admin
+//                 .firestore()
+//                 .collection("user")
+//                 .doc(targetStudent)
+//                 .get()
+//                 .then(snap => {
+//                     const userInfo = snap.data();
+//                     const email = userInfo.email;
+//                     const mailOptions = {
+//                         from: "yiyoga.official@gmail.com",
+//                         to: email,
+//                         subject: "補課通知",
+//                         html: `<p style="font-size: 16px;">補課成功囉！</p>`
+//                     };
 
-                    return transporter.sendMail(mailOptions, (error, data) => {
-                        if (error) {
-                            console.log(error);
-                            return;
-                        }
-                    });
+//                     return transporter.sendMail(mailOptions, (error, data) => {
+//                         if (error) {
+//                             console.log(error);
+//                             return;
+//                         }
+//                     });
+//                 });
+//         }
+
+//         return true
+//     });
+
+exports.rescheduleSuccessNotification = functions.https.onCall(
+    (data, context) => {
+        return admin
+            .firestore()
+            .collection("user")
+            .doc(data.studentId)
+            .get()
+            .then(snap => {
+                const userInfo = snap.data();
+                const email = userInfo.email;
+                const mailOptions = {
+                    from: "yiyoga.official@gmail.com",
+                    to: email,
+                    subject: "補課通知",
+                    html: `<p style="font-size: 16px;">補課成功囉！</p>`
+                };
+
+                return transporter.sendMail(mailOptions, (error, data) => {
+                    if (error) {
+                        console.log(error);
+                        return;
+                    }
                 });
-        }
+            });
+    }
+);
 
-        return true
-    });
+exports.rescheduleQuery = functions.https.onCall(
+    (data, context) => {
+        return admin
+            .firestore()
+            .collection("user")
+            .doc(data.studentId)
+            .get()
+            .then(snap => {
+                const userInfo = snap.data();
+                const email = userInfo.email;
+                const mailOptions = {
+                    from: "yiyoga.official@gmail.com",
+                    to: email,
+                    subject: "補課通知",
+                    html: `<p style="font-size: 16px;">請問是否要補課？</p>`
+                };
+
+                return transporter.sendMail(mailOptions, (error, data) => {
+                    if (error) {
+                        console.log(error);
+                        return;
+                    }
+                });
+            });
+    }
+);
