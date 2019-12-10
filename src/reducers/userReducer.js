@@ -48,6 +48,11 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 updatePaymentSuccess: true
             };
+        case 'RESCHEDULE_QUERY_PROCESSED':
+            return {
+                ...state,
+                rescheduleQueryProcessed: true
+            }
         default:
             return state;
     }

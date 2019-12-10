@@ -378,6 +378,8 @@ export const rescheduleQueryAccept = (userId, classId) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
+        dispatch({type: 'LOADING'})
+
         function updateClassProfile(userId, classId) {
             return firestore
                 .collection("classProfile")
@@ -433,9 +435,11 @@ export const rescheduleQueryAccept = (userId, classId) => {
 
         Promise.all(tasks)
             .then(() => {
+                dispatch({type: 'LOADED'})
                 console.log("success");
             })
             .catch(err => {
+                dispatch({type: 'LOADED'})
                 console.log(err);
             });
     };
@@ -445,6 +449,8 @@ export const rescheduleQueryDecline = (userId, classId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
+
+        dispatch({type: 'LOADING'})
 
         function updateClassProfile(userId, classId) {
             return firestore
@@ -494,8 +500,9 @@ export const rescheduleQueryDecline = (userId, classId) => {
 
         Promise.all(tasks)
             .then(() => {
-                const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
+                dispatch({type: 'LOADED'})
                 
+                const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
                 return firestore.collection('classProfile').doc(classId).get().then((snap) => {
                     const data = snap.data();
                     const targetStudent = data.pendingStudents[0];
@@ -506,6 +513,7 @@ export const rescheduleQueryDecline = (userId, classId) => {
                 })
             })
             .catch(err => {
+                dispatch({type: 'LOADED'})
                 console.log(err);
             });
     };
