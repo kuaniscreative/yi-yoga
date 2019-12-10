@@ -18,6 +18,7 @@ import LocationInfo from './components/locationInfo';
 import LeaveRule from './components/leaveRule';
 import RescheduleRule from './components/rescheduleRule';
 import Payment from './components/users/payment';
+import RescheduleQuery from './components/users/rescheduleQuery';
 
 import Testing from './components/ui/testing';
 
@@ -55,6 +56,7 @@ class App extends Component {
                         <Route path="/leaveRule" component={LeaveRule} />
                         <Route path="/rescheduleRule" component={RescheduleRule} />
                         <Route path="/payment/:paymentId" component={Payment} />
+                        <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date' component={RescheduleQuery} />
                         {/** test */}
                         <Route path="/testing" component={Testing} />
                 </HashRouter>
