@@ -163,6 +163,9 @@ export const leaveApplication = (userId, classInfo) => {
                                 )
                             }); 
                         } else {
+                            const sendNotification = firebase.functions().httpsCallable('rescheduleSuccessNotification');
+                            sendNotification({studentId: thePendingStudent});
+
                             return firestore
                             .collection("classProfile")
                             .doc(classInfo.id)
