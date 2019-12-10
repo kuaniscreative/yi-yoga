@@ -75,7 +75,9 @@ export const registerToCourse = (
         Promise.all(tasks)
             .then(() => {
                 dispatch({ type: "REGISTERED_TO_COURSE" });
-                dispatch({ type: 'CLEAR_SELECTION_WHEN_REGISTER_TO_CLASS_SUCCESS'})
+                dispatch({
+                    type: "CLEAR_SELECTION_WHEN_REGISTER_TO_CLASS_SUCCESS"
+                });
                 dispatch({ type: "LOADED" });
             })
             .catch(err => {
@@ -206,8 +208,8 @@ export const reschedulePending = (classId, userId, rescheduleDate) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
-        
-        dispatch({type: 'LOADING'});
+
+        dispatch({ type: "LOADING" });
 
         function updateClassProfile(classId, userId) {
             return firestore
@@ -238,11 +240,13 @@ export const reschedulePending = (classId, userId, rescheduleDate) => {
                 });
         }
 
-        const tasks = [updateClassProfile(classId, userId), updateLeaveRecord(classId, userId, rescheduleDate)];
+        const tasks = [
+            updateClassProfile(classId, userId),
+            updateLeaveRecord(classId, userId, rescheduleDate)
+        ];
 
-        Promise.all(tasks)
-        .then(() => {
-            dispatch({type: 'LOADED'});
+        Promise.all(tasks).then(() => {
+            dispatch({ type: "LOADED" });
             dispatch({ type: "RESCHEDULE_PENDING_SUCCESS" });
         });
     };
@@ -253,7 +257,7 @@ export const rescheduleAdd = (classId, userId, rescheduleDate) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
-        dispatch({type: 'LOADING'});
+        dispatch({ type: "LOADING" });
 
         function updateClassProfile(classId, userId) {
             return firestore
@@ -290,7 +294,7 @@ export const rescheduleAdd = (classId, userId, rescheduleDate) => {
         ];
 
         Promise.all(tasks).then(() => {
-            dispatch({type: 'LOADED'});
+            dispatch({ type: "LOADED" });
             dispatch({ type: "RESCHEDULE_ADD_SUCCESS" });
         });
     };
@@ -340,5 +344,144 @@ export const cancelReschedulePending = (userId, pendingClassId) => {
         const tasks = [updateLeaveRecord(), updateClassProfile()];
 
         Promise.all(tasks);
+    };
+};
+
+export const rescheduleQueryAccept = (userId, classId) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+
+        function updateClassProfile(userId, classId) {
+            return firestore
+                .collection("classProfile")
+                .doc(classId)
+                .get()
+                .then(() => {
+                    return firestore
+                    .collection("classProfile")
+                    .doc(classId)
+                    .update({
+                        pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                            userId
+                        ),
+                        rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                            userId
+                        )
+                    })
+                })
+        }
+
+        function updateLeaveRecord(userId, classId) {
+            return firestore
+                .collection("leaveRecord")
+                .doc(userId)
+                .get()
+                .then(snap => {
+                    const data = snap.data();
+                    const reschedulePendingInfo = data.reschedulePending.find(
+                        info => {
+                            return info.pendingClassId === classId;
+                        }
+                    );
+                    const rescheduleInfo = {
+                        leaveDate: reschedulePendingInfo.leaveDate,
+                        rescheduleClassId: classId
+                    };
+
+                    return firestore
+                        .collection("leaveRecord")
+                        .doc(userId)
+                        .update({
+                            rescheduled: firebase.firestore.FieldValue.arrayUnion(
+                                rescheduleInfo
+                            ),
+                            reschedulePending: firebase.firestore.FieldValue.arrayRemove(
+                                reschedulePendingInfo
+                            )
+                        });
+                });
+        }
+
+        const tasks = [updateClassProfile(userId, classId), updateLeaveRecord(userId, classId)];
+
+        Promise.all(tasks)
+            .then(() => {
+                console.log("success");
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+};
+
+export const rescheduleQueryDecline = (userId, classId) => {
+    return (dispatch, getState, { getFirebase, getFirestore }) => {
+        const firestore = getFirestore();
+        const firebase = getFirebase();
+        
+
+        function updateClassProfile(userId, classId) {
+            return firestore
+                .collection("classProfile")
+                .doc(classId)
+                .get()
+                .then(() => {
+                    return firestore
+                    .collection("classProfile")
+                    .doc(classId)
+                    .update({
+                        pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                            userId
+                        )
+                    })
+                })
+        }
+
+        function updateLeaveRecord(userId, classId) {
+            return firestore
+                .collection("leaveRecord")
+                .doc(userId)
+                .get()
+                .then(snap => {
+                    const data = snap.data();
+                    const reschedulePendingInfo = data.reschedulePending.find(
+                        info => {
+                            return info.pendingClassId === classId;
+                        }
+                    );
+
+                    return firestore
+                        .collection("leaveRecord")
+                        .doc(userId)
+                        .update({
+                            reschedulable: firebase.firestore.FieldValue.arrayUnion(
+                                reschedulePendingInfo.leaveDate
+                            ),
+                            reschedulePending: firebase.firestore.FieldValue.arrayRemove(
+                                reschedulePendingInfo
+                            )
+                        });
+                });
+        }
+
+        const tasks = [updateClassProfile(userId, classId), updateLeaveRecord(userId, classId)];
+
+        Promise.all(tasks)
+            .then(() => {
+                const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
+                
+                return firestore.collection('classProfile').get().then((snap) => {
+                    const data = snap.data();
+                    const targetStudent = data.pendingStudents[0];
+                    
+                    if (targetStudent) {
+                        sendQueryMail({studentId: targetStudent})
+                    }
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 };

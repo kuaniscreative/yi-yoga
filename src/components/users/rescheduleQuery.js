@@ -1,7 +1,25 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 
+// actions
+import { rescheduleQueryAccept, rescheduleQueryDecline } from '../../actions/userActions';
 class RescheduleQuery extends Component {
     state = {};
+
+    componentDidMount() {
+        const params =  this.props.match.params;
+        const result = params.result;
+        const userId = params.userId;
+        const classId = params.classId;
+        const rescheduleQueryAccept = this.props.rescheduleQueryAccept;
+
+        if (result === 'accept') {
+            rescheduleQueryAccept(userId, classId);
+        } else if (result === 'decline') {
+            rescheduleQueryDecline(userId, classId)
+        }
+    }
+
     render() {
         return (
             <div>
@@ -18,4 +36,15 @@ class RescheduleQuery extends Component {
     }
 }
 
-export default RescheduleQuery;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        rescheduleQueryAccept: (userId, classId) => {
+            dispatch(rescheduleQueryAccept(userId, classId))
+        },
+        rescheduleQueryDecline: (userId, classId) => {
+            dispatch(rescheduleQueryDecline(userId, classId))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(RescheduleQuery);

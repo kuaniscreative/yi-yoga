@@ -56,7 +56,7 @@ class App extends Component {
                         <Route path="/leaveRule" component={LeaveRule} />
                         <Route path="/rescheduleRule" component={RescheduleRule} />
                         <Route path="/payment/:paymentId" component={Payment} />
-                        <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date' component={RescheduleQuery} />
+                        <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date?' component={RescheduleQuery} />
                         {/** test */}
                         <Route path="/testing" component={Testing} />
                 </HashRouter>
