@@ -12,6 +12,7 @@ class RescheduleQuery extends Component {
         const userId = params.userId;
         const classId = params.classId;
         const rescheduleQueryAccept = this.props.rescheduleQueryAccept;
+        const rescheduleQueryDecline = this.props.rescheduleQueryDecline;
 
         if (result === 'accept') {
             rescheduleQueryAccept(userId, classId);

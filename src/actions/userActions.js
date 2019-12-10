@@ -442,7 +442,6 @@ export const rescheduleQueryDecline = (userId, classId) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
-        
 
         function updateClassProfile(userId, classId) {
             return firestore
@@ -494,12 +493,12 @@ export const rescheduleQueryDecline = (userId, classId) => {
             .then(() => {
                 const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
                 
-                return firestore.collection('classProfile').get().then((snap) => {
+                return firestore.collection('classProfile').doc(classId).get().then((snap) => {
                     const data = snap.data();
                     const targetStudent = data.pendingStudents[0];
                     
                     if (targetStudent) {
-                        sendQueryMail({studentId: targetStudent})
+                        sendQueryMail({studentId: targetStudent, classId: classId})
                     }
                 })
             })
