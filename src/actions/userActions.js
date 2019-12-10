@@ -143,7 +143,27 @@ export const leaveApplication = (userId, classInfo) => {
                     const data = res.data();
                     const thePendingStudent = data.pendingStudents[0];
                     if (thePendingStudent) {
-                        return firestore
+                        const currentTime = new Date();
+                        const classTime = data.classDate.toDate();
+                        const classStartWithinTwoHour = classTime - currentTime < 7200000;
+
+                        if (classStartWithinTwoHour) {
+                            const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
+                            sendQueryMail({studentId: thePendingStudent, classId: res.id});
+
+                            return firestore
+                            .collection("classProfile")
+                            .doc(classInfo.id)
+                            .update({
+                                students: firebase.firestore.FieldValue.arrayRemove(
+                                    userId
+                                ),
+                                absence: firebase.firestore.FieldValue.arrayUnion(
+                                    userId
+                                )
+                            }); 
+                        } else {
+                            return firestore
                             .collection("classProfile")
                             .doc(classInfo.id)
                             .update({
@@ -160,6 +180,7 @@ export const leaveApplication = (userId, classInfo) => {
                                     userId
                                 )
                             });
+                        }
                     } else {
                         return firestore
                             .collection("classProfile")
@@ -199,6 +220,8 @@ export const leaveApplication = (userId, classInfo) => {
         Promise.all(tasks).then(() => {
             dispatch({ type: "LOADED" });
             dispatch({ type: "LEAVE_APPLICATION_SUCCESS" });
+        }).catch((err) => {
+            console.log(err);
         });
     };
 };
