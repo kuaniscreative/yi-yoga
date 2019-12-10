@@ -163,11 +163,13 @@ exports.rescheduleQuery = functions.https.onCall(
             .then(snap => {
                 const userInfo = snap.data();
                 const email = userInfo.email;
+                const classId = data.classId;
+                const userId = data.studentId;
                 const mailOptions = {
                     from: "yiyoga.official@gmail.com",
                     to: email,
                     subject: "補課通知",
-                    html: `<p style="font-size: 16px;">請問是否要補課？</p>`
+                    html: `<p style="font-size: 16px;">請問是否要補課？</p> <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a> <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>`
                 };
 
                 return transporter.sendMail(mailOptions, (error, data) => {
