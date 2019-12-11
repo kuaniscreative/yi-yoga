@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
+const Email = require("email-templates");
 const cors = require("cors")({ origin: true });
 admin.initializeApp(functions.config().firebase);
 
@@ -153,31 +154,75 @@ exports.rescheduleSuccessNotification = functions.https.onCall(
     }
 );
 
-exports.rescheduleQuery = functions.https.onCall(
-    (data, context) => {
-        return admin
-            .firestore()
-            .collection("user")
-            .doc(data.studentId)
-            .get()
-            .then(snap => {
-                const userInfo = snap.data();
-                const email = userInfo.email;
-                const classId = data.classId;
-                const userId = data.studentId;
-                const mailOptions = {
-                    from: "yiyoga.official@gmail.com",
-                    to: email,
-                    subject: "補課通知",
-                    html: `<p style="font-size: 16px;">請問是否要補課？</p> <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a> <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>`
-                };
+exports.rescheduleQuery = functions.https.onCall((data, context) => {
+    return admin
+        .firestore()
+        .collection("user")
+        .doc(data.studentId)
+        .get()
+        .then(snap => {
+            const userInfo = snap.data();
+            const email = userInfo.email;
+            const classId = data.classId;
+            const userId = data.studentId;
+            const mailOptions = {
+                from: "yiyoga.official@gmail.com",
+                to: email,
+                subject: "補課通知",
+                html: /*html*/ `
+                <p style="font-size: 16px;">請問是否要補課？</p> 
+                <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a> 
+                <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>
+                `
+            };
 
-                return transporter.sendMail(mailOptions, (error, data) => {
-                    if (error) {
-                        console.log(error);
-                        return;
-                    }
-                });
+            return transporter.sendMail(mailOptions, (error, data) => {
+                if (error) {
+                    console.log(error);
+                    return;
+                }
             });
-    }
-);
+        });
+});
+
+exports.testMail = functions.https.onCall((data, context) => {
+    // const mailOptions = {
+    //     from: "yiyoga.official@gmail.com",
+    //     to: "benben19911020@gmail.com",
+    //     subject: "補課通知",
+    //     html: /*html*/ `
+    //             <p style="font-size: 16px;">請問是否要補課？</p> 
+    //             <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a> 
+    //             <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>
+    //             `
+    // };
+
+    const email = new Email({
+        message: {
+            from: "芝伊瑜珈 <yiyoga.official@gmail.com>"
+        },
+        // uncomment below to send emails in development/test env:
+        send: true,
+        transport: {
+            service: "gmail",
+            auth: {
+                user: account,
+                pass: password
+            }
+        }
+    });
+
+    email.send({
+        template: 'reschedule',
+        message: {
+            to: "benben19911020@gmail.com"
+        },
+        locals: {
+            name: "凱婷",
+            date: '2月15日',
+            time: '19:30',
+            acceptLink: 'https://class-manage-80e60.firebaseapp.com/#/',
+            declineLink:'https://class-manage-80e60.firebaseapp.com/#/'
+        }
+    });
+});
