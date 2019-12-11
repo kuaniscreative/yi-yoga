@@ -23,11 +23,18 @@ import RescheduleQuery from './components/users/rescheduleQuery';
 import Testing from './components/ui/testing';
 
 // actions
-
+import {removeExpireClasses} from './actions/systemActions';
 class App extends Component {
     state = {
         loggedIn: true
     };
+
+    componentDidMount() {
+        // const dates = [new Date(2019, 11, 11, 13, 25), new Date(2019, 11, 11, 13, 30), new Date(2019, 11, 11, 13, 40), new Date(2019, 11, 11, 13, 45)]
+        this.props.removeExpireClasses()
+    }
+    
+
     render() {
         return (
             <div className="App">
@@ -71,4 +78,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removeExpireClasses: () => {
+            dispatch(removeExpireClasses())
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
