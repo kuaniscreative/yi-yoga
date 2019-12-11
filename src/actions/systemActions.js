@@ -1,6 +1,7 @@
 export const removeExpireClassProfile = () => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
         const firestore = getFirestore();
+        const firebase = getFirebase();
         /**
          *      取得classProfile並找出過期課堂
          */
@@ -18,8 +19,62 @@ export const removeExpireClassProfile = () => {
                     const date = classInfo.classDate.toDate();
                     return timeIsDue(date);
                 });
+                const hasPendingStudent = dueClasses.filter(classInfo => {
+                    return classInfo.pendingStudents.length > 0;
+                });
+
                 /**
-                 *      非同步執行： 從classProfile移除 && 新增到classHistory
+                 *      功能：退還補課機會
+                 */
+                function returnReschedulable(userId, pendingClassId) {
+                    return firestore
+                        .collection("leaveRecord")
+                        .doc(userId)
+                        .get()
+                        .then(res => {
+                            const data = res.data();
+                            const currentPending = data.reschedulePending;
+                            const newPending = currentPending.filter(
+                                profile => {
+                                    return (
+                                        profile.pendingClassId !==
+                                        pendingClassId
+                                    );
+                                }
+                            );
+                            const leaveDate = currentPending.find(profile => {
+                                return (
+                                    profile.pendingClassId === pendingClassId
+                                );
+                            }).leaveDate;
+
+                            return firestore
+                                .collection("leaveRecord")
+                                .doc(userId)
+                                .update({
+                                    reschedulePending: newPending,
+                                    reschedulable: firebase.firestore.FieldValue.arrayUnion(
+                                        leaveDate
+                                    )
+                                });
+                        });
+                }
+
+                function restorePendingStudents(hasPendingStudent) {
+                    const tasks = [];
+                    hasPendingStudent.forEach((classInfo) => {
+                        const pendingClassId = classInfo.id;
+                        const pendingStudents = classInfo.pendingStudents;
+                        pendingStudents.forEach((studentId) => {
+                            tasks.push(returnReschedulable(studentId, pendingClassId))
+                        })
+                    })
+                    
+                    return Promise.all(tasks);
+                }
+
+                /**
+                 *     功能： 從classProfile移除 && 新增到classHistory
                  */
                 function removeFromClassProfile(dueClasses) {
                     const tasks = [];
@@ -46,13 +101,24 @@ export const removeExpireClassProfile = () => {
                     });
                     return Promise.all(tasks);
                 }
+
+                /**
+                 *      如果有候補中學生，先退還補課機會再移除過期課程
+                 *      移除過期課程為非同步執行：從classProfile移除過期課程 && 新增過期課程資訊到classHistory
+                 */
                 if (dueClasses.length) {
                     const tasks = [
                         removeFromClassProfile(dueClasses),
                         createClassHistory(dueClasses)
                     ];
 
-                    return Promise.all(tasks);
+                    if (hasPendingStudent.length) {
+                        return restorePendingStudents(hasPendingStudent).then(() => {
+                            return Promise.all(tasks)
+                        })
+                    } else {
+                        return Promise.all(tasks);
+                    }
                 }
             })
             .catch(err => {
@@ -105,32 +171,46 @@ export const removeExpireUserClasses = uid => {
             /**
              *      更新leaveRecord
              */
-            return firestore.collection('leaveRecord').doc(uid).get().then((snap) => {
-                const data = snap.data();
-                const reschedulable = data.reschedulable;
-                const currentTime = new Date();
-                const due = reschedulable.filter((timestamp) => {
-                    const currentMonth = currentTime.getMonth();
-                    const classDate = timestamp.toDate();
-                    const available = [classDate.getMonth(), (classDate.getMonth() + 1) % 12]
-                    return available.indexOf(currentMonth) < 0
-                })
-                
-                if (due.length) {
-                    return firestore.collection('leaveRecord').doc(uid).update({
-                        reschedulable: firebase.firestore.FieldValue.arrayRemove(...due)
-                    })
-                }
-            })
+            return firestore
+                .collection("leaveRecord")
+                .doc(uid)
+                .get()
+                .then(snap => {
+                    const data = snap.data();
+                    const reschedulable = data.reschedulable;
+                    const currentTime = new Date();
+                    const due = reschedulable.filter(timestamp => {
+                        const currentMonth = currentTime.getMonth();
+                        const classDate = timestamp.toDate();
+                        const available = [
+                            classDate.getMonth(),
+                            (classDate.getMonth() + 1) % 12
+                        ];
+                        return available.indexOf(currentMonth) < 0;
+                    });
+
+                    if (due.length) {
+                        return firestore
+                            .collection("leaveRecord")
+                            .doc(uid)
+                            .update({
+                                reschedulable: firebase.firestore.FieldValue.arrayRemove(
+                                    ...due
+                                )
+                            });
+                    }
+                });
         }
 
         const tasks = [updateUserClasses(uid), updateLeaveRecord(uid)];
 
-        Promise.all(tasks).then(() => {
-            console.log('ok')
-        }).catch((err) => {
-            console.log(err);
-        })
+        Promise.all(tasks)
+            .then(() => {
+                console.log("ok");
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 };
 
