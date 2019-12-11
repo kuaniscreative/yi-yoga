@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, HashRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { getFirebase } from "react-redux-firebase";
 
 // Components
 import Main from "./components/main";
@@ -23,15 +24,22 @@ import RescheduleQuery from './components/users/rescheduleQuery';
 import Testing from './components/ui/testing';
 
 // actions
-import {removeExpireClasses} from './actions/systemActions';
+import {removeExpireClassProfile, removeExpireUserClasses} from './actions/systemActions';
 class App extends Component {
     state = {
         loggedIn: true
     };
 
     componentDidMount() {
-        // const dates = [new Date(2019, 11, 11, 13, 25), new Date(2019, 11, 11, 13, 30), new Date(2019, 11, 11, 13, 40), new Date(2019, 11, 11, 13, 45)]
-        this.props.removeExpireClasses()
+        this.props.removeExpireClassProfile();
+        const firebase = getFirebase();
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.props.removeExpireUserClasses(user.uid)
+            } else {
+              console.log('Nouser')
+            }
+          });
     }
     
 
@@ -80,8 +88,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        removeExpireClasses: () => {
-            dispatch(removeExpireClasses())
+        removeExpireClassProfile: () => {
+            dispatch(removeExpireClassProfile())
+        }, 
+        removeExpireUserClasses: (uid) => {
+            dispatch(removeExpireUserClasses(uid))
         }
     }
 }
