@@ -27,12 +27,6 @@
             margin-left: 0;
         }
     }
-
-    .checkboxContainer {
-        @include media("above-tablet") {
-            margin-bottom: 3em;
-        }
-    }
 }
 #leaveApplication_classList {
     width: 100%;
