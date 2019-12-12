@@ -37,46 +37,46 @@ class UserStatus extends Component {
                         <h1>課程狀態</h1>
                     </div>
                 </div>
-
-                <div id="userStatus_menu">
-                    <div>
-                        <button
-                            onClick={e => {
-                                this.changeView(e, 1);
-                            }}
-                            className={
-                                this.state.inView === 1 ? "inView" : null
-                            }
-                        >
-                            所有課程
-                        </button>
-                    </div>
-                    <div>
-                        <button
-                            onClick={e => {
-                                this.changeView(e, 2);
-                            }}
-                            className={
-                                this.state.inView === 2 ? "inView" : null
-                            }
-                        >
-                            繳費狀態
-                        </button>
-                    </div>
-                    <div>
-                        <button
-                            onClick={e => {
-                                this.changeView(e, 3);
-                            }}
-                            className={
-                                this.state.inView === 3 ? "inView" : null
-                            }
-                        >
-                            請假 & 補課
-                        </button>
+                <div className='layout_contentBlock'>
+                    <div id="userStatus_menu">
+                        <div>
+                            <button
+                                onClick={e => {
+                                    this.changeView(e, 1);
+                                }}
+                                className={
+                                    this.state.inView === 1 ? "inView" : null
+                                }
+                            >
+                                所有課程
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                onClick={e => {
+                                    this.changeView(e, 2);
+                                }}
+                                className={
+                                    this.state.inView === 2 ? "inView" : null
+                                }
+                            >
+                                繳費狀態
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                onClick={e => {
+                                    this.changeView(e, 3);
+                                }}
+                                className={
+                                    this.state.inView === 3 ? "inView" : null
+                                }
+                            >
+                                請假 & 補課
+                            </button>
+                        </div>
                     </div>
                 </div>
-
                 {/**
                  *
                  *   報名

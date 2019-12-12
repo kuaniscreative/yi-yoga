@@ -35,6 +35,7 @@
 .layout_contentBlock {
     padding: 0 32px;
     margin-bottom: 40px;
+    max-width: 960px;
     @include media('above-tablet') {
         padding: 0 72px;
     }
