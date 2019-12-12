@@ -15,7 +15,7 @@ const authReducer = (state = initState, action) => {
                     case 'auth/email-already-in-use':
                         return '帳號重複';
                     case 'auth/invalid-email':
-                        return '帳號格式錯誤';
+                        return '請輸入正確信箱';
                     default:
                         return err.message
                 }
