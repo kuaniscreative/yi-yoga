@@ -45,8 +45,8 @@ class RescheduleQuery extends Component {
                             </ul>
                         ) : (
                             <ul className="comfyList">
-                                <li>補課的機會已經退還給你</li>
-                                <li>記得要在兩個月內補課唷</li>
+                                <li>已取消本堂課的候補，並退還補課機會</li>
+                                <li>記得請假的課堂要在兩個月內補課完畢</li>
                             </ul>
                         )}
                     </div>
