@@ -141,48 +141,68 @@ export const leaveApplication = (userId, classInfo) => {
                 .get()
                 .then(res => {
                     const data = res.data();
+                    const classTime = data.classDate.toDate();
+                    const mm = classTime.getMonth();
+                    const dd = classTime.getDate();
+                    const hr = classTime.getHours();
+                    const min = classTime.getMinutes();
+                    const dateString = `${mm + 1}月${dd}日`;
+                    const startAt = `${hr}:${min < 10 ? `0${min}` : min}`;
                     const thePendingStudent = data.pendingStudents[0];
                     if (thePendingStudent) {
                         const currentTime = new Date();
-                        const classTime = data.classDate.toDate();
-                        const classStartWithinTwoHour = classTime - currentTime < 7200000;
+                        const classStartWithinTwoHour =
+                            classTime - currentTime < 7200000;
 
                         if (classStartWithinTwoHour) {
-                            const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
-                            sendQueryMail({studentId: thePendingStudent, classId: res.id});
-
-                            return firestore
-                            .collection("classProfile")
-                            .doc(classInfo.id)
-                            .update({
-                                students: firebase.firestore.FieldValue.arrayRemove(
-                                    userId
-                                ),
-                                absence: firebase.firestore.FieldValue.arrayUnion(
-                                    userId
-                                )
-                            }); 
-                        } else {
-                            const sendNotification = firebase.functions().httpsCallable('rescheduleSuccessNotification');
-                            sendNotification({studentId: thePendingStudent});
-
-                            return firestore
-                            .collection("classProfile")
-                            .doc(classInfo.id)
-                            .update({
-                                pendingStudents: firebase.firestore.FieldValue.arrayRemove(
-                                    thePendingStudent
-                                ),
-                                rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
-                                    thePendingStudent
-                                ),
-                                students: firebase.firestore.FieldValue.arrayRemove(
-                                    userId
-                                ),
-                                absence: firebase.firestore.FieldValue.arrayUnion(
-                                    userId
-                                )
+                            const sendQueryMail = firebase
+                                .functions()
+                                .httpsCallable("rescheduleQuery");
+                            sendQueryMail({
+                                studentId: thePendingStudent,
+                                classId: res.id,
+                                dateString: dateString,
+                                startAt: startAt
                             });
+
+                            return firestore
+                                .collection("classProfile")
+                                .doc(classInfo.id)
+                                .update({
+                                    students: firebase.firestore.FieldValue.arrayRemove(
+                                        userId
+                                    ),
+                                    absence: firebase.firestore.FieldValue.arrayUnion(
+                                        userId
+                                    )
+                                });
+                        } else {
+                            const sendNotification = firebase
+                                .functions()
+                                .httpsCallable("rescheduleSuccessNotification");
+                            sendNotification({
+                                studentId: thePendingStudent,
+                                dateString: dateString,
+                                startAt: startAt
+                            });
+
+                            return firestore
+                                .collection("classProfile")
+                                .doc(classInfo.id)
+                                .update({
+                                    pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                                        thePendingStudent
+                                    ),
+                                    rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                                        thePendingStudent
+                                    ),
+                                    students: firebase.firestore.FieldValue.arrayRemove(
+                                        userId
+                                    ),
+                                    absence: firebase.firestore.FieldValue.arrayUnion(
+                                        userId
+                                    )
+                                });
                         }
                     } else {
                         return firestore
@@ -220,12 +240,14 @@ export const leaveApplication = (userId, classInfo) => {
             updateLeaveRecord(userId, classInfo)
         ];
 
-        Promise.all(tasks).then(() => {
-            dispatch({ type: "LOADED" });
-            dispatch({ type: "LEAVE_APPLICATION_SUCCESS" });
-        }).catch((err) => {
-            console.log(err);
-        });
+        Promise.all(tasks)
+            .then(() => {
+                dispatch({ type: "LOADED" });
+                dispatch({ type: "LEAVE_APPLICATION_SUCCESS" });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 };
 
@@ -378,7 +400,7 @@ export const rescheduleQueryAccept = (userId, classId) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
-        dispatch({type: 'LOADING'})
+        dispatch({ type: "LOADING" });
 
         function updateClassProfile(userId, classId) {
             return firestore
@@ -387,17 +409,17 @@ export const rescheduleQueryAccept = (userId, classId) => {
                 .get()
                 .then(() => {
                     return firestore
-                    .collection("classProfile")
-                    .doc(classId)
-                    .update({
-                        pendingStudents: firebase.firestore.FieldValue.arrayRemove(
-                            userId
-                        ),
-                        rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
-                            userId
-                        )
-                    })
-                })
+                        .collection("classProfile")
+                        .doc(classId)
+                        .update({
+                            pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                                userId
+                            ),
+                            rescheduleStudents: firebase.firestore.FieldValue.arrayUnion(
+                                userId
+                            )
+                        });
+                });
         }
 
         function updateLeaveRecord(userId, classId) {
@@ -431,15 +453,18 @@ export const rescheduleQueryAccept = (userId, classId) => {
                 });
         }
 
-        const tasks = [updateClassProfile(userId, classId), updateLeaveRecord(userId, classId)];
+        const tasks = [
+            updateClassProfile(userId, classId),
+            updateLeaveRecord(userId, classId)
+        ];
 
         Promise.all(tasks)
             .then(() => {
-                dispatch({type: 'LOADED'})
+                dispatch({ type: "LOADED" });
                 console.log("success");
             })
             .catch(err => {
-                dispatch({type: 'LOADED'})
+                dispatch({ type: "LOADED" });
                 console.log(err);
             });
     };
@@ -450,7 +475,7 @@ export const rescheduleQueryDecline = (userId, classId) => {
         const firestore = getFirestore();
         const firebase = getFirebase();
 
-        dispatch({type: 'LOADING'})
+        dispatch({ type: "LOADING" });
 
         function updateClassProfile(userId, classId) {
             return firestore
@@ -459,14 +484,14 @@ export const rescheduleQueryDecline = (userId, classId) => {
                 .get()
                 .then(() => {
                     return firestore
-                    .collection("classProfile")
-                    .doc(classId)
-                    .update({
-                        pendingStudents: firebase.firestore.FieldValue.arrayRemove(
-                            userId
-                        )
-                    })
-                })
+                        .collection("classProfile")
+                        .doc(classId)
+                        .update({
+                            pendingStudents: firebase.firestore.FieldValue.arrayRemove(
+                                userId
+                            )
+                        });
+                });
         }
 
         function updateLeaveRecord(userId, classId) {
@@ -496,24 +521,36 @@ export const rescheduleQueryDecline = (userId, classId) => {
                 });
         }
 
-        const tasks = [updateClassProfile(userId, classId), updateLeaveRecord(userId, classId)];
+        const tasks = [
+            updateClassProfile(userId, classId),
+            updateLeaveRecord(userId, classId)
+        ];
 
         Promise.all(tasks)
             .then(() => {
-                dispatch({type: 'LOADED'})
-                
-                const sendQueryMail = firebase.functions().httpsCallable('rescheduleQuery');
-                return firestore.collection('classProfile').doc(classId).get().then((snap) => {
-                    const data = snap.data();
-                    const targetStudent = data.pendingStudents[0];
-                    
-                    if (targetStudent) {
-                        sendQueryMail({studentId: targetStudent, classId: classId})
-                    }
-                })
+                dispatch({ type: "LOADED" });
+
+                const sendQueryMail = firebase
+                    .functions()
+                    .httpsCallable("rescheduleQuery");
+                return firestore
+                    .collection("classProfile")
+                    .doc(classId)
+                    .get()
+                    .then(snap => {
+                        const data = snap.data();
+                        const targetStudent = data.pendingStudents[0];
+
+                        if (targetStudent) {
+                            sendQueryMail({
+                                studentId: targetStudent,
+                                classId: classId
+                            });
+                        }
+                    });
             })
             .catch(err => {
-                dispatch({type: 'LOADED'})
+                dispatch({ type: "LOADED" });
                 console.log(err);
             });
     };

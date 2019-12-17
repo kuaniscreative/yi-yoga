@@ -136,18 +136,32 @@ exports.rescheduleSuccessNotification = functions.https.onCall(
             .get()
             .then(snap => {
                 const userInfo = snap.data();
-                const email = userInfo.email;
-                const mailOptions = {
-                    from: "yiyoga.official@gmail.com",
-                    to: email,
-                    subject: "補課通知",
-                    html: `<p style="font-size: 16px;">補課成功囉！</p>`
-                };
+                const userEmail = userInfo.email;
+                const userName = userInfo.name;
+                const email = new Email({
+                    message: {
+                        from: "芝伊瑜珈 <yiyoga.official@gmail.com>"
+                    },
+                    // uncomment below to send emails in development/test env:
+                    // send: true,
+                    transport: {
+                        service: "gmail",
+                        auth: {
+                            user: account,
+                            pass: password
+                        }
+                    }
+                });
 
-                return transporter.sendMail(mailOptions, (error, data) => {
-                    if (error) {
-                        console.log(error);
-                        return;
+                return email.send({
+                    template: "rescheduleSuccess",
+                    message: {
+                        to: userEmail
+                    },
+                    locals: {
+                        name: userName,
+                        date: data.dateString,
+                        time: data.startAt
                     }
                 });
             });
@@ -162,67 +176,79 @@ exports.rescheduleQuery = functions.https.onCall((data, context) => {
         .get()
         .then(snap => {
             const userInfo = snap.data();
-            const email = userInfo.email;
+            const userEmail = userInfo.email;
+            const userName = userInfo.name;
             const classId = data.classId;
             const userId = data.studentId;
-            const mailOptions = {
-                from: "yiyoga.official@gmail.com",
-                to: email,
-                subject: "補課通知",
-                html: /*html*/ `
-                <p style="font-size: 16px;">請問是否要補課？</p> 
-                <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a> 
-                <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>
-                `
-            };
+            const email = new Email({
+                message: {
+                    from: "芝伊瑜珈 <yiyoga.official@gmail.com>"
+                },
+                // uncomment below to send emails in development/test env:
+                // send: true,
+                transport: {
+                    service: "gmail",
+                    auth: {
+                        user: account,
+                        pass: password
+                    }
+                }
+            });
 
-            return transporter.sendMail(mailOptions, (error, data) => {
-                if (error) {
-                    console.log(error);
-                    return;
+            return email.send({
+                template: "rescheduleQuery",
+                message: {
+                    to: userEmail
+                },
+                locals: {
+                    name: userName,
+                    date: data.dateString,
+                    time: data.startAt,
+                    acceptLink: `https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}`,
+                    declineLink: `https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}`
                 }
             });
         });
 });
 
-exports.testMail = functions.https.onCall((data, context) => {
-    // const mailOptions = {
-    //     from: "yiyoga.official@gmail.com",
-    //     to: "benben19911020@gmail.com",
-    //     subject: "補課通知",
-    //     html: /*html*/ `
-    //             <p style="font-size: 16px;">請問是否要補課？</p> 
-    //             <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a> 
-    //             <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>
-    //             `
-    // };
+// exports.testMail = functions.https.onCall((data, context) => {
+//     // const mailOptions = {
+//     //     from: "yiyoga.official@gmail.com",
+//     //     to: "benben19911020@gmail.com",
+//     //     subject: "補課通知",
+//     //     html: /*html*/ `
+//     //             <p style="font-size: 16px;">請問是否要補課？</p>
+//     //             <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}'>是</a>
+//     //             <a href='https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}'>否</a>
+//     //             `
+//     // };
 
-    const email = new Email({
-        message: {
-            from: "芝伊瑜珈 <yiyoga.official@gmail.com>"
-        },
-        // uncomment below to send emails in development/test env:
-        send: true,
-        transport: {
-            service: "gmail",
-            auth: {
-                user: account,
-                pass: password
-            }
-        }
-    });
+//     const email = new Email({
+//         message: {
+//             from: "芝伊瑜珈 <yiyoga.official@gmail.com>"
+//         },
+//         // uncomment below to send emails in development/test env:
+//         send: true,
+//         transport: {
+//             service: "gmail",
+//             auth: {
+//                 user: account,
+//                 pass: password
+//             }
+//         }
+//     });
 
-    email.send({
-        template: 'reschedule',
-        message: {
-            to: "benben19911020@gmail.com"
-        },
-        locals: {
-            name: "凱婷",
-            date: '2月15日',
-            time: '19:30',
-            acceptLink: 'https://class-manage-80e60.firebaseapp.com/#/',
-            declineLink:'https://class-manage-80e60.firebaseapp.com/#/'
-        }
-    });
-});
+//     email.send({
+//         template: 'reschedule',
+//         message: {
+//             to: "benben19911020@gmail.com"
+//         },
+//         locals: {
+//             name: "凱婷",
+//             date: '2月15日',
+//             time: '19:30',
+//             acceptLink: 'https://class-manage-80e60.firebaseapp.com/#/',
+//             declineLink:'https://class-manage-80e60.firebaseapp.com/#/'
+//         }
+//     });
+// });
