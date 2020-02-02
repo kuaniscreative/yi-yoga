@@ -1,6 +1,6 @@
 # Yi Yoga Class Manage System
 
-A class manage system for Yi Yoga
+A class manage system for Yi Yoga.
 
 
 
@@ -9,7 +9,7 @@ A class manage system for Yi Yoga
 - `$ npm install` to install packages
 - `$ npm start` to run a dev server
 - `$ gulp` to listen to SCSS file changes
-- `npm run build` for a production build
+- `$ npm run build` for a production build
 
 
 
