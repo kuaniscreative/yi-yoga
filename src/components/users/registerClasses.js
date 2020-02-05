@@ -43,11 +43,20 @@ class RegisterClasses extends Component {
                         return profile.id === classInfo.id;
                     });
 
-                    return {
-                        ...classInfo,
-                        capacity: matchInClassProfile.capacity,
-                        numOfStudent: matchInClassProfile.students.length
-                    };
+                    if (matchInClassProfile) {
+                        return {
+                            ...classInfo,
+                            capacity: matchInClassProfile.capacity,
+                            numOfStudent: matchInClassProfile.students.length
+                        };
+                    } else {
+                        return {
+                            ...classInfo,
+                            capacity: 0,
+                            numOfStudent: 0
+                        }
+                    }
+                    
                 });
                 const cellDatas = this.appendClassInfo(
                     dateInfos,
