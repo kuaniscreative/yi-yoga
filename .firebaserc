@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "class-manage-80e60"
+    "default": "class-manage-80e60",
+    "dev": "class-manage-dev"
   }
 }
