@@ -24,11 +24,10 @@ const devConfig = {
   appId: '1:310170459856:web:1e75c9b40be43f13b0c8d5'
 };
 
-const config = process.env.NODE_ENV === 'development' ? devConfig : prodConfig;
-// Initialize Firebase*
+const config =
+  process.env.REACT_APP_FB_CONFIG === 'dev' ? devConfig : prodConfig;
 
+// Initialize Firebase*
 firebase.initializeApp(config);
-console.log(config);
-console.log(process.env.NODE_ENV);
 
 export default firebase;
