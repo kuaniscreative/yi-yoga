@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import { BrowserRouter, Route, HashRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { getFirebase } from "react-redux-firebase";
+import React, { Component } from 'react';
+import { BrowserRouter, Route, HashRouter } from 'react-router-dom';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 
 // Components
-import Main from "./components/main";
-import LogIn from "./components/users/logIn";
-import Register from "./components/users/register";
-import Reschedule from "./components/users/reschedule";
-import LeaveApplication from "./components/users/leaveApplication";
-import RegisterClasses from "./components/users/registerClasses";
-import Admin from "./components/admin/admin";
-import UserAccount from "./components/users/userAccount";
-import SideMenu from "./components/sideMenu";
+import Main from './components/main';
+import LogIn from './components/users/logIn';
+import Register from './components/users/register';
+import Reschedule from './components/users/reschedule';
+import LeaveApplication from './components/users/leaveApplication';
+import RegisterClasses from './components/users/registerClasses';
+import Admin from './components/admin/admin';
+import UserAccount from './components/users/userAccount';
+import SideMenu from './components/sideMenu';
 import Header from './components/header';
 import UserStatus from './components/users/userStatus';
 import LocationInfo from './components/locationInfo';
@@ -20,36 +21,52 @@ import LeaveRule from './components/leaveRule';
 import RescheduleRule from './components/rescheduleRule';
 import Payment from './components/users/payment';
 import RescheduleQuery from './components/users/rescheduleQuery';
+import GuestPanel from './components/panels/guestPanel';
+import UserPanel from './components/panels/userPanel';
+import AdminPanel from './components/panels/adminPanel';
 
 import Testing from './components/ui/testing';
+import UserContext, { userContext } from './components/contexts/userContext';
 
 // actions
-import {removeExpireClassProfile, removeExpireUserClasses} from './actions/systemActions';
+import {
+  removeExpireClassProfile,
+  removeExpireUserClasses
+} from './actions/systemActions';
 class App extends Component {
-    state = {
-        loggedIn: true
-    };
+  state = {
+    loggedIn: true
+  };
 
-    componentDidMount() {
-        this.props.removeExpireClassProfile();
-        const firebase = getFirebase();
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                this.props.removeExpireUserClasses(user.uid)
-            } else {
-              console.log('Nouser')
-            }
-          });
-    }
-    
+  static contextType = userContext;
 
-    render() {
-        return (
-            <div className="App">
-                <div id='loadingBar' className={this.props.loading ? "active" : ""}>
-                    <div id='loadingBar_bar'></div>
-                </div>
-                <HashRouter basename='/'>
+  componentDidMount() {
+    this.props.removeExpireClassProfile();
+    const firebase = getFirebase();
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.removeExpireUserClasses(user.uid);
+      } else {
+        console.log('Nouser');
+      }
+    });
+  }
+
+  render() {
+    console.log(this.context);
+    return (
+      <div className="App">
+        <div id="loadingBar" className={this.props.loading ? 'active' : ''}>
+          <div id="loadingBar_bar"></div>
+        </div>
+        {this.context.isAdmin ? (
+          <AdminPanel />
+        ) : this.context.uid ? (
+          <UserPanel />
+        ) : (
+          <GuestPanel />
+        )}
+        {/* <HashRouter basename='/'>
                     <Header />
                     <SideMenu />
                         <Route exact path="/" component={Main} />
@@ -72,29 +89,30 @@ class App extends Component {
                         <Route path="/rescheduleRule" component={RescheduleRule} />
                         <Route path="/payment/:paymentId" component={Payment} />
                         <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date?' component={RescheduleQuery} />
-                        {/** test */}
-                        <Route path="/testing" component={Testing} />
-                </HashRouter>
-            </div>
-        );
-    }
+                </HashRouter> */}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        loading: state.pageControl.loading
-    }
-}
+  return {
+    loading: state.pageControl.loading
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        removeExpireClassProfile: () => {
-            dispatch(removeExpireClassProfile())
-        }, 
-        removeExpireUserClasses: (uid) => {
-            dispatch(removeExpireUserClasses(uid))
-        }
+  return {
+    removeExpireClassProfile: () => {
+      dispatch(removeExpireClassProfile());
+    },
+    removeExpireUserClasses: (uid) => {
+      dispatch(removeExpireUserClasses(uid));
     }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect([{ collection: 'user' }])
+)(App);
