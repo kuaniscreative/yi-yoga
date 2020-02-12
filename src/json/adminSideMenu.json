@@ -1,0 +1,30 @@
+{
+    "divisions": [
+        {
+            "name": "課程管理",
+            "items": [
+                {
+                    "name": "開放報名",
+                    "path": "/new-session"
+                },
+                {
+                    "name": "課表",
+                    "path": "/classList"
+                },
+                {
+                    "name": "付款狀況",
+                    "path": "/paymentStatus"
+                }
+            ]
+        },
+        {
+            "name": "學生管理",
+            "items": [
+                {
+                    "name": "新學生",
+                    "path": "/newStudent"
+                }
+            ]
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, HashRouter } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 // components
 import UserIndex from '../users/userIndex';
@@ -7,8 +7,8 @@ import Reschedule from '../users/reschedule';
 import LeaveApplication from '../users/leaveApplication';
 import RegisterClasses from '../users/registerClasses';
 import UserAccount from '../users/userAccount';
-import SideMenu from '../sideMenu';
-import Header from '../header';
+import SideMenu from '../ui/sideMenu';
+import Header from '../ui/header';
 import UserStatus from '../users/userStatus';
 import LocationInfo from '../locationInfo';
 import LeaveRule from '../leaveRule';

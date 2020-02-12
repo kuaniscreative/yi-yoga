@@ -1,0 +1,47 @@
+{
+    "divisions": [
+        {
+            "name": "課程管理",
+            "items": [
+                {
+                    "name": "報名",
+                    "path": "/register-classes"
+                },
+                {
+                    "name": "請假",
+                    "path": "/leave-application"
+                },
+                {
+                    "name": "補課",
+                    "path": "/reschedule"
+                }
+            ]
+        },
+        {
+            "name": "使用者",
+            "items": [
+                {
+                    "name": "課程狀態",
+                    "path": "/userStatus"
+                }
+            ]
+        },
+        {
+            "name": "課程資訊",
+            "items": [
+                {
+                    "name": "上課地點",
+                    "path": "/locationInfo"
+                },
+                {
+                    "name": "請假規則",
+                    "path": "/leaveRule"
+                },
+                {
+                    "name": "補課規則",
+                    "path": "/rescheduleRule"
+                }
+            ]
+        }
+    ]
+}
