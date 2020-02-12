@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 
 // Components
-import Main from './components/main';
 import LogIn from './components/users/logIn';
 import Register from './components/users/register';
 import Reschedule from './components/users/reschedule';
@@ -59,14 +58,15 @@ class App extends Component {
         <div id="loadingBar" className={this.props.loading ? 'active' : ''}>
           <div id="loadingBar_bar"></div>
         </div>
-        {this.context.isAdmin ? (
-          <AdminPanel />
-        ) : this.context.uid ? (
-          <UserPanel />
-        ) : (
-          <GuestPanel />
-        )}
-        {/* <HashRouter basename='/'>
+        <HashRouter basename="/">
+          {this.context.isAdmin ? (
+            <AdminPanel />
+          ) : this.context.uid ? (
+            <UserPanel />
+          ) : (
+            <GuestPanel />
+          )}
+          {/* <HashRouter basename='/'>
                     <Header />
                     <SideMenu />
                         <Route exact path="/" component={Main} />
@@ -90,6 +90,13 @@ class App extends Component {
                         <Route path="/payment/:paymentId" component={Payment} />
                         <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date?' component={RescheduleQuery} />
                 </HashRouter> */}
+          <Route
+            path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
+            component={RescheduleQuery}
+          />
+          <Route path="/log-in" component={LogIn} />
+          <Route path="/register" component={Register} />
+        </HashRouter>
       </div>
     );
   }
