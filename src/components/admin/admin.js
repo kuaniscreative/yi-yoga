@@ -5,19 +5,21 @@ import { Route } from 'react-router-dom';
 import NewSession from './newSession';
 import ClassList from './classList';
 import PaymentStatus from './paymentStatus';
+import NewStudent from './newStudent';
 
 class Admin extends Component {
-    render() {
-        return (
-            <div>
-                <div id='admin'>
-                    <Route path='/admin/new-session' component={NewSession} />
-                    <Route path='/admin/classList' component={ClassList} />
-                    <Route path='/admin/paymentStatus' component={PaymentStatus} />
-                </div>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <div id="admin">
+          <Route path="/admin/new-session" component={NewSession} />
+          <Route path="/admin/classList" component={ClassList} />
+          <Route path="/admin/paymentStatus" component={PaymentStatus} />
+          <Route path="/admin/newStudent" component={NewStudent} />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Admin;
