@@ -7,24 +7,23 @@ import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 // Components
 import LogIn from './components/users/logIn';
 import Register from './components/users/register';
-import Reschedule from './components/users/reschedule';
-import LeaveApplication from './components/users/leaveApplication';
-import RegisterClasses from './components/users/registerClasses';
-import Admin from './components/admin/admin';
-import UserAccount from './components/users/userAccount';
-import Header from './components/ui/header';
-import UserStatus from './components/users/userStatus';
-import LocationInfo from './components/locationInfo';
-import LeaveRule from './components/leaveRule';
-import RescheduleRule from './components/rescheduleRule';
-import Payment from './components/users/payment';
+// import Reschedule from './components/users/reschedule';
+// import LeaveApplication from './components/users/leaveApplication';
+// import RegisterClasses from './components/users/registerClasses';
+// import UserAccount from './components/users/userAccount';
+// import Header from './components/ui/header';
+// import UserStatus from './components/users/userStatus';
+// import LocationInfo from './components/locationInfo';
+// import LeaveRule from './components/leaveRule';
+// import RescheduleRule from './components/rescheduleRule';
+// import Payment from './components/users/payment';
 import RescheduleQuery from './components/users/rescheduleQuery';
 import GuestPanel from './components/panels/guestPanel';
 import UserPanel from './components/panels/userPanel';
 import AdminPanel from './components/panels/adminPanel';
 
-import Testing from './components/ui/testing';
-import UserContext, { userContext } from './components/contexts/userContext';
+// contexts
+import { userContext } from './components/contexts/userContext';
 
 // actions
 import {
