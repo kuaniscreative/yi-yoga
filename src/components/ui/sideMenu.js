@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
 
 // actions
 import { signOut } from '../../actions/authActions';
@@ -18,10 +16,8 @@ class SideMenu extends Component {
 
   render() {
     const { divisions } = this.props.data;
-
     return (
       <div id="sideMenu">
-        {/* {isAdmin ? this.adminOptions() : this.userOptions()} */}
         {divisions.map((division) => {
           return (
             <div key={keyGen()}>
@@ -49,32 +45,12 @@ class SideMenu extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const uid = state.firebase.auth.uid;
-  const userData = state.firestore.ordered.user
-    ? state.firestore.ordered.user.find((user) => {
-        return user.id === uid;
-      })
-    : null;
-  return {
-    uid: uid,
-    userData: userData,
-    newSession: state.firestore.ordered.newSession
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearSuccessMessage: (dispatchType) => {
-      dispatch({ type: dispatchType });
-    },
     signOut: () => {
       dispatch(signOut());
     }
   };
 };
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([{ collection: 'user' }, { collection: 'newSession' }])
-)(SideMenu);
+export default connect(null, mapDispatchToProps)(SideMenu);
