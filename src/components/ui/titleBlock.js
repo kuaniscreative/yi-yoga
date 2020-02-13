@@ -1,10 +1,12 @@
 import React from 'react';
 
 const TitleBlock = (props) => {
-  const { title } = props;
+  const { title, children } = props;
   return (
-    <div className="col-12 col-md-10 col-lg-8 container">
-      <h2>{title}</h2>
+    <div className="col-12 col-md-10 container titleBlock">
+      <h1>{title}</h1>
+      <p>{children}</p>
+      <div className="titleBlock_line"></div>
     </div>
   );
 };

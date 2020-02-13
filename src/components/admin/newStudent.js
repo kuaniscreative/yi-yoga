@@ -11,7 +11,9 @@ class NewStudent extends Component {
     return (
       <Container>
         <Row>
-          <TitleBlock title="新學生" />
+          <TitleBlock title="新學生">
+            以下是新註冊的學生，需要管理者確認過後才可以使用系統報名課程
+          </TitleBlock>
         </Row>
       </Container>
     );
