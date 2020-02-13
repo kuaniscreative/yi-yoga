@@ -7,7 +7,7 @@ import ClassList from '../admin/classList';
 import PaymentStatus from '../admin/paymentStatus';
 import NewStudent from '../admin/newStudent';
 import SideMenu from '../ui/sideMenu';
-import Header from '../ui/header';
+import Header from '../admin/header';
 
 // json
 import sideMenuData from '../../json/adminSideMenu';
