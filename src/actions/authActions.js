@@ -54,7 +54,7 @@ export const signUp = (userInfo) => {
               name: userInfo.name || null,
               nickName: userInfo.nickName || null,
               email: userInfo.email || null,
-              validate: false
+              validated: false
             });
         }
         const tasks = [updateLeaceRecord(uid), addUserInfo(uid)];

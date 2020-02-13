@@ -6,9 +6,22 @@ import Row from '../ui/row';
 import TitleBlock from '../ui/titleBlock';
 import StudentCard from './studentCard';
 
+// contexts
+import { allUserContext } from '../contexts/allUserContext';
+
+// functions
+import keyGen from '../../functions/keyGen';
+
 class NewStudent extends Component {
   state = {};
+
+  static contextType = allUserContext;
   render() {
+    const { students } = this.context;
+    const newStudents = students.filter((student) => {
+      return student.validated === false;
+    });
+
     return (
       <Container>
         <Row>
@@ -19,18 +32,13 @@ class NewStudent extends Component {
         <Row>
           <div className="col-10 container-fluid">
             <div className="row">
-              <div className="col-12 col-md-6 col-lg-4">
-                <StudentCard />
-              </div>
-              <div className="col-12 col-md-6 col-lg-4">
-                <StudentCard />
-              </div>
-              <div className="col-12 col-md-6 col-lg-4">
-                <StudentCard />
-              </div>
-              <div className="col-12 col-md-6 col-lg-4">
-                <StudentCard />
-              </div>
+              {newStudents.map((student) => {
+                return (
+                  <div className="col-12 col-md-6 col-lg-4" key={keyGen()}>
+                    <StudentCard data={student} />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Row>

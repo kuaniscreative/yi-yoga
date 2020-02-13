@@ -50,7 +50,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.context);
     return (
       <div className="App">
         <div id="loadingBar" className={this.props.loading ? 'active' : ''}>

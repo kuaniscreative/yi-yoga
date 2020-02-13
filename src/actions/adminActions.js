@@ -120,7 +120,7 @@ export const registerSession = (sessionInfo) => {
 
 export const validateStudent = (id) => {
   return firestore
-    .colletion('user')
+    .collection('user')
     .doc(id)
     .update({
       validated: true

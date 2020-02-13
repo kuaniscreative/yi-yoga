@@ -1,16 +1,14 @@
 import React from 'react';
 
-// data
-import studentExample from '../../json/studentExample';
-
 //actions
 import { validateStudent } from '../../actions/adminActions';
 
 const StudentCard = (props) => {
-  const { name, nickName, email, message, id } = studentExample;
+  const { name, nickName, email, message, id } = props.data;
   const handleClick = (e) => {
     const id = e.target.dataset.id;
-    if (id) {
+    const proceed = window.confirm(`確認開放 ${name} 所有功能`);
+    if (proceed) {
       validateStudent(id);
     }
   };
