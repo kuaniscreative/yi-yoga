@@ -4,18 +4,19 @@ import React, { Component } from 'react';
 import Container from '../ui/container';
 import Row from '../ui/row';
 import TitleBlock from '../ui/titleBlock';
-import StudentCard from './studentCard';
+import NewStudentList from './newStudentList';
 
 // contexts
 import { allUserContext } from '../contexts/allUserContext';
 
-// functions
-import keyGen from '../../functions/keyGen';
+const DefaultOutput = () => {
+  return <div className="col-12 col-md-10">沒有新學生</div>;
+};
 
 class NewStudent extends Component {
   state = {};
-
   static contextType = allUserContext;
+
   render() {
     const { students } = this.context;
     const newStudents = students.filter((student) => {
@@ -30,17 +31,11 @@ class NewStudent extends Component {
           </TitleBlock>
         </Row>
         <Row>
-          <div className="col-10 container-fluid">
-            <div className="row">
-              {newStudents.map((student) => {
-                return (
-                  <div className="col-12 col-md-6 col-lg-4" key={keyGen()}>
-                    <StudentCard data={student} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          {newStudents.length ? (
+            <NewStudentList newStudents={newStudents} />
+          ) : (
+            <DefaultOutput />
+          )}
         </Row>
       </Container>
     );
