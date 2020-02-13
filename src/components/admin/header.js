@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   const handleClick = () => {
-    const sideMenu = document.getElementById('sideMenu');
+    const sideMenu = document.getElementById('sideMenuRefactor');
     sideMenu.classList.toggle('active');
   };
 
   const hideMenu = () => {
-    const sideMenu = document.getElementById('sideMenu');
+    const sideMenu = document.getElementById('sideMenuRefactor');
     sideMenu.classList.remove('active');
   };
 
