@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 
 // Components
-import LogIn from './components/users/logIn';
-import Register from './components/users/register';
+// import LogIn from './components/users/logIn';
+// import SignUp from './components/users/signUp';
 // import Reschedule from './components/users/reschedule';
 // import LeaveApplication from './components/users/leaveApplication';
 // import RegisterClasses from './components/users/registerClasses';
@@ -91,8 +91,6 @@ class App extends Component {
             path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
             component={RescheduleQuery}
           />
-          <Route path="/log-in" component={LogIn} />
-          <Route path="/register" component={Register} />
         </HashRouter>
       </div>
     );

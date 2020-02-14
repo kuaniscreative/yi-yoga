@@ -1,24 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
+
+// components
+import GuestIndex from '../guest/guestIndex';
+import LogIn from '../guest/logIn';
+import SignUp from '../guest/signUp';
+import SideMenu from '../ui/sideMenu';
+import Header from '../ui/header';
+
+// json
+import sideMenuData from '../../json/guestSideMenu';
 
 const GuestPanel = () => {
   return (
     <div id="guestPanel">
-      <div className="heroMessage">
-        <div className="heroMessage_main">
-          <p>最強凍齡瑜伽</p>
-          <p>沒有芝伊</p>
-        </div>
-        <div className="heroMessage_sub">
-          <p>----的最強課程管理系統</p>
-        </div>
-      </div>
-      <Link to="/log-in" className="outlineButton">
-        登入
-      </Link>
-      <Link to="/register" className="outlineButton">
-        註冊
-      </Link>
+      <Header />
+      <SideMenu data={sideMenuData} />
+      <Route exact path="/" component={GuestIndex} />
+      <Route path="/log-in" component={LogIn} />
+      <Route path="/signUp" component={SignUp} />
     </div>
   );
 };

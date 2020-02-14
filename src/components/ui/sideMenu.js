@@ -15,7 +15,7 @@ class SideMenu extends Component {
   };
 
   render() {
-    const { divisions } = this.props.data;
+    const { divisions, logoutSection } = this.props.data;
     return (
       <div id="sideMenu">
         {divisions.map((division) => {
@@ -36,10 +36,14 @@ class SideMenu extends Component {
             </div>
           );
         })}
-        <p className="sideMenu_division">帳號管理</p>
-        <button onClick={this.props.signOut}>
-          <p className="rectButton_text">登出</p>
-        </button>
+        {logoutSection ? (
+          <div>
+            <p className="sideMenu_division">帳號管理</p>
+            <button onClick={this.props.signOut}>
+              <p className="rectButton_text">登出</p>
+            </button>
+          </div>
+        ) : null}
       </div>
     );
   }

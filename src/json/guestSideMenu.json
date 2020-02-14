@@ -1,0 +1,22 @@
+{
+    "divisions": [
+        {
+            "name": "課程資訊",
+            "items": [
+                {
+                    "name": "上課地點",
+                    "path": "/locationInfo"
+                },
+                {
+                    "name": "請假規則",
+                    "path": "/leaveRule"
+                },
+                {
+                    "name": "補課規則",
+                    "path": "/rescheduleRule"
+                }
+            ]
+        }
+    ],
+    "logoutSection": false
+}
