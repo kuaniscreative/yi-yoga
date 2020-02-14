@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import firebase from '../../fbConfig';
 
 // components
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
 // actions
 import { signUp } from '../../actions/authActions';
+
+//settings
+const sendNewUserNotification = firebase
+  .functions()
+  .httpsCallable('sendNewUserNotification');
 
 class SignUpForm extends Component {
   state = {
