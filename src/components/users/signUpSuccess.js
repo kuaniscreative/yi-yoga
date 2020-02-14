@@ -7,28 +7,28 @@ import Row from '../ui/row';
 
 const SignUpSuccess = () => {
   return (
-    <Container>
-      <Row>
-        <div className="col-10 col-md-10">
+    <div>
+      <div className="layout_pageTitle">
+        <div className="wrapper">
           <h1>註冊成功</h1>
         </div>
-      </Row>
-      <Row>
-        <div className="col-10 col-md-10">
-          <ul className="comfyList">
-            <li>需要等待芝伊確認過後才能開始報名</li>
-            <li>芝伊確認後會寄 email 通知你</li>
-          </ul>
+      </div>
+      <div className="layout_contentBlock">
+        <ul className="comfyList">
+          <li>要等待芝伊確認過後才能開始報名</li>
+          <li>確認後會寄 email 通知你</li>
+        </ul>
+        <div className="container-fluid">
+          <div className="row py-5">
+            <div className="col-12">
+              <Link to="/" className="outlineButton">
+                確認
+              </Link>
+            </div>
+          </div>
         </div>
-      </Row>
-      <Row>
-        <div className="col-10 col-md-10">
-          <Link to="/" className="outlineButton">
-            確認
-          </Link>
-        </div>
-      </Row>
-    </Container>
+      </div>
+    </div>
   );
 };
 

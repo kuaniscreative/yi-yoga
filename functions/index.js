@@ -202,7 +202,7 @@ exports.sendNewStudentNotification = functions.firestore
     return email.send({
       template: 'sendNewStudentNotification',
       message: {
-        to: 'kuan.thisis@gmail.com'
+        to: 'yiyoga.official@gmail.com'
       },
       locals: {
         url: 'https://class-manage-80e60.firebaseapp.com/'
