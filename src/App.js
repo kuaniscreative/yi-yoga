@@ -18,6 +18,7 @@ import { firestoreConnect, getFirebase } from 'react-redux-firebase';
 // import RescheduleRule from './components/rescheduleRule';
 // import Payment from './components/users/payment';
 import RescheduleQuery from './components/users/rescheduleQuery';
+import SignUpSuccess from './components/users/signUpSuccess';
 import GuestPanel from './components/panels/guestPanel';
 import UserPanel from './components/panels/userPanel';
 import AdminPanel from './components/panels/adminPanel';
@@ -91,6 +92,7 @@ class App extends Component {
             path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
             component={RescheduleQuery}
           />
+          <Route path="/signUpSuccess" component={SignUpSuccess} />
         </HashRouter>
       </div>
     );

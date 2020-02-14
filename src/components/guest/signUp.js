@@ -1,16 +1,14 @@
-import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 
-// contexts
-import { userContext } from '../contexts/userContext';
-import { signUpContext } from '../contexts/signUpContext';
+// components
+import SignUpForm from './signUpForm';
 
 const SignUp = () => {
-  const { id } = useContext(userContext);
-  const { signUpSuccess } = useContext(signUpContext);
-
-  if (id && signUpSuccess) return <Redirect to="/" />;
-  return <div id="signUp">{signUpSuccess ? null : null}</div>;
+  return (
+    <div id="signUp">
+      <SignUpForm />
+    </div>
+  );
 };
 
 export default SignUp;

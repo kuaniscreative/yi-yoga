@@ -15,11 +15,14 @@ import LeaveRule from '../leaveRule';
 import RescheduleRule from '../rescheduleRule';
 import Payment from '../users/payment';
 
+// data
+import sideMenuData from '../../json/userSideMenu';
+
 const UserPanel = () => {
   return (
     <div>
       <Header />
-      <SideMenu />
+      <SideMenu data={sideMenuData} />
       <Route exact path="/" component={UserIndex} />
       <Route path="/reschedule" component={Reschedule} />
       <Route path="/register-classes" component={RegisterClasses} />

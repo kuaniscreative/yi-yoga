@@ -1,4 +1,5 @@
 import React, { Component, createContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import firebase from '../../fbConfig';
 
 const firestore = firebase.firestore();
@@ -28,6 +29,10 @@ class UserContextProvider extends Component {
             listener: this.realTimeUpdateListener(user.uid),
             ...data
           });
+        });
+      } else {
+        this.setState(initState, () => {
+          return <Redirect to="/" />;
         });
       }
     });
