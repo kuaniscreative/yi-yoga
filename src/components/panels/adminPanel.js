@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 
 // components
@@ -7,7 +7,8 @@ import ClassList from '../admin/classList';
 import PaymentStatus from '../admin/paymentStatus';
 import NewStudent from '../admin/newStudent';
 import SideMenu from '../ui/sideMenu';
-import Header from '../ui/header';
+import Header from '../admin/header';
+import Navigation from '../ui/navigation';
 
 // context
 import AllUserContext from '../contexts/allUserContext';
@@ -16,11 +17,18 @@ import AllUserContext from '../contexts/allUserContext';
 import sideMenuData from '../../json/adminSideMenu';
 
 const AdminPanel = () => {
+  const [navIsActive, setNavIsActive] = useState(true);
+
   return (
     <AllUserContext>
       <div id="admin">
-        <Header />
+        <Header navIsActive={navIsActive} setNavIsActive={setNavIsActive} />
         <SideMenu data={sideMenuData} />
+        <Navigation
+          data={sideMenuData}
+          navIsActive={navIsActive}
+          setNavIsActive={setNavIsActive}
+        />
         <Route path="/new-session" component={NewSession} />
         <Route path="/classList" component={ClassList} />
         <Route path="/paymentStatus" component={PaymentStatus} />

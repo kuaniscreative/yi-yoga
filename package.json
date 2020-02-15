@@ -23,7 +23,8 @@
     "react-scripts": "3.1.1",
     "redux": "^4.0.4",
     "redux-firestore": "^0.9.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.0.1"
   },
   "scripts": {
     "start": "REACT_APP_FB_CONFIG=dev react-scripts start",

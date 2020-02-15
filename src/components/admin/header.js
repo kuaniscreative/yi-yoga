@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = (props) => {
+  const { navIsActive, setNavIsActive } = props;
+
   const handleClick = () => {
-    const sideMenu = document.getElementById('sideMenuRefactor');
-    sideMenu.classList.toggle('active');
+    setNavIsActive(!navIsActive);
   };
 
   const hideMenu = () => {
-    const sideMenu = document.getElementById('sideMenuRefactor');
-    sideMenu.classList.remove('active');
+    setNavIsActive(true);
   };
 
   return (

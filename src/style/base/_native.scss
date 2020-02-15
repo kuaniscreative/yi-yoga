@@ -3,6 +3,7 @@ html {
   font-family: customSet--sans;
   font-size: $base-font-size;
   font-weight: 400;
+  letter-spacing: 0.075em;
   color: $black;
 }
 
@@ -26,4 +27,8 @@ a {
   text-decoration: none;
   color: $black;
   user-select: none;
+}
+
+button {
+  letter-spacing: 0.075em;
 }
