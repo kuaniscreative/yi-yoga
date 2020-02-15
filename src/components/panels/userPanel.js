@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route } from 'react-router-dom';
 
 // components
@@ -18,11 +18,25 @@ import Payment from '../users/payment';
 // data
 import sideMenuData from '../../json/userSideMenu';
 
+// contexts
+import { userContext } from '../contexts/userContext';
+
 const UserPanel = () => {
+  const { validated } = useContext(userContext);
+  const divisions = sideMenuData.divisions;
+  const filteredData = validated
+    ? sideMenuData
+    : {
+        divisions: divisions.filter((division) => {
+          return division.name !== '課程管理';
+        }),
+        logoutSection: true
+      };
+
   return (
     <div>
       <Header />
-      <SideMenu data={sideMenuData} />
+      <SideMenu data={filteredData} />
       <Route exact path="/" component={UserIndex} />
       <Route path="/reschedule" component={Reschedule} />
       <Route path="/register-classes" component={RegisterClasses} />
