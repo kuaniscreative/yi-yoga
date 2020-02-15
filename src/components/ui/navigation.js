@@ -18,9 +18,13 @@ const NavWrapper = styled.nav`
   padding-top: ${(props) => (props.collapse ? 0 : '56px')};
   top: 0;
   background: ${theme.colors.yellowWhite};
-  transition: all 0.5s ease-out;
+  transition: all 0.5s ease-in-out;
   overflow: hidden;
   z-index: 2;
+  @media (max-width: 720px) {
+    height: 100%;
+    overflow: ${(props) => (props.collapse ? 'hidden' : 'scroll')};
+  }
 `;
 
 const NavSectionTitle = styled.p`
@@ -48,12 +52,18 @@ const NavItem = styled.div`
 const NavItemSmall = styled.div`
   font-size: 0.75rem;
   text-align: right;
+
   button {
     display: block;
     margin-left: auto;
     margin-right: 0;
     margin-bottom: 1.5em;
     font-weight: 500;
+
+    @media (max-width: 720px) {
+      margin: 0;
+      margin-bottom: 1.5em;
+    }
   }
 `;
 
@@ -74,13 +84,13 @@ const Navigation = (props) => {
             {/** Nav Column */
             divisions.map((division) => {
               return (
-                <div className="col-3" key={keyGen()}>
+                <div className="col-10 col-md-3" key={keyGen()}>
                   <NavSectionTitle>{division.name}</NavSectionTitle>
                   <NavSectionLine />
                   {/** Nav Item */
                   division.items.map((item) => {
                     return (
-                      <NavItem>
+                      <NavItem key={keyGen()}>
                         <Link
                           to={item.path}
                           onClick={handleClick}
@@ -96,11 +106,15 @@ const Navigation = (props) => {
             })}
             {/** Log out section */
             logoutSection ? (
-              <NavItemSmall className={`col-3 offset-${logoutOffset}`}>
+              <NavItemSmall
+                className={`col-10 col-md-3 offset-md-${logoutOffset}`}
+              >
                 <button>登出</button>
               </NavItemSmall>
             ) : (
-              <NavItemSmall className={`col-3 offset-${logoutOffset}`}>
+              <NavItemSmall
+                className={`col-10 col-md-3 offset-md-${logoutOffset}`}
+              >
                 <button>登入</button>
                 <button>註冊</button>
               </NavItemSmall>
