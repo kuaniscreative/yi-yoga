@@ -14,7 +14,7 @@ import keyGen from '../../functions/keyGen';
 const NavWrapper = styled.nav`
   position: fixed;
   width: 100%;
-  max-height: ${(props) => (props.collapse ? 0 : '1200px')};
+  max-height: ${(props) => (props.collapse ? 0 : '876px')};
   padding-top: ${(props) => (props.collapse ? 0 : '56px')};
   top: 0;
   background: ${theme.colors.yellowWhite};

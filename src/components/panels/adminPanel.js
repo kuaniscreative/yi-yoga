@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
 
 // components
+import AdminIndex from '../admin/adminIndex';
 import NewSession from '../admin/newSession';
 import ClassList from '../admin/classList';
 import PaymentStatus from '../admin/paymentStatus';
@@ -27,6 +28,7 @@ const AdminPanel = () => {
           navIsActive={navIsActive}
           setNavIsActive={setNavIsActive}
         />
+        <Route exact path="/" component={AdminIndex} />
         <Route path="/new-session" component={NewSession} />
         <Route path="/classList" component={ClassList} />
         <Route path="/paymentStatus" component={PaymentStatus} />
