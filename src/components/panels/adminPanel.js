@@ -6,7 +6,6 @@ import NewSession from '../admin/newSession';
 import ClassList from '../admin/classList';
 import PaymentStatus from '../admin/paymentStatus';
 import NewStudent from '../admin/newStudent';
-import SideMenu from '../ui/sideMenu';
 import Header from '../admin/header';
 import Navigation from '../ui/navigation';
 
@@ -23,7 +22,6 @@ const AdminPanel = () => {
     <AllUserContext>
       <div id="admin">
         <Header navIsActive={navIsActive} setNavIsActive={setNavIsActive} />
-        <SideMenu data={sideMenuData} />
         <Navigation
           data={sideMenuData}
           navIsActive={navIsActive}
