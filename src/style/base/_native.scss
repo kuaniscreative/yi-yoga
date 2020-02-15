@@ -28,7 +28,23 @@ a {
   color: $black;
   user-select: none;
 }
+a:hover {
+  text-decoration: none;
+  color: $black;
+}
 
 button {
   letter-spacing: 0.075em;
+}
+
+button.active.focus,
+button.active:focus,
+button.focus,
+button.focus:active,
+button:active:focus,
+button:focus {
+  outline: 0;
+  outline-offset: 0;
+  background-image: none;
+  box-shadow: none;
 }

@@ -20,6 +20,7 @@ const NavWrapper = styled.nav`
   background: ${theme.colors.yellowWhite};
   transition: all 0.5s ease-out;
   overflow: hidden;
+  z-index: 2;
 `;
 
 const NavSectionTitle = styled.p`
@@ -97,7 +98,6 @@ const Navigation = (props) => {
             logoutSection ? (
               <NavItemSmall className={`col-3 offset-${logoutOffset}`}>
                 <button>登出</button>
-                <button>註冊</button>
               </NavItemSmall>
             ) : (
               <NavItemSmall className={`col-3 offset-${logoutOffset}`}>
