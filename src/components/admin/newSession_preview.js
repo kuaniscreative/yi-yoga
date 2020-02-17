@@ -16,7 +16,16 @@ import keyGen from '../../functions/keyGen';
 
 const Preview = (props) => {
   const { deleteClassWhenPreview, addSession, clearSessionInfo } = props;
-  const { regularCourse, classes, toNextStep } = useContext(newSessionContext);
+  const { regularCourse, classes, setClasses, toNextStep } = useContext(
+    newSessionContext
+  );
+  const removeClass = (id) => {
+    const newClasses = classes.filter((classInfo) => {
+      return classInfo.id !== id;
+    });
+
+    setClasses(newClasses);
+  };
 
   // props received from newSession.js
   //   const classesMon = classes.filter((classInfo) => {
@@ -51,7 +60,11 @@ const Preview = (props) => {
           {regularCourse.map((courseInfo) => {
             return (
               <div className="col-12 col-md-6 col-lg-4" key={keyGen()}>
-                <ClassWrapper courseInfo={courseInfo} classes={classes} />
+                <ClassWrapper
+                  courseInfo={courseInfo}
+                  classes={classes}
+                  removeClass={removeClass}
+                />
               </div>
             );
           })}

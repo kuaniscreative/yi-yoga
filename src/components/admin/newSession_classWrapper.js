@@ -44,7 +44,7 @@ const ItemMain = styled.div`
 `;
 
 const ClassWrapper = (props) => {
-  const { courseInfo, classes } = props;
+  const { courseInfo, classes, removeClass } = props;
   return (
     <Wrapper>
       <Title>{courseInfo.name}</Title>
@@ -55,7 +55,11 @@ const ClassWrapper = (props) => {
               <ItemMain>
                 <DateSingle date={classInfo.date} />
               </ItemMain>
-              <button>
+              <button
+                onClick={() => {
+                  removeClass(classInfo.id);
+                }}
+              >
                 <DeleteIcon />
               </button>
             </ListItem>

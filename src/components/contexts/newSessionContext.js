@@ -45,7 +45,7 @@ const NewSessionContext = (props) => {
     const matchClasses = getSession(startDate, endDate, regularCourse);
 
     setClasses(matchClasses);
-  }, [sessionSpan]);
+  }, [sessionSpan, regularCourse]);
 
   return (
     <newSessionContext.Provider
@@ -55,6 +55,7 @@ const NewSessionContext = (props) => {
         sessionSpan,
         setSessionSpan,
         classes,
+        setClasses,
         regularCourse
       }}
     >

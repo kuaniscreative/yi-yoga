@@ -24,23 +24,23 @@ class NewSession extends Component {
 
   static contextType = newSessionContext;
 
-  clearSessionInfo = () => {
-    this.setState({
-      ...this.state,
-      classes: [],
-      period: []
-    });
-  };
+  //   clearSessionInfo = () => {
+  //     this.setState({
+  //       ...this.state,
+  //       classes: [],
+  //       period: []
+  //     });
+  //   };
 
-  deleteClassWhenPreview = (id) => {
-    const classes = this.state.classes.filter((classSingle) => {
-      return classSingle.id !== id;
-    });
-    this.setState({
-      ...this.state,
-      classes: classes
-    });
-  };
+  //   deleteClassWhenPreview = (id) => {
+  //     const classes = this.state.classes.filter((classSingle) => {
+  //       return classSingle.id !== id;
+  //     });
+  //     this.setState({
+  //       ...this.state,
+  //       classes: classes
+  //     });
+  //   };
 
   addSession = () => {
     const period = this.state.period;
@@ -61,11 +61,7 @@ class NewSession extends Component {
         </TitleBlock>
         {this.context.step === 'setter' ? <Setter /> : null}
         {this.context.step === 'preview' ? (
-          <NewSessionPreview
-            deleteClassWhenPreview={this.deleteClassWhenPreview}
-            addSession={this.addSession}
-            clearSessionInfo={this.clearSessionInfo}
-          />
+          <NewSessionPreview addSession={this.addSession} />
         ) : null}
         {this.context.step === 'success' ? <Success /> : null}
         {/* {this.props.newSessionIsAdded ? (

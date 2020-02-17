@@ -1,3 +1,5 @@
+import keyGen from './keyGen';
+
 export const getSession = (startDate, endDate, regularCourses) => {
   const classes = [];
 
@@ -19,7 +21,8 @@ export const getSession = (startDate, endDate, regularCourses) => {
         classes.push({
           date: d,
           capacity: course.capacity,
-          name: course.name
+          name: course.name,
+          id: keyGen()
         });
       });
     }
