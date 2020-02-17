@@ -56,7 +56,7 @@ class App extends Component {
         <div id="loadingBar" className={this.props.loading ? 'active' : ''}>
           <div id="loadingBar_bar"></div>
         </div>
-        <HashRouter basename="/">
+        <BrowserRouter>
           {this.context.isAdmin ? (
             <AdminPanel />
           ) : this.context.uid ? (
@@ -93,7 +93,7 @@ class App extends Component {
             component={RescheduleQuery}
           />
           <Route path="/signUpSuccess" component={SignUpSuccess} />
-        </HashRouter>
+        </BrowserRouter>
       </div>
     );
   }
