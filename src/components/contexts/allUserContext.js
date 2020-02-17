@@ -2,7 +2,6 @@ import React, { Component, createContext } from 'react';
 import firebase from '../../fbConfig';
 
 const firestore = firebase.firestore();
-const auth = firebase.auth();
 
 export const allUserContext = createContext();
 
