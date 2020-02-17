@@ -43,16 +43,15 @@ const Preview = (props) => {
   //   };
   return (
     <Block id="newSession_preview">
-      <Subtitle title="課程預覽" />
-      <ul className="comfyList">
-        <li>如果有特定日期不開放課程，可以在這裡移除</li>
-      </ul>
+      <Subtitle title="課程預覽">
+        如果有特定日期不開放課程，可以在這裡移除。
+      </Subtitle>
       <div className="container-fluid px-0">
         <div className="row">
           {regularCourse.map((courseInfo) => {
             return (
-              <div className="col-12 col-md-4" key={keyGen()}>
-                <ClassWrapper courseInfo={courseInfo} />
+              <div className="col-12 col-md-6 col-lg-4" key={keyGen()}>
+                <ClassWrapper courseInfo={courseInfo} classes={classes} />
               </div>
             );
           })}

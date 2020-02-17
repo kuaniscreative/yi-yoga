@@ -1,20 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import theme from '../../json/theme.json';
+const Wrapper = styled.div`
+  margin-bottom: 2em;
+`;
 
 const Title = styled.h1`
   font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 2em;
 `;
 
 const Subtitle = (props) => {
-  const { title } = props;
+  const { title, children } = props;
   return (
-    <div>
+    <Wrapper>
       <Title>{title}</Title>
-    </div>
+      <p>{children}</p>
+    </Wrapper>
   );
 };
 
