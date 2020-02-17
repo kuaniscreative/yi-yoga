@@ -12,11 +12,12 @@ const initState = {
   name: '',
   nickName: '',
   email: '',
+  isAdmin: false,
   validated: false
 };
 
 class UserContextProvider extends Component {
-  state = initState;
+  state = { ...initState };
 
   componentDidMount() {
     // 監聽 firebase auth 狀態，更動 data 並監聽 firestore 資料變動
@@ -31,9 +32,7 @@ class UserContextProvider extends Component {
           });
         });
       } else {
-        this.setState(initState, () => {
-          return <Redirect to="/" />;
-        });
+        this.setState(initState);
       }
     });
   }

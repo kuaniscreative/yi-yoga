@@ -10,6 +10,7 @@ import theme from '../../json/theme.json';
 
 // functions
 import keyGen from '../../functions/keyGen';
+import { signOut } from '../../functions/auth';
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -109,7 +110,7 @@ const Navigation = (props) => {
               <NavItemSmall
                 className={`col-10 col-md-3 offset-md-${logoutOffset}`}
               >
-                <button>登出</button>
+                <button onClick={signOut}>登出</button>
               </NavItemSmall>
             ) : (
               <NavItemSmall
