@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 import theme from '../../json/theme.json';
 
 // components
+const NavIconBtn = styled.button`
+  padding: 16px;
+  transform: translate(16px, 0);
+`;
+
 const NavIcon = styled.span`
   display: inline-block;
   position: relative;
@@ -75,9 +80,9 @@ const Header = (props) => {
             </Link>
           </LogoArea>
           <NavArea className="col-6 col-md-5 col-lg-5">
-            <button onClick={handleClick}>
+            <NavIconBtn onClick={handleClick}>
               <NavIcon />
-            </button>
+            </NavIconBtn>
           </NavArea>
         </Row>
       </div>
