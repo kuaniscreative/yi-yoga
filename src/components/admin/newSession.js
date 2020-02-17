@@ -12,12 +12,17 @@ import TitleBlock from '../ui/titleBlock';
 // actions
 import { registerSession } from '../../actions/adminActions';
 
+// contexts
+import { newSessionContext } from '../contexts/newSessionContext';
+
 class NewSession extends Component {
   state = {
     period: [],
     classes: [],
     periodInputIsValid: true
   };
+
+  static contextType = newSessionContext;
 
   getSession = (start, end) => {
     const startDate = new Date(start.year, start.month - 1, 1);
@@ -105,7 +110,22 @@ class NewSession extends Component {
         <TitleBlock title="開放報名">
           開放新一期的課程。設定完成後同學即可開始報名。
         </TitleBlock>
-        {this.props.newSessionIsAdded ? (
+        {this.context.step === 'setter' ? (
+          <NewSessionForm
+            setSessionPeriod={this.setSessionPeriod}
+            validPeriod={this.state.periodInputIsValid}
+          />
+        ) : null}
+        {this.context.step === 'preview' ? (
+          <NewSessionPreview
+            classes={this.state.classes}
+            deleteClassWhenPreview={this.deleteClassWhenPreview}
+            addSession={this.addSession}
+            clearSessionInfo={this.clearSessionInfo}
+          />
+        ) : null}
+        {this.context.step === 'success' ? <Success /> : null}
+        {/* {this.props.newSessionIsAdded ? (
           <Success />
         ) : this.state.classes.length ? (
           <NewSessionPreview
@@ -119,7 +139,7 @@ class NewSession extends Component {
             setSessionPeriod={this.setSessionPeriod}
             validPeriod={this.state.periodInputIsValid}
           />
-        )}
+        )} */}
       </div>
     );
   }

@@ -1,9 +1,9 @@
 import React, { createContext, useState } from 'react';
 
-const newSessionContext = createContext();
+export const newSessionContext = createContext();
 
 const NewSessionContext = (props) => {
-  const [step, setStep] = useState('period');
+  const [step, setStep] = useState('setter');
   const toNextStep = () => {
     const fsm = {
       initial: 'setter',
@@ -14,7 +14,7 @@ const NewSessionContext = (props) => {
     setStep(fsm[step]);
   };
   return (
-    <newSessionContext.Provider value={{ toNextStep }}>
+    <newSessionContext.Provider value={{ step, toNextStep }}>
       {props.children}
     </newSessionContext.Provider>
   );
