@@ -24,57 +24,6 @@ class NewSession extends Component {
 
   static contextType = newSessionContext;
 
-  getSession = (start, end) => {
-    const startDate = new Date(start.year, start.month - 1, 1);
-    const endDate = new Date(end.year, end.month, 0);
-    const regularCourse = this.props.regularCourse;
-    const targets = [];
-
-    // get the classes and push them to targets
-    while (startDate.valueOf() !== endDate.valueOf()) {
-      const day = startDate.getDay();
-      const match = regularCourse.filter((course) => {
-        return course.dayNum === day;
-      });
-
-      if (match.length) {
-        match.forEach((course) => {
-          const d = new Date(
-            startDate.getFullYear(),
-            startDate.getMonth(),
-            startDate.getDate(),
-            course.reference.toDate().getHours(),
-            course.reference.toDate().getMinutes()
-          );
-          targets.push({
-            date: d,
-            capacity: course.capacity,
-            name: course.name
-          });
-        });
-      }
-
-      startDate.setDate(startDate.getDate() + 1);
-    }
-    return targets;
-  };
-
-  setSessionPeriod = (start, end) => {
-    const classes = this.getSession(start, end);
-    if (classes.length === 0) {
-      this.setState({
-        ...this.state,
-        periodInputIsValid: false
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        period: [start, end],
-        classes: classes
-      });
-    }
-  };
-
   clearSessionInfo = () => {
     this.setState({
       ...this.state,
