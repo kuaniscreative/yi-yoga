@@ -62,7 +62,6 @@ class NewSession extends Component {
         {this.context.step === 'setter' ? <Setter /> : null}
         {this.context.step === 'preview' ? (
           <NewSessionPreview
-            classes={this.state.classes}
             deleteClassWhenPreview={this.deleteClassWhenPreview}
             addSession={this.addSession}
             clearSessionInfo={this.clearSessionInfo}
