@@ -49,7 +49,14 @@ const NewSessionContext = (props) => {
 
   return (
     <newSessionContext.Provider
-      value={{ step, toNextStep, sessionSpan, setSessionSpan, classes }}
+      value={{
+        step,
+        toNextStep,
+        sessionSpan,
+        setSessionSpan,
+        classes,
+        regularCourse
+      }}
     >
       {props.children}
     </newSessionContext.Provider>

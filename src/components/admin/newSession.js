@@ -59,8 +59,8 @@ class NewSession extends Component {
         <TitleBlock title="開放報名">
           開放新一期的課程。設定完成後同學即可開始報名。
         </TitleBlock>
-        {this.context.step === 'setter' ? <Setter /> : null}
-        {this.context.step === 'preview' ? (
+        {/* {this.context.step === 'setter' ? <Setter /> : null} */}
+        {this.context.step === 'preview' || true ? (
           <NewSessionPreview
             deleteClassWhenPreview={this.deleteClassWhenPreview}
             addSession={this.addSession}
