@@ -12,6 +12,7 @@ import Navigation from '../ui/navigation';
 
 // context
 import AllUserContext from '../contexts/allUserContext';
+import NewSessionContext from '../contexts/newSessionContext';
 
 // json
 import sideMenuData from '../../json/adminSideMenu';
@@ -29,7 +30,11 @@ const AdminPanel = () => {
           setNavIsActive={setNavIsActive}
         />
         <Route exact path="/" component={AdminIndex} />
-        <Route path="/new-session" component={NewSession} />
+        <Route path="/new-session">
+          <NewSessionContext>
+            <NewSession />
+          </NewSessionContext>
+        </Route>
         <Route path="/classList" component={ClassList} />
         <Route path="/paymentStatus" component={PaymentStatus} />
         <Route path="/newStudent" component={NewStudent} />
