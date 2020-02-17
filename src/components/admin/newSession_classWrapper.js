@@ -44,10 +44,10 @@ const ItemMain = styled.div`
 `;
 
 const ClassWrapper = (props) => {
-  const { courseInfo, classes, removeClass } = props;
+  const { month, classes, removeClass } = props;
   return (
     <Wrapper>
-      <Title>{courseInfo.name}</Title>
+      <Title>{`${month.toLocaleString('zh-u-nu-hanidec')}月`}</Title>
       <ul>
         {classes.map((classInfo) => {
           return (

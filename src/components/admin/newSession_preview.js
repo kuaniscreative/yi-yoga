@@ -14,11 +14,24 @@ import { newSessionContext } from '../contexts/newSessionContext';
 // functions
 import keyGen from '../../functions/keyGen';
 
+const getMonths = (startMonth, endMonth) => {
+  const total = [];
+  while (endMonth >= startMonth) {
+    total.push(startMonth % 12);
+    startMonth = (startMonth + 1) % 12;
+  }
+  return total;
+};
 const Preview = (props) => {
   const { deleteClassWhenPreview, addSession, clearSessionInfo } = props;
-  const { regularCourse, classes, setClasses, toNextStep } = useContext(
-    newSessionContext
-  );
+  const {
+    sessionSpan,
+    regularCourse,
+    classes,
+    setClasses,
+    toNextStep
+  } = useContext(newSessionContext);
+  const totalMonths = getMonths(sessionSpan.start.month, sessionSpan.end.month);
   const removeClass = (id) => {
     const newClasses = classes.filter((classInfo) => {
       return classInfo.id !== id;
@@ -26,7 +39,7 @@ const Preview = (props) => {
 
     setClasses(newClasses);
   };
-
+  console.log(classes);
   // props received from newSession.js
   //   const classesMon = classes.filter((classInfo) => {
   //     return classInfo.date.getDay() === 1;
@@ -57,17 +70,25 @@ const Preview = (props) => {
       </Subtitle>
       <div className="container-fluid px-0">
         <div className="row">
-          {regularCourse.map((courseInfo) => {
+          {totalMonths.map((month) => {
+            const matchClasses = classes.filter((classInfo) => {
+              return classInfo.date.getMonth() + 1 === month;
+            });
             return (
-              <div className="col-12 col-md-6 col-lg-4" key={keyGen()}>
+              <div className="col-12 col-md-6" key={keyGen()}>
                 <ClassWrapper
-                  courseInfo={courseInfo}
-                  classes={classes}
+                  month={month}
+                  classes={matchClasses}
                   removeClass={removeClass}
                 />
               </div>
             );
           })}
+        </div>
+        <div className="container-fluid">
+          <div className="row justify-content-end">
+            <button className="outlineButton">確認</button>
+          </div>
         </div>
       </div>
 
