@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 
 // components
 import Block from '../ui/block';
@@ -58,77 +58,74 @@ const YearSelect = (props) => {
   );
 };
 
-class Setter extends Component {
-  state = {
-    start: {
-      month: null,
-      year: null
-    },
-    end: {
-      month: null,
-      year: null
-    },
-    validPeriod: true
-  };
+const initSpan = {
+  start: {
+    month: null,
+    year: null
+  },
+  end: {
+    month: null,
+    year: null
+  }
+};
 
-  static contextType = newSessionContext;
+const Setter = () => {
+  const [span, setSpan] = useState(initSpan);
+  const { toNextStep, setSessionSpan } = useContext(newSessionContext);
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // check if the input date is valid
-    const sMonth = this.state.start.month;
-    const eMonth = this.state.end.month;
-    const sYear = this.state.start.year;
-    const eYear = this.state.end.year;
+    const sMonth = span.start.month;
+    const eMonth = span.end.month;
+    const sYear = span.start.year;
+    const eYear = span.end.year;
     const validYear = eYear >= sYear;
     const validPeriod = validYear && eMonth >= sMonth;
 
-    // excute setSessionPeriod from props passed from newSession.js
     if (validPeriod) {
-      this.context.toNextStep();
-      this.props.setSessionPeriod(this.state.start, this.state.end);
+      setSessionSpan(span);
+      toNextStep();
     } else {
       alert('時間設定有誤');
     }
   };
 
-  handleChange = (e) => {
+  const handleChange = (e) => {
     // start or end
     const point = e.target.dataset.point;
     // year or month
     const name = e.target.name;
     const value = e.target.value;
-    this.setState({
-      ...this.state,
+    setSpan({
+      ...span,
       [point]: {
-        ...this.state[point],
+        ...span[point],
         [name]: parseInt(value, 10)
       }
     });
   };
 
-  render() {
-    return (
-      <Block>
-        <Subtitle title="設定課程期間" />
-        <form action="" onSubmit={this.handleSubmit} className="comfyForm">
-          <label htmlFor="start">開始月份</label>
-          <div className="periodSetter">
-            <YearSelect point="start" changeHandler={this.handleChange} />
-            <div className="seperator">/</div>
-            <MonthSelect point="start" changeHandler={this.handleChange} />
-          </div>
-          <label htmlFor="end">結束月份</label>
-          <div className="periodSetter">
-            <YearSelect point="end" changeHandler={this.handleChange} />
-            <div className="seperator">/</div>
-            <MonthSelect point="end" changeHandler={this.handleChange} />
-          </div>
-          <button className="outlineButton">確認</button>
-        </form>
-      </Block>
-    );
-  }
-}
+  return (
+    <Block>
+      <Subtitle title="設定課程期間" />
+      <form action="" onSubmit={handleSubmit} className="comfyForm">
+        <label htmlFor="start">開始月份</label>
+        <div className="periodSetter">
+          <YearSelect point="start" changeHandler={handleChange} />
+          <div className="seperator">/</div>
+          <MonthSelect point="start" changeHandler={handleChange} />
+        </div>
+        <label htmlFor="end">結束月份</label>
+        <div className="periodSetter">
+          <YearSelect point="end" changeHandler={handleChange} />
+          <div className="seperator">/</div>
+          <MonthSelect point="end" changeHandler={handleChange} />
+        </div>
+        <button className="outlineButton">確認</button>
+      </form>
+    </Block>
+  );
+};
 
 export default Setter;
