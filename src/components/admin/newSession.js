@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { firestoreConnect } from 'react-redux-firebase';
 
 // components
-import NewSessionForm from './newSession_form';
+import Setter from './newSession_setter';
 import NewSessionPreview from './newSession_preview';
 import Success from './newSession_success';
 import TitleBlock from '../ui/titleBlock';
@@ -111,7 +111,7 @@ class NewSession extends Component {
           開放新一期的課程。設定完成後同學即可開始報名。
         </TitleBlock>
         {this.context.step === 'setter' ? (
-          <NewSessionForm
+          <Setter
             setSessionPeriod={this.setSessionPeriod}
             validPeriod={this.state.periodInputIsValid}
           />
