@@ -56,15 +56,15 @@ class App extends Component {
         <div id="loadingBar" className={this.props.loading ? 'active' : ''}>
           <div id="loadingBar_bar"></div>
         </div>
-        <BrowserRouter>
-          {this.context.isAdmin ? (
-            <AdminPanel />
-          ) : this.context.uid ? (
-            <UserPanel />
-          ) : (
-            <GuestPanel />
-          )}
-          {/* <HashRouter basename='/'>
+
+        {this.context.isAdmin ? (
+          <AdminPanel />
+        ) : this.context.uid ? (
+          <UserPanel />
+        ) : (
+          <GuestPanel />
+        )}
+        {/* <HashRouter basename='/'>
                     <Header />
                     <SideMenu />
                         <Route exact path="/" component={Main} />
@@ -88,12 +88,11 @@ class App extends Component {
                         <Route path="/payment/:paymentId" component={Payment} />
                         <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date?' component={RescheduleQuery} />
                 </HashRouter> */}
-          <Route
-            path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
-            component={RescheduleQuery}
-          />
-          <Route path="/signUpSuccess" component={SignUpSuccess} />
-        </BrowserRouter>
+        <Route
+          path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
+          component={RescheduleQuery}
+        />
+        <Route path="/signUpSuccess" component={SignUpSuccess} />
       </div>
     );
   }

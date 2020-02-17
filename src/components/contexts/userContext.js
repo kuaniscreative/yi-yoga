@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import firebase from '../../fbConfig';
 
 const firestore = firebase.firestore();
@@ -32,7 +32,7 @@ class UserContextProvider extends Component {
           });
         });
       } else {
-        this.setState(initState);
+        this.setState(initState, this.redirectToIndex);
       }
     });
   }
@@ -60,6 +60,10 @@ class UserContextProvider extends Component {
     });
   };
 
+  redirectToIndex = () => {
+    this.props.history.push('/');
+  };
+
   render() {
     return (
       <userContext.Provider value={{ ...this.state }}>
@@ -69,4 +73,4 @@ class UserContextProvider extends Component {
   }
 }
 
-export default UserContextProvider;
+export default withRouter(UserContextProvider);

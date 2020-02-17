@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './style.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import { BrowserRouter } from 'react-router-dom';
 // redux
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -32,11 +32,13 @@ const store = createStore(
 );
 
 ReactDOM.render(
-  <Provider store={store}>
-    <UserContext>
-      <App />
-    </UserContext>
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <UserContext>
+        <App />
+      </UserContext>
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
