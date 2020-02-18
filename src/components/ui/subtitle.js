@@ -6,7 +6,9 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 1rem;
+  margin-bottom: 0.5em;
+  font-size: 1.5rem;
+  line-height: 2em;
   font-weight: 500;
 `;
 
