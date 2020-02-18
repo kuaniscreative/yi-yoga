@@ -1,121 +1,102 @@
 import firebase from '../fbConfig';
 const firestore = firebase.firestore();
 
-export const registerSession = (sessionInfo) => {
-  return (dispatch, getState, { getFirestore, getFirebase }) => {
-    dispatch({ type: 'LOADING' });
-    const firestore = getFirestore();
+const createSessionName = ({ start, end }) => {
+  if (start.year !== end.year) {
+    return `${start.year}年${start.month}月 - ${end.year}年${end.month}月`;
+  }
+  return `${start.year}年 ${start.month}月 - ${end.month}月`;
+};
 
-    const classInfos = sessionInfo.classInfos.map((info) => {
-      return {
-        ...info,
-        id: generateId()
-      };
-    });
-    const sessionId = generateId();
+const createSpan = ({ start, end }) => {
+  const startDate = new Date(start.year, start.month - 1);
+  const endDate = new Date(end.year, end.month - 1);
 
-    function createNewSession(givenId) {
-      /**
-       *
-       *      第一步是先取得當前開放中的課程，之後同時進行：
-       *      1. addSession
-       *      2. 關掉當前開放的課程
-       *
-       */
-      const period = sessionInfo.period;
-      let span;
-      if (
-        period.length === 2 &&
-        period[0].month === period[1].month &&
-        period[0].year === period[1].year
-      ) {
-        span = [`${period[0].month}/${period[0].year}`];
-      } else {
-        span = period.map((obj) => {
-          return `${obj.month}/${obj.year}`;
-        });
-      }
+  const span = [];
+  while (endDate.valueOf() >= startDate.valueOf()) {
+    const month = startDate.getMonth();
+    const year = startDate.getFullYear();
+    const tag = `${month + 1}/${year}`;
+    span.push(tag);
+    startDate.setMonth(month + 1);
+  }
 
-      const addSession = (givenId) => {
-        return firestore
-          .collection('session')
-          .doc(givenId)
-          .set({
-            name: sessionInfo.name,
-            span: span,
-            open: true,
-            classes: classInfos
-          });
-      };
-      /**
-       *      第一步： 取得當前開放的課程
-       */
-      return (
-        firestore
-          .collection('session')
-          .where('open', '==', true)
-          .get()
-          /**
-           *      第二步，新增課程以及關掉當前開放報名的課程
-           */
-          .then((snap) => {
-            const ids = snap.docs.map((snap) => {
-              return snap.id;
-            });
-            const promiseTask = [addSession(givenId)];
-            ids.forEach((id) => {
-              const task = firestore
-                .collection('session')
-                .doc(id)
-                .update({
-                  open: false
-                });
-              promiseTask.push(task);
-            });
+  return span;
+};
 
-            return Promise.all(promiseTask);
-          })
-      );
-    }
-
-    function addClassProfile(classInfos, sessionId) {
+function closeOpeningSession() {
+  return firestore
+    .collection('session')
+    .where('open', '==', true)
+    .get()
+    .then((snap) => {
+      const ids = snap.docs.map((snapshot) => {
+        return snapshot.id;
+      });
       const tasks = [];
-
-      classInfos.forEach((info) => {
+      ids.forEach((id) => {
         const task = firestore
-          .collection('classProfile')
-          .doc(info.id)
-          .set({
-            classDate: info.date,
-            capacity: info.capacity,
-            name: info.name,
-            session: sessionId,
-            absence: [],
-            pendingStudents: [],
-            rescheduleStudents: [],
-            students: []
+          .collection('session')
+          .doc(id)
+          .update({
+            open: false
           });
         tasks.push(task);
       });
 
       return Promise.all(tasks);
-    }
+    });
+}
 
-    const tasks = [
-      createNewSession(sessionId),
-      addClassProfile(classInfos, sessionId)
-    ];
+function addSessionToFirestore({ id, name, span, classes }) {
+  return firestore
+    .collection('session')
+    .doc(id)
+    .set({
+      name: name,
+      span: span,
+      open: true,
+      classes: classes
+    });
+}
 
-    Promise.all(tasks)
-      .then(() => {
-        alert('新的課程現在可以報名囉！');
-        dispatch({ type: 'LOADED' });
-        dispatch({ type: 'ADDED_NEW_SESSION' });
-      })
-      .catch((err) => {
-        console.log(err);
+function addClassProfile(classes, sessionId) {
+  const tasks = [];
+  classes.forEach((info) => {
+    const task = firestore
+      .collection('classProfile')
+      .doc(info.id)
+      .set({
+        ...info,
+        session: sessionId,
+        absence: [],
+        pendingStudents: [],
+        rescheduleStudents: [],
+        students: []
       });
+    tasks.push(task);
+  });
+
+  return Promise.all(tasks);
+}
+
+export const addNewSession = (sessionSpan, classes) => {
+  const name = createSessionName(sessionSpan);
+  const id = generateId();
+  const span = createSpan(sessionSpan);
+
+  const sessionTask = () => {
+    return closeOpeningSession().then(() => {
+      return addSessionToFirestore({ name, id, span, classes });
+    });
   };
+
+  const classTask = () => {
+    return addClassProfile(classes, id);
+  };
+  const tasks = [sessionTask(), classTask()];
+
+  return Promise.all(tasks);
 };
 
 export const validateStudent = (id) => {
