@@ -14,6 +14,7 @@ import Navigation from '../ui/navigation';
 import AllUserContext from '../contexts/allUserContext';
 import NewSessionContext from '../contexts/newSessionContext';
 import RegularCourseContextProvider from '../contexts/regularCourseContext';
+import AllClassContextProvider from '../contexts/allClassContext';
 
 // json
 import sideMenuData from '../../json/adminSideMenu';
@@ -24,25 +25,27 @@ const AdminPanel = () => {
   return (
     <AllUserContext>
       <RegularCourseContextProvider>
-        <div id="admin">
-          <Header navIsActive={navIsActive} setNavIsActive={setNavIsActive} />
-          <Navigation
-            data={sideMenuData}
-            navIsActive={navIsActive}
-            setNavIsActive={setNavIsActive}
-          />
-          <Switch>
-            <Route exact path="/" component={AdminIndex} />
-            <Route path="/new-session">
-              <NewSessionContext>
-                <NewSession />
-              </NewSessionContext>
-            </Route>
-            <Route path="/classList" component={ClassList} />
-            <Route path="/paymentStatus" component={PaymentStatus} />
-            <Route path="/newStudent" component={NewStudent} />
-          </Switch>
-        </div>
+        <AllClassContextProvider>
+          <div id="admin">
+            <Header navIsActive={navIsActive} setNavIsActive={setNavIsActive} />
+            <Navigation
+              data={sideMenuData}
+              navIsActive={navIsActive}
+              setNavIsActive={setNavIsActive}
+            />
+            <Switch>
+              <Route exact path="/" component={AdminIndex} />
+              <Route path="/new-session">
+                <NewSessionContext>
+                  <NewSession />
+                </NewSessionContext>
+              </Route>
+              <Route path="/classList" component={ClassList} />
+              <Route path="/paymentStatus" component={PaymentStatus} />
+              <Route path="/newStudent" component={NewStudent} />
+            </Switch>
+          </div>
+        </AllClassContextProvider>
       </RegularCourseContextProvider>
     </AllUserContext>
   );

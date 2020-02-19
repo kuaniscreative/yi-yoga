@@ -8,9 +8,11 @@ import ButtonGroup from '../ui/buttonGroup';
 
 // contexts
 import { regularCourseContext } from '../contexts/regularCourseContext';
+import { allClassContext } from '../contexts/allClassContext';
 
 const ClassList = () => {
   const { regularCourse } = useContext(regularCourseContext);
+  const { classes } = useContext(allClassContext);
   const courseOptions = regularCourse.reduce((acc, cVal) => {
     const day = cVal.day;
     if (acc.indexOf(day) < 0) {
