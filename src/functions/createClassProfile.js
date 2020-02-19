@@ -1,6 +1,6 @@
 import keyGen from './keyGen';
 
-export const getSession = (startDate, endDate, regularCourses) => {
+export const createClassProfile = (startDate, endDate, regularCourses) => {
   const classes = [];
 
   while (startDate.valueOf() !== endDate.valueOf()) {
@@ -11,17 +11,21 @@ export const getSession = (startDate, endDate, regularCourses) => {
 
     if (match.length) {
       match.forEach((course) => {
-        const d = new Date(
-          startDate.getFullYear(),
-          startDate.getMonth(),
-          startDate.getDate(),
+        const yyyy = startDate.getFullYear();
+        const mm = startDate.getMonth();
+        const dd = startDate.getDate();
+        const date = new Date(
+          yyyy,
+          mm,
+          dd,
           course.reference.toDate().getHours(),
           course.reference.toDate().getMinutes()
         );
         classes.push({
-          date: d,
+          date: date,
           capacity: course.capacity,
-          name: course.name,
+          name: `${yyyy}年${mm}月${dd}日`,
+          type: course.name,
           id: keyGen()
         });
       });

@@ -4,7 +4,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { regularCourseContext } from './regularCourseContext';
 
 // functions
-import { getSession } from '../../functions/getSession';
+import { createClassProfile } from '../../functions/createClassProfile';
 
 export const newSessionContext = createContext();
 
@@ -42,7 +42,7 @@ const NewSessionContext = (props) => {
     const { start, end } = sessionSpan;
     const startDate = new Date(start.year, start.month - 1, 1);
     const endDate = new Date(end.year, end.month, 0);
-    const matchClasses = getSession(startDate, endDate, regularCourse);
+    const matchClasses = createClassProfile(startDate, endDate, regularCourse);
 
     setClasses(matchClasses);
   }, [sessionSpan, regularCourse]);
