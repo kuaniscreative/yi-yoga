@@ -6,12 +6,23 @@ const firestore = firebase.firestore();
 export const allClassContext = createContext();
 
 const initState = {
-  classes: null
+  classes: null,
+  sorted: {
+    byMonth: null
+  },
+  requestState: 'initial'
 };
 
 class AllClassContextProvider extends Component {
   state = {
     ...initState
+  };
+
+  setRequestState = () => {
+    const states = {
+      initial: 'requested'
+    };
+    return states[this.state.requestState];
   };
 
   updateClassProfile = (data = []) => {
@@ -30,8 +41,9 @@ class AllClassContextProvider extends Component {
   };
 
   componentDidMount() {
-    if (this.state.classes === null) {
+    if (this.state.classes === null && this.state.requestState === 'initial') {
       this.setState({
+        requestState: this.setRequestState(),
         listener: this.realTimeUpdateListener()
       });
     }
@@ -43,8 +55,9 @@ class AllClassContextProvider extends Component {
   }
 
   render() {
+    const classes = this.state.classes;
     return (
-      <allClassContext.Provider value={{ ...this.state }}>
+      <allClassContext.Provider value={{ classes }}>
         {this.props.children}
       </allClassContext.Provider>
     );
