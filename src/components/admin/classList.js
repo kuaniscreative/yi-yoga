@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -9,6 +9,12 @@ import ButtonGroup from '../ui/buttonGroup';
 // contexts
 import { regularCourseContext } from '../contexts/regularCourseContext';
 import { allClassContext } from '../contexts/allClassContext';
+
+// functions
+import keyGen from '../../functions/keyGen';
+
+// data
+import theme from '../../json/theme.json';
 
 const reconstruct = (classes) => {
   const monthOptions = [];
@@ -37,16 +43,32 @@ const reconstruct = (classes) => {
   };
 };
 
-const ClassList = () => {
-  const { regularCourse } = useContext(regularCourseContext);
-  const { classes } = useContext(allClassContext);
-  const { monthOptions, sortedByMonth } = reconstruct(classes);
-  const courseOptions = regularCourse.reduce((acc, cVal) => {
+const getCourseOption = (regularCourse) => {
+  return regularCourse.reduce((acc, cVal) => {
     const day = cVal.day;
     if (acc.indexOf(day) < 0) {
       return [...acc, day];
     }
   }, []);
+};
+
+const OptionButton = styled.button`
+  margin-right: 12px;
+  background: ${(props) => (props.inView ? theme.colors.gray6 : 'none')};
+  color: ${(props) => (props.inView ? 'white' : theme.colors.gray6)};
+`;
+
+const ClassList = () => {
+  const { regularCourse } = useContext(regularCourseContext);
+  const { classes } = useContext(allClassContext);
+  const { monthOptions, sortedByMonth } = reconstruct(classes);
+  const courseOptions = getCourseOption(regularCourse);
+  const [monthInView, setMonthInView] = useState(0);
+  const selectMonth = (e) => {
+    const index = e.target.dataset.index;
+    const i = parseInt(index, 10);
+    setMonthInView(i);
+  };
 
   return (
     <div>
@@ -57,7 +79,22 @@ const ClassList = () => {
           <button>未額滿</button>
         </ButtonGroup>
       </Block>
-      <Block></Block>
+      <Block>
+        {monthOptions.map((item, i) => {
+          const inView = i === monthInView;
+          return (
+            <OptionButton
+              className="outlineButton"
+              key={keyGen()}
+              inView={inView}
+              data-index={i}
+              onClick={selectMonth}
+            >
+              {`${item.toLocaleString('zh')}月`}
+            </OptionButton>
+          );
+        })}
+      </Block>
     </div>
   );
 };
