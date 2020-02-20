@@ -6,10 +6,7 @@ const firestore = firebase.firestore();
 export const allClassContext = createContext();
 
 const initState = {
-  classes: null,
-  sorted: {
-    byMonth: null
-  },
+  classes: [],
   requestState: 'initial'
 };
 
@@ -34,14 +31,19 @@ class AllClassContextProvider extends Component {
   realTimeUpdateListener = () => {
     return firestore.collection('classProfile').onSnapshot((query) => {
       const classes = query.docs.map((doc) => {
-        return doc.data();
+        const classSingle = doc.data();
+        const date = classSingle.date.toDate();
+        return {
+          ...classSingle,
+          date
+        };
       });
       this.updateClassProfile(classes);
     });
   };
 
   componentDidMount() {
-    if (this.state.classes === null && this.state.requestState === 'initial') {
+    if (this.state.requestState === 'initial') {
       this.setState({
         requestState: this.setRequestState(),
         listener: this.realTimeUpdateListener()
@@ -50,6 +52,7 @@ class AllClassContextProvider extends Component {
   }
 
   componentWillUnmount() {
+    console.log('unmount fired');
     // detach listener
     this.state.listener();
   }

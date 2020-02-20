@@ -10,9 +10,37 @@ import ButtonGroup from '../ui/buttonGroup';
 import { regularCourseContext } from '../contexts/regularCourseContext';
 import { allClassContext } from '../contexts/allClassContext';
 
+const reconstruct = (classes) => {
+  const monthOptions = [];
+  const sortedByMonth = {};
+
+  if (classes.length === 0) {
+    return {
+      monthOptions,
+      sortedByMonth
+    };
+  }
+
+  classes.forEach((classInfo) => {
+    const date = classInfo.date;
+    const classMonth = date.getMonth();
+    if (monthOptions.indexOf(classMonth) < 0) {
+      monthOptions.push(classMonth);
+      sortedByMonth[classMonth] = [];
+    }
+    sortedByMonth[classMonth].push(classInfo);
+  });
+
+  return {
+    monthOptions,
+    sortedByMonth
+  };
+};
+
 const ClassList = () => {
   const { regularCourse } = useContext(regularCourseContext);
   const { classes } = useContext(allClassContext);
+  const { monthOptions, sortedByMonth } = reconstruct(classes);
   const courseOptions = regularCourse.reduce((acc, cVal) => {
     const day = cVal.day;
     if (acc.indexOf(day) < 0) {
@@ -29,10 +57,7 @@ const ClassList = () => {
           <button>未額滿</button>
         </ButtonGroup>
       </Block>
-      <Block>
-        <button className="outlineButton">一月</button>
-        <button className="outlineButton">二月</button>
-      </Block>
+      <Block></Block>
     </div>
   );
 };
