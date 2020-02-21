@@ -58,6 +58,10 @@ const OptionButton = styled.button`
   color: ${(props) => (props.inView ? 'white' : theme.colors.gray6)};
 `;
 
+const OptionRow = styled.div`
+  margin-bottom: 1rem;
+`;
+
 const ClassList = () => {
   const { regularCourse } = useContext(regularCourseContext);
   const { classes } = useContext(allClassContext);
@@ -73,27 +77,47 @@ const ClassList = () => {
   return (
     <div>
       <TitleBlock title="查看課表" />
-      <Block>
+      {/* <Block>
         <ButtonGroup>
           <button>所有課堂</button>
           <button>未額滿</button>
         </ButtonGroup>
-      </Block>
+      </Block> */}
       <Block>
-        {monthOptions.map((item, i) => {
-          const inView = i === monthInView;
-          return (
-            <OptionButton
-              className="outlineButton"
-              key={keyGen()}
-              inView={inView}
-              data-index={i}
-              onClick={selectMonth}
-            >
-              {`${item.toLocaleString('zh')}月`}
-            </OptionButton>
-          );
-        })}
+        <OptionRow>
+          {monthOptions.map((item, i) => {
+            const inView = i === monthInView;
+            return (
+              <OptionButton
+                className="outlineButton"
+                key={keyGen()}
+                inView={inView}
+                data-index={i}
+                onClick={selectMonth}
+              >
+                {`${item.toLocaleString('zh')}月`}
+              </OptionButton>
+            );
+          })}
+        </OptionRow>
+        {/* <OptionRow>
+          {courseOptions.map((item) => {
+            return (
+              <OptionButton className="outlineButton" key={keyGen()}>
+                {item}
+              </OptionButton>
+            );
+          })}
+        </OptionRow> */}
+        <div>
+          {classes
+            .filter((classProfile) => {
+              return classProfile.date.getMonth() === monthOptions[monthInView];
+            })
+            .map((classProfile) => {
+              return <div key={keyGen()}>{classProfile.name}</div>;
+            })}
+        </div>
       </Block>
     </div>
   );
