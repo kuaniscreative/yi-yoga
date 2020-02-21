@@ -7,7 +7,7 @@ import theme from '../../json/theme.json';
 const CardBase = styled.div`
   display: block;
   position: relative;
-  width: 320px;
+  width: 100%;
   height: 400px;
   padding: 32px 24px;
   border-radius: 16px;

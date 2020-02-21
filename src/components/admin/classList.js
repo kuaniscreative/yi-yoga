@@ -7,6 +7,7 @@ import Block from '../ui/block';
 import ButtonGroup from '../ui/buttonGroup';
 import ListCard from '../ui/listCard';
 import NameTag from '../ui/nameTag';
+import FullWidthScrollableBlock from '../ui/fullWidthScrollableBlock';
 
 // contexts
 import { regularCourseContext } from '../contexts/regularCourseContext';
@@ -120,20 +121,31 @@ const ClassList = () => {
               return <div key={keyGen()}>{classProfile.name}</div>;
             })}
         </div> */}
-
-        <ListCard title="2020年10月20日">
-          <NameTag name="張三豐" nickName="Fon" />
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-          <div>123</div>
-        </ListCard>
       </Block>
+      <FullWidthScrollableBlock>
+        {classes
+          .filter((classProfile) => {
+            return classProfile.date.getMonth() === monthOptions[monthInView];
+          })
+          .map((classProfile) => {
+            return (
+              <div className="col-12 col-md-4 col-lg-3 mb-5">
+                <ListCard title={classProfile.name}>
+                  <NameTag name="張三豐" nickName="Fon" />
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                  <div>123</div>
+                </ListCard>
+              </div>
+            );
+          })}
+      </FullWidthScrollableBlock>
     </div>
   );
 };
