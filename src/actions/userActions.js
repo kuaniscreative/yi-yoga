@@ -1,7 +1,7 @@
 // register classes
 export const registerToCourse = (
   classes,
-  userId,
+  userData,
   sessionName,
   sessionId,
   amount
@@ -28,7 +28,7 @@ export const registerToCourse = (
         });
     }
 
-    function addStudentToClasses(classInfos, userId) {
+    function addStudentToClasses(classInfos, userData) {
       const ids = classInfos.map((info) => {
         return info.id;
       });
@@ -38,7 +38,12 @@ export const registerToCourse = (
           .collection('classProfile')
           .doc(id)
           .update({
-            students: firebase.firestore.FieldValue.arrayUnion(userId)
+            students: firebase.firestore.FieldValue.arrayUnion({
+              name: userData.name,
+              nickName: userData.nickName,
+              email: userData.email,
+              id: userData.id
+            })
           });
         tasks.push(task);
       });
@@ -59,11 +64,13 @@ export const registerToCourse = (
     }
 
     const tasks = [
-      updateUserData(classes, userId),
-      addStudentToClasses(classes, userId),
-      addPaymentStatus(userId, sessionName, sessionId, amount).then((res) => {
-        dispatch({ type: 'ADD_PAYMENT_SUCCESS', id: res.id });
-      })
+      updateUserData(classes, userData.id),
+      addStudentToClasses(classes, userData),
+      addPaymentStatus(userData.id, sessionName, sessionId, amount).then(
+        (res) => {
+          dispatch({ type: 'ADD_PAYMENT_SUCCESS', id: res.id });
+        }
+      )
     ];
 
     Promise.all(tasks)
