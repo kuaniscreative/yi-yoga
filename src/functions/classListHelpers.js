@@ -33,3 +33,14 @@ export function getCourseOption(regularCourse) {
     }
   }, []);
 }
+
+export function rule(classInfo) {
+  const pattern = this;
+  return Object.keys(pattern).every((key) => {
+    if (pattern[key] === null || undefined) {
+      return true;
+    }
+    console.log(pattern[key], classInfo[key]);
+    return pattern[key] === classInfo[key];
+  });
+}

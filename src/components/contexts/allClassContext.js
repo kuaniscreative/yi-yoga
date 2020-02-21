@@ -1,6 +1,9 @@
 import React, { Component, createContext } from 'react';
 import firebase from '../../fbConfig';
 
+// functions
+import { toChineseString } from '../../functions/toChineseString';
+
 const firestore = firebase.firestore();
 
 export const allClassContext = createContext();
@@ -32,10 +35,15 @@ class AllClassContextProvider extends Component {
     return firestore.collection('classProfile').onSnapshot((query) => {
       const classes = query.docs.map((doc) => {
         const classSingle = doc.data();
+        const { students, rescheduleStudents, capacity } = classSingle;
         const date = classSingle.date.toDate();
+        const dayString = `星期${toChineseString(date.getDay())}`;
+        const isFull = students.length + rescheduleStudents.length >= capacity;
         return {
           ...classSingle,
-          date
+          date,
+          dayString,
+          isFull
         };
       });
       this.updateClassProfile(classes);
@@ -52,7 +60,6 @@ class AllClassContextProvider extends Component {
   }
 
   componentWillUnmount() {
-    console.log('unmount fired');
     // detach listener
     this.state.listener();
   }

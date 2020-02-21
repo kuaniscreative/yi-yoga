@@ -34,7 +34,9 @@ const ClassList = () => {
     monthIndex,
     monthInViewAsString,
     setMonthIndex,
-    courseOptions
+    courseOptions,
+    setCourseInView,
+    setViewAvailable
   } = useContext(classListContext);
 
   const selectMonth = (e) => {
@@ -65,23 +67,19 @@ const ClassList = () => {
         </OptionRow>
       </Block>
       <FullWidthScrollableBlock>
-        {classes
-          .filter((classProfile) => {
-            return classProfile.date.getMonth() === monthInView;
-          })
-          .map((classProfile) => {
-            return (
-              <div className="col-12 col-md-4 col-lg-3 mb-5" key={keyGen()}>
-                <ListCard
-                  title={classProfile.name}
-                  subtitle={classProfile.type}
-                  students={classProfile.students}
-                  pendingStudents={classProfile.pendingStudents}
-                  rescheduleStudents={classProfile.rescheduleStudents}
-                />
-              </div>
-            );
-          })}
+        {classes.map((classProfile) => {
+          return (
+            <div className="col-12 col-md-4 col-lg-3 mb-5" key={keyGen()}>
+              <ListCard
+                title={classProfile.name}
+                subtitle={classProfile.type}
+                students={classProfile.students}
+                pendingStudents={classProfile.pendingStudents}
+                rescheduleStudents={classProfile.rescheduleStudents}
+              />
+            </div>
+          );
+        })}
       </FullWidthScrollableBlock>
     </div>
   );
