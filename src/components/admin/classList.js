@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 import ButtonGroup from '../ui/buttonGroup';
+import ListCard from '../ui/listCard';
+import NameTag from '../ui/nameTag';
 
 // contexts
 import { regularCourseContext } from '../contexts/regularCourseContext';
@@ -109,7 +111,7 @@ const ClassList = () => {
             );
           })}
         </OptionRow> */}
-        <div>
+        {/* <div>
           {classes
             .filter((classProfile) => {
               return classProfile.date.getMonth() === monthOptions[monthInView];
@@ -117,7 +119,20 @@ const ClassList = () => {
             .map((classProfile) => {
               return <div key={keyGen()}>{classProfile.name}</div>;
             })}
-        </div>
+        </div> */}
+
+        <ListCard title="2020年10月20日">
+          <NameTag name="張三豐" nickName="Fon" />
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+          <div>123</div>
+        </ListCard>
       </Block>
     </div>
   );
