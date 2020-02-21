@@ -4,56 +4,17 @@ import styled from 'styled-components';
 // components
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
-import ButtonGroup from '../ui/buttonGroup';
 import ListCard from './classList_listCard';
-import NameTag from '../ui/nameTag';
 import FullWidthScrollableBlock from '../ui/fullWidthScrollableBlock';
 
 // contexts
-import { regularCourseContext } from '../contexts/regularCourseContext';
-import { allClassContext } from '../contexts/allClassContext';
+import { classListContext } from '../contexts/classListContext';
 
 // functions
 import keyGen from '../../functions/keyGen';
 
 // data
 import theme from '../../json/theme.json';
-
-const reconstruct = (classes) => {
-  const monthOptions = [];
-  const sortedByMonth = {};
-
-  if (classes.length === 0) {
-    return {
-      monthOptions,
-      sortedByMonth
-    };
-  }
-
-  classes.forEach((classInfo) => {
-    const date = classInfo.date;
-    const classMonth = date.getMonth();
-    if (monthOptions.indexOf(classMonth) < 0) {
-      monthOptions.push(classMonth);
-      sortedByMonth[classMonth] = [];
-    }
-    sortedByMonth[classMonth].push(classInfo);
-  });
-
-  return {
-    monthOptions,
-    sortedByMonth
-  };
-};
-
-const getCourseOption = (regularCourse) => {
-  return regularCourse.reduce((acc, cVal) => {
-    const day = cVal.day;
-    if (acc.indexOf(day) < 0) {
-      return [...acc, day];
-    }
-  }, []);
-};
 
 const OptionButton = styled.button`
   margin-right: 12px;
@@ -66,15 +27,20 @@ const OptionRow = styled.div`
 `;
 
 const ClassList = () => {
-  const { regularCourse } = useContext(regularCourseContext);
-  const { classes } = useContext(allClassContext);
-  const { monthOptions, sortedByMonth } = reconstruct(classes);
-  const courseOptions = getCourseOption(regularCourse);
-  const [monthInView, setMonthInView] = useState(0);
+  const {
+    classes,
+    monthOptions,
+    monthInView,
+    monthIndex,
+    monthInViewAsString,
+    setMonthIndex,
+    courseOptions
+  } = useContext(classListContext);
+
   const selectMonth = (e) => {
     const index = e.target.dataset.index;
     const i = parseInt(index, 10);
-    setMonthInView(i);
+    setMonthIndex(i);
   };
 
   return (
@@ -83,7 +49,7 @@ const ClassList = () => {
       <Block>
         <OptionRow>
           {monthOptions.map((item, i) => {
-            const inView = i === monthInView;
+            const inView = i === monthIndex;
             return (
               <OptionButton
                 className="outlineButton"
@@ -101,11 +67,11 @@ const ClassList = () => {
       <FullWidthScrollableBlock>
         {classes
           .filter((classProfile) => {
-            return classProfile.date.getMonth() === monthOptions[monthInView];
+            return classProfile.date.getMonth() === monthInView;
           })
           .map((classProfile) => {
             return (
-              <div className="col-12 col-md-4 col-lg-3 mb-5">
+              <div className="col-12 col-md-4 col-lg-3 mb-5" key={keyGen()}>
                 <ListCard
                   title={classProfile.name}
                   subtitle={classProfile.type}
