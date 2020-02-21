@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // contexts
 import { regularCourseContext } from './regularCourseContext';
@@ -27,7 +27,7 @@ const ClassListContextProvider = (props) => {
 
   const matchPattern = {
     dayString: courseInView,
-    isFull: viewAvailable ? null : false
+    isFull: viewAvailable ? false : null
   };
 
   const matchPatternClasses = classesInView.filter(rule, matchPattern);

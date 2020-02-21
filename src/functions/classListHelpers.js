@@ -40,7 +40,6 @@ export function rule(classInfo) {
     if (pattern[key] === null || undefined) {
       return true;
     }
-    console.log(pattern[key], classInfo[key]);
     return pattern[key] === classInfo[key];
   });
 }
