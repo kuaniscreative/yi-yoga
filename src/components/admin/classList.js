@@ -6,6 +6,8 @@ import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 import ListCard from './classList_listCard';
 import FullWidthScrollableBlock from '../ui/fullWidthScrollableBlock';
+import MonthOptions from './classList_monthOptions';
+import CourseOptions from './classList_courseOptions';
 
 // contexts
 import { classListContext } from '../contexts/classListContext';
@@ -16,14 +18,8 @@ import keyGen from '../../functions/keyGen';
 // data
 import theme from '../../json/theme.json';
 
-const OptionButton = styled.button`
-  margin-right: 12px;
-  background: ${(props) => (props.inView ? theme.colors.gray6 : 'none')};
-  color: ${(props) => (props.inView ? 'white' : theme.colors.gray6)};
-`;
-
 const OptionRow = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 `;
 
 const ClassList = () => {
@@ -39,31 +35,15 @@ const ClassList = () => {
     setViewAvailable
   } = useContext(classListContext);
 
-  const selectMonth = (e) => {
-    const index = e.target.dataset.index;
-    const i = parseInt(index, 10);
-    setMonthIndex(i);
-  };
-
   return (
     <div>
       <TitleBlock title="查看課表" />
       <Block>
         <OptionRow>
-          {monthOptions.map((item, i) => {
-            const inView = i === monthIndex;
-            return (
-              <OptionButton
-                className="outlineButton"
-                key={keyGen()}
-                inView={inView}
-                data-index={i}
-                onClick={selectMonth}
-              >
-                {`${item.toLocaleString('zh')}月`}
-              </OptionButton>
-            );
-          })}
+          <MonthOptions />
+        </OptionRow>
+        <OptionRow>
+          <CourseOptions />
         </OptionRow>
       </Block>
       <FullWidthScrollableBlock>

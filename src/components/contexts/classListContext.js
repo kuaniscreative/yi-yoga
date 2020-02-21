@@ -42,6 +42,7 @@ const ClassListContextProvider = (props) => {
         monthInViewAsString,
         setMonthIndex,
         courseOptions,
+        courseInView,
         setCourseInView,
         setViewAvailable
       }}
