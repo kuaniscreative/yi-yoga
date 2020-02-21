@@ -69,7 +69,7 @@ const NavItemSmall = styled.div`
 `;
 
 const Navigation = (props) => {
-  const { navIsActive, setNavIsActive } = props;
+  const { navIsActive, setNavIsActive, setHeaderBackground } = props;
   const { divisions, logoutSection } = props.data;
   const logoutOffset = (3 - divisions.length) * 3;
 
@@ -77,8 +77,14 @@ const Navigation = (props) => {
     setNavIsActive(!navIsActive);
   };
 
+  const handleTransition = () => {
+    if (navIsActive) {
+      setHeaderBackground('white');
+    }
+  };
+
   return (
-    <NavWrapper collapse={navIsActive}>
+    <NavWrapper collapse={navIsActive} onTransitionEnd={handleTransition}>
       <Block>
         <div className="container-fluid px-0">
           <div className="row">

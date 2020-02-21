@@ -43,6 +43,7 @@ const HeaderWrapper = styled.header`
   top: 0;
   left: 0;
   z-index: 3;
+  background: ${(props) => props.headerBackground};
 `;
 
 const Row = styled.div`
@@ -60,9 +61,15 @@ const LogoArea = styled.div`
 `;
 
 const Header = (props) => {
-  const { navIsActive, setNavIsActive } = props;
+  const {
+    headerBackground,
+    setHeaderBackground,
+    navIsActive,
+    setNavIsActive
+  } = props;
 
   const handleClick = () => {
+    setHeaderBackground('transparent');
     setNavIsActive(!navIsActive);
   };
 
@@ -71,7 +78,7 @@ const Header = (props) => {
   };
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper headerBackground={headerBackground}>
       <div className="container">
         <Row className="row justify-content-center align-items-center">
           <LogoArea className="col-6 col-md-5 col-lg-5">

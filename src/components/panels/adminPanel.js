@@ -22,17 +22,24 @@ import sideMenuData from '../../json/adminSideMenu';
 
 const AdminPanel = () => {
   const [navIsActive, setNavIsActive] = useState(true);
+  const [headerBackground, setHeaderBackground] = useState('white');
 
   return (
     <AllUserContext>
       <RegularCourseContextProvider>
         <AllClassContextProvider>
           <div id="admin">
-            <Header navIsActive={navIsActive} setNavIsActive={setNavIsActive} />
+            <Header
+              headerBackground={headerBackground}
+              setHeaderBackground={setHeaderBackground}
+              navIsActive={navIsActive}
+              setNavIsActive={setNavIsActive}
+            />
             <Navigation
               data={sideMenuData}
               navIsActive={navIsActive}
               setNavIsActive={setNavIsActive}
+              setHeaderBackground={setHeaderBackground}
             />
             <Switch>
               <Route exact path="/" component={AdminIndex} />
