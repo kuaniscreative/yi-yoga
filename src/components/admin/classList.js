@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -8,6 +8,7 @@ import ListCard from './classList_listCard';
 import FullWidthScrollableBlock from '../ui/fullWidthScrollableBlock';
 import MonthOptions from './classList_monthOptions';
 import CourseOptions from './classList_courseOptions';
+import { OptionButton } from './classList_optionButton';
 
 // contexts
 import { classListContext } from '../contexts/classListContext';
@@ -15,25 +16,18 @@ import { classListContext } from '../contexts/classListContext';
 // functions
 import keyGen from '../../functions/keyGen';
 
-// data
-import theme from '../../json/theme.json';
-
 const OptionRow = styled.div`
   margin-bottom: 1.5rem;
 `;
 
 const ClassList = () => {
-  const {
-    classes,
-    monthOptions,
-    monthInView,
-    monthIndex,
-    monthInViewAsString,
-    setMonthIndex,
-    courseOptions,
-    setCourseInView,
-    setViewAvailable
-  } = useContext(classListContext);
+  const { classes, viewAvailable, setViewAvailable } = useContext(
+    classListContext
+  );
+
+  const toggleAvailable = () => {
+    setViewAvailable(!viewAvailable);
+  };
 
   return (
     <div>
@@ -44,6 +38,11 @@ const ClassList = () => {
         </OptionRow>
         <OptionRow>
           <CourseOptions />
+        </OptionRow>
+        <OptionRow>
+          <OptionButton onClick={toggleAvailable} inView={viewAvailable}>
+            未額滿
+          </OptionButton>
         </OptionRow>
       </Block>
       <FullWidthScrollableBlock>

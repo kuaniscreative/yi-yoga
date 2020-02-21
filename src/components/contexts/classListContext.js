@@ -44,6 +44,7 @@ const ClassListContextProvider = (props) => {
         courseOptions,
         courseInView,
         setCourseInView,
+        viewAvailable,
         setViewAvailable
       }}
     >
