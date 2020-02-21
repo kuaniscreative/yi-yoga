@@ -4,6 +4,9 @@ import styled from 'styled-components';
 // components
 import NameTag from '../ui/nameTag';
 
+// functions
+import keyGen from '../../functions/keyGen';
+
 // data
 import theme from '../../json/theme.json';
 
@@ -78,7 +81,7 @@ const ListCard = (props) => {
             <ListTitle>補課學生</ListTitle>
             {students.map((student) => {
               return (
-                <ListItem>
+                <ListItem key={keyGen()}>
                   <NameTag name={student.name} nickName={student.nickName} />
                 </ListItem>
               );
@@ -92,7 +95,7 @@ const ListCard = (props) => {
             <ListTitle>補課學生</ListTitle>
             {rescheduleStudents.map((student) => {
               return (
-                <ListItem>
+                <ListItem key={keyGen()}>
                   <NameTag name={student.name} nickName={student.nickName} />
                 </ListItem>
               );
@@ -104,7 +107,7 @@ const ListCard = (props) => {
             <ListTitle>補課學生</ListTitle>
             {pendingStudents.map((student) => {
               return (
-                <ListItem>
+                <ListItem key={keyGen()}>
                   <NameTag name={student.name} nickName={student.nickName} />
                 </ListItem>
               );
