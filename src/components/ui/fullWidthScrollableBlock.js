@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 const RowNoWrap = styled.div`
   flex-wrap: nowrap;
+  padding-top: 32px;
+  padding-bottom: 32px;
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 import ButtonGroup from '../ui/buttonGroup';
-import ListCard from '../ui/listCard';
+import ListCard from './classList_listCard';
 import NameTag from '../ui/nameTag';
 import FullWidthScrollableBlock from '../ui/fullWidthScrollableBlock';
 
@@ -80,12 +80,6 @@ const ClassList = () => {
   return (
     <div>
       <TitleBlock title="查看課表" />
-      {/* <Block>
-        <ButtonGroup>
-          <button>所有課堂</button>
-          <button>未額滿</button>
-        </ButtonGroup>
-      </Block> */}
       <Block>
         <OptionRow>
           {monthOptions.map((item, i) => {
@@ -103,24 +97,6 @@ const ClassList = () => {
             );
           })}
         </OptionRow>
-        {/* <OptionRow>
-          {courseOptions.map((item) => {
-            return (
-              <OptionButton className="outlineButton" key={keyGen()}>
-                {item}
-              </OptionButton>
-            );
-          })}
-        </OptionRow> */}
-        {/* <div>
-          {classes
-            .filter((classProfile) => {
-              return classProfile.date.getMonth() === monthOptions[monthInView];
-            })
-            .map((classProfile) => {
-              return <div key={keyGen()}>{classProfile.name}</div>;
-            })}
-        </div> */}
       </Block>
       <FullWidthScrollableBlock>
         {classes
@@ -130,18 +106,13 @@ const ClassList = () => {
           .map((classProfile) => {
             return (
               <div className="col-12 col-md-4 col-lg-3 mb-5">
-                <ListCard title={classProfile.name}>
-                  <NameTag name="張三豐" nickName="Fon" />
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                  <div>123</div>
-                </ListCard>
+                <ListCard
+                  title={classProfile.name}
+                  subtitle={classProfile.type}
+                  students={classProfile.students}
+                  pendingStudents={classProfile.pendingStudents}
+                  rescheduleStudents={classProfile.rescheduleStudents}
+                />
               </div>
             );
           })}
