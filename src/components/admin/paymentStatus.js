@@ -23,7 +23,7 @@ const PaymentStatus = () => {
   const { payments } = useContext(allPaymentContext);
   const sessionData = combinePaymentsWithSession(payments, sessions);
 
-  const [modalType, setModalType] = useState('');
+  const [modalData, setModalData] = useState(null);
   const [modlaIsActive, setModalIsActive] = useState(false);
 
   return (
@@ -35,7 +35,7 @@ const PaymentStatus = () => {
             <SessionItem
               name={sessionInfo.name}
               payments={sessionInfo.payments}
-              setModalType={setModalType}
+              setModalData={setModalData}
               setModalIsActive={setModalIsActive}
               key={keyGen()}
             />
@@ -43,7 +43,8 @@ const PaymentStatus = () => {
         })}
       </Block>
       <Modal
-        modalType={modalType}
+        modalData={modalData}
+        setModalData={setModalData}
         isActive={modlaIsActive}
         setModalIsActive={setModalIsActive}
       />
