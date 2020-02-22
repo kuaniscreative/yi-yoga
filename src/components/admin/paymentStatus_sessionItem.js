@@ -10,23 +10,34 @@ const PaymentStatusButton = styled.button`
   display: inline-block;
   position: relative;
   margin-right: 1.5rem;
+  user-select: none;
+`;
+
+const Num = styled.u`
+  pointer-events: none;
 `;
 
 const SessionItem = (props) => {
-  const { name, payments } = props;
+  const { name, payments, setModalType, setModalIsActive } = props;
   const { finished, paid, pending } = payments;
+
+  const handleClick = (e) => {
+    const type = e.target.dataset.payment;
+    setModalType(type);
+    setModalIsActive(true);
+  };
 
   return (
     <div>
       <SessionTitle>{name}</SessionTitle>
-      <PaymentStatusButton>
-        未繳費：<u>{pending.length}</u>
+      <PaymentStatusButton data-payment="pending" onClick={handleClick}>
+        未繳費：<Num>{pending.length}</Num>
       </PaymentStatusButton>
-      <PaymentStatusButton>
-        待確認：<u>{paid.length}</u>
+      <PaymentStatusButton data-payment="paid" onClick={handleClick}>
+        待確認：<Num>{paid.length}</Num>
       </PaymentStatusButton>
-      <PaymentStatusButton>
-        已完成：<u>{finished.length}</u>
+      <PaymentStatusButton data-payment="finished" onClick={handleClick}>
+        已完成：<Num>{finished.length}</Num>
       </PaymentStatusButton>
     </div>
   );

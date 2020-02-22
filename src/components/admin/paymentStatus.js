@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useState } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -8,6 +8,7 @@ import ItemBarWithAction from '../ui/itemBarWithAction';
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 import SessionItem from './paymentStatus_sessionItem';
+import Modal from './paymentStatus_modal';
 
 // contexts
 import { allPaymentContext } from '../contexts/allPaymentContext';
@@ -22,6 +23,9 @@ const PaymentStatus = () => {
   const { payments } = useContext(allPaymentContext);
   const sessionData = combinePaymentsWithSession(payments, sessions);
 
+  const [modalType, setModalType] = useState('');
+  const [modlaIsActive, setModalIsActive] = useState(false);
+
   return (
     <div>
       <TitleBlock title="付款狀況" />
@@ -31,11 +35,18 @@ const PaymentStatus = () => {
             <SessionItem
               name={sessionInfo.name}
               payments={sessionInfo.payments}
+              setModalType={setModalType}
+              setModalIsActive={setModalIsActive}
               key={keyGen()}
             />
           );
         })}
       </Block>
+      <Modal
+        modalType={modalType}
+        isActive={modlaIsActive}
+        setModalIsActive={setModalIsActive}
+      />
     </div>
   );
 };
