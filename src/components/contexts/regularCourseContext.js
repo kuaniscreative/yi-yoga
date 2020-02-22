@@ -10,17 +10,11 @@ const initState = {
 };
 
 class RegularCourseContextProvider extends Component {
-  state = initState;
+  state = { ...initState };
 
   componentDidMount() {
-    this.getRegularCourse().then((snapshot) => {
-      const regularCourse = snapshot.docs.map((doc) => {
-        return doc.data();
-      });
-      this.setState({
-        regularCourse,
-        listener: this.realTimeUpdateListener()
-      });
+    this.setState({
+      listener: this.realTimeUpdateListener()
     });
   }
 
@@ -30,19 +24,18 @@ class RegularCourseContextProvider extends Component {
   }
 
   realTimeUpdateListener = () => {
-    return firestore.collection('regularCourse').onSnapshot((query) => {
-      const courses = query.docs.map((doc) => {
-        return {
-          ...doc.data(),
-          id: doc.id
-        };
+    return firestore
+      .collection('regularCourse')
+      .orderBy('reference', 'asc')
+      .onSnapshot((query) => {
+        const regularCourse = query.docs.map((doc) => {
+          return {
+            ...doc.data(),
+            id: doc.id
+          };
+        });
+        this.updateRegularCourse({ regularCourse });
       });
-      this.updateRegularCourse({ courses });
-    });
-  };
-
-  getRegularCourse = () => {
-    return firestore.collection('regularCourse').get();
   };
 
   updateRegularCourse = (data = {}) => {

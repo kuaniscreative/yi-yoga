@@ -11,17 +11,11 @@ const initState = {
 };
 
 class AllUserContextProvider extends Component {
-  state = initState;
+  state = { ...initState };
 
   componentDidMount() {
-    this.getUserData().then((snapshot) => {
-      const students = snapshot.docs.map((doc) => {
-        return doc.data();
-      });
-      this.setState({
-        students,
-        listener: this.realTimeUpdateListener()
-      });
+    this.setState({
+      listener: this.realTimeUpdateListener()
     });
   }
 
@@ -35,10 +29,6 @@ class AllUserContextProvider extends Component {
       });
       this.updateUserData({ students });
     });
-  };
-
-  getUserData = () => {
-    return firestore.collection('user').get();
   };
 
   updateUserData = (data = {}) => {

@@ -11,8 +11,8 @@ import Header from '../admin/header';
 import Navigation from '../ui/navigation';
 
 // context
-import AllUserContext from '../contexts/allUserContext';
-import NewSessionContext from '../contexts/newSessionContext';
+import AllUserContextProvider from '../contexts/allUserContext';
+import NewSessionContextProvider from '../contexts/newSessionContext';
 import RegularCourseContextProvider from '../contexts/regularCourseContext';
 import AllClassContextProvider from '../contexts/allClassContext';
 import ClassListContextProvider from '../contexts/classListContext';
@@ -25,7 +25,7 @@ const AdminPanel = () => {
   const [headerBackground, setHeaderBackground] = useState('white');
 
   return (
-    <AllUserContext>
+    <AllUserContextProvider>
       <RegularCourseContextProvider>
         <AllClassContextProvider>
           <div id="admin">
@@ -44,9 +44,9 @@ const AdminPanel = () => {
             <Switch>
               <Route exact path="/" component={AdminIndex} />
               <Route path="/new-session">
-                <NewSessionContext>
+                <NewSessionContextProvider>
                   <NewSession />
-                </NewSessionContext>
+                </NewSessionContextProvider>
               </Route>
               <Route path="/classList">
                 <ClassListContextProvider>
@@ -59,7 +59,7 @@ const AdminPanel = () => {
           </div>
         </AllClassContextProvider>
       </RegularCourseContextProvider>
-    </AllUserContext>
+    </AllUserContextProvider>
   );
 };
 
