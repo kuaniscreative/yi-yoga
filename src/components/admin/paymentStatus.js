@@ -10,6 +10,7 @@ import Block from '../ui/block';
 
 // contexts
 import { allPaymentContext } from '../contexts/allPaymentContext';
+import { sessionContext } from '../contexts/sessionContext';
 
 class PaymentStatus extends Component {
   state = {

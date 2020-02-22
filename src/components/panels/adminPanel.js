@@ -17,6 +17,7 @@ import RegularCourseContextProvider from '../contexts/regularCourseContext';
 import AllClassContextProvider from '../contexts/allClassContext';
 import ClassListContextProvider from '../contexts/classListContext';
 import AllPaymentContextProvider from '../contexts/allPaymentContext';
+import SessionContextProvider from '../contexts/sessionContext';
 
 // json
 import sideMenuData from '../../json/adminSideMenu';
@@ -56,7 +57,9 @@ const AdminPanel = () => {
               </Route>
               <Route path="/paymentStatus">
                 <AllPaymentContextProvider>
-                  <PaymentStatus />
+                  <SessionContextProvider>
+                    <PaymentStatus />
+                  </SessionContextProvider>
                 </AllPaymentContextProvider>
               </Route>
               <Route path="/newStudent" component={NewStudent} />
