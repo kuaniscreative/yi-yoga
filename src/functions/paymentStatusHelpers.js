@@ -5,12 +5,24 @@ export const combinePaymentsWithSession = (payments, sessions) => {
   const sorting = {};
   payments.forEach((payment) => {
     const session = payment.sessionId;
+    const status = payment.moneyReceived
+      ? 'finished'
+      : payment.moneySent
+      ? 'paid'
+      : 'pending';
+
     if (sorting[session]) {
-      sorting[session].push(payment);
+      sorting[session][status].push(payment);
     } else {
-      sorting[session] = [payment];
+      sorting[session] = {
+        finished: [],
+        paid: [],
+        pending: []
+      };
+      sorting[session][status].push(payment);
     }
   });
+
   return sessions.map((session) => {
     return {
       ...session,
