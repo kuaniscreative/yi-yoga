@@ -24,7 +24,7 @@ export const createClassProfile = (startDate, endDate, regularCourses) => {
         classes.push({
           date: date,
           capacity: course.capacity,
-          name: `${yyyy}年${mm}月${dd}日`,
+          name: `${yyyy}年${mm + 1}月${dd}日`,
           type: course.name,
           id: keyGen()
         });

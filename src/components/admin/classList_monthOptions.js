@@ -31,7 +31,7 @@ const MonthOptions = () => {
             data-index={i}
             onClick={selectMonth}
           >
-            {`${toChineseString(item)}月`}
+            {`${toChineseString(item + 1)}月`}
           </OptionButton>
         );
       })}
