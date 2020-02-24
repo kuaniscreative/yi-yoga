@@ -4,6 +4,9 @@ import styled from 'styled-components';
 // components
 import NameTag from '../ui/nameTag';
 
+// actions
+import { confirmPayment } from '../../actions/adminActions';
+
 // data
 import theme from '../../json/theme.json';
 
@@ -43,6 +46,12 @@ const ModalItem = (props) => {
     payment.method === 'transaction'
       ? `於 ${payment.date} 匯款，帳號末四碼：${payment.account}`
       : `於 ${payment.date} 當面繳交學費`;
+
+  const handleClick = () => {
+    window.confirm(`確認收到學生 ${payment.owner.name} 的款項？`);
+    confirmPayment(payment.id);
+  };
+
   return (
     <div className="container-fluid px-0">
       <Wrapper className="row">
@@ -60,7 +69,9 @@ const ModalItem = (props) => {
         </Infos>
         {type === 'paid' ? (
           <Action className="col-12 col-md-4">
-            <button className="outlineButton">確認收款</button>
+            <button className="outlineButton" onClick={handleClick}>
+              確認收款
+            </button>
           </Action>
         ) : null}
       </Wrapper>

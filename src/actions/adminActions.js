@@ -1,6 +1,13 @@
 import firebase from '../fbConfig';
+
+// helpers
+import generateId from '../functions/keyGen';
+
 const firestore = firebase.firestore();
 
+/**
+ * Add New Session
+ */
 const createSessionName = ({ start, end }) => {
   if (start.year !== end.year) {
     return `${start.year}年${start.month}月 - ${end.year}年${end.month}月`;
@@ -99,6 +106,9 @@ export const addNewSession = (sessionSpan, classes) => {
   return Promise.all(tasks);
 };
 
+/**
+ * Validate Student Account
+ */
 export const validateStudent = (id) => {
   return firestore
     .collection('user')
@@ -108,8 +118,14 @@ export const validateStudent = (id) => {
     });
 };
 
-function generateId() {
-  return Math.random()
-    .toString(36)
-    .substr(2, 9);
-}
+/**
+ * Payments
+ */
+export const confirmPayment = (paymentId) => {
+  return firestore
+    .collection('paymentStatus')
+    .doc(paymentId)
+    .update({
+      moneyReceived: true
+    });
+};
