@@ -51,11 +51,15 @@ export const registerToCourse = (
       return Promise.all(tasks);
     }
 
-    function addPaymentStatus(userId, sessionName, sessionId, amount) {
+    function addPaymentStatus(userData, sessionName, sessionId, amount) {
       return firestore.collection('paymentStatus').add({
         amount: amount,
         method: null,
-        owner: userId,
+        owner: {
+          name: userData.name,
+          nickName: userData.nickName,
+          id: userData.id
+        },
         sessionName: sessionName,
         sessionId: sessionId,
         moneyReceived: false,
@@ -66,11 +70,9 @@ export const registerToCourse = (
     const tasks = [
       updateUserData(classes, userData.id),
       addStudentToClasses(classes, userData),
-      addPaymentStatus(userData.id, sessionName, sessionId, amount).then(
-        (res) => {
-          dispatch({ type: 'ADD_PAYMENT_SUCCESS', id: res.id });
-        }
-      )
+      addPaymentStatus(userData, sessionName, sessionId, amount).then((res) => {
+        dispatch({ type: 'ADD_PAYMENT_SUCCESS', id: res.id });
+      })
     ];
 
     Promise.all(tasks)
