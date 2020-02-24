@@ -32,22 +32,26 @@ class AllClassContextProvider extends Component {
   };
 
   realTimeUpdateListener = () => {
-    return firestore.collection('classProfile').onSnapshot((query) => {
-      const classes = query.docs.map((doc) => {
-        const classSingle = doc.data();
-        const { students, rescheduleStudents, capacity } = classSingle;
-        const date = classSingle.date.toDate();
-        const dayString = `星期${toChineseString(date.getDay())}`;
-        const isFull = students.length + rescheduleStudents.length >= capacity;
-        return {
-          ...classSingle,
-          date,
-          dayString,
-          isFull
-        };
+    return firestore
+      .collection('classProfile')
+      .orderBy('date', 'asc')
+      .onSnapshot((query) => {
+        const classes = query.docs.map((doc) => {
+          const classSingle = doc.data();
+          const { students, rescheduleStudents, capacity } = classSingle;
+          const date = classSingle.date.toDate();
+          const dayString = `星期${toChineseString(date.getDay())}`;
+          const isFull =
+            students.length + rescheduleStudents.length >= capacity;
+          return {
+            ...classSingle,
+            date,
+            dayString,
+            isFull
+          };
+        });
+        this.updateClassProfile(classes);
       });
-      this.updateClassProfile(classes);
-    });
   };
 
   componentDidMount() {

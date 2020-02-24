@@ -20,7 +20,9 @@ export function reconstruct(classes) {
   });
 
   return {
-    monthOptions,
+    monthOptions: monthOptions.sort((a, b) => {
+      return a - b;
+    }),
     sortedByMonth
   };
 }
