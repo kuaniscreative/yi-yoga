@@ -1,55 +1,22 @@
 #newSession {
-    .periodSetter {
-        margin-bottom: 32px;
-        display: flex;
+  .periodSetter {
+    margin-bottom: 32px;
+    display: flex;
 
-        select[name="year"] {
-            margin-bottom: 0;
-            margin-right: 0.5em;
-        }
-        select[name="month"] {
-            margin-bottom: 0;
-            margin-left: 1em;
-        }
-        .seperator {
-            display: flex;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: 400;
-            padding: 1em 0 0.5em 0;
-        }
+    select[name='year'] {
+      margin-bottom: 0;
+      margin-right: 0.5em;
     }
-    .newSession_instruction {
-        margin-bottom: 32px;
-    } 
-}
-
-#newSession_preview {
-    .comfyList {
-        margin-bottom: 2em;
-        li {
-            color: $gray-4;
-        }
+    select[name='month'] {
+      margin-bottom: 0;
+      margin-left: 1em;
     }
-    .borderBottomList {
-        margin: 0 16px;
-        box-shadow: 0 0 20px -12px;
-        margin-bottom: 24px;
-        li {
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-        .contentWrapper {
-            padding: 8px;
-        }
+    .seperator {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 400;
+      padding: 1em 0 0.5em 0;
     }
-}
-
-.newSession_instruction {
-    .stepIndicator {
-        margin-bottom: 16px;
-    }
-    ul li {
-        font-size: 0.75rem;
-    }
+  }
 }
