@@ -34,13 +34,14 @@ const ListItem = styled.li`
   border-bottom: 1px solid ${theme.colors.gray1};
   letter-spacing: normal;
 
-  .dateSingle_other {
+  /* .dateSingle_other {
     display: none;
-  }
+  } */
 `;
 
 const ItemMain = styled.div`
   flex: 1 0;
+  padding: 0.5rem;
 `;
 
 const ClassWrapper = (props) => {
