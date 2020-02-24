@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// data
+import theme from '../../json/theme.json';
+
 const ModalBase = styled.div`
   display: ${(props) => (props.isActive ? 'block' : 'none')};
   width: 100%;
@@ -28,14 +31,47 @@ const ModalWrapper = styled.div`
   overflow: hidden;
 `;
 
-const ModalTitle = styled.div`
+const ModalContent = styled.div`
+  padding: 1rem 2rem;
+`;
+
+const ModalTitle = styled(ModalContent)`
   display: block;
   width: 100%;
+  background: ${theme.colors.gray6};
+
+  h1 {
+    font-size: 1rem;
+    line-height: 2em;
+    color: white;
+  }
+  p {
+    font-size: 0.75rem;
+    letter-spacing: normal;
+    color: white;
+  }
 `;
+
+const ModalList = styled.ul`
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const titleOutputs = {
+  pending: '未付款',
+  paid: '待確認',
+  finished: '已完成'
+};
 
 const Modal = (props) => {
   const { modalData, setModalData, isActive, setModalIsActive } = props;
-  console.log(modalData);
+  const { session, type, payments } = modalData;
+
   const closeModal = (e) => {
     setModalIsActive(false);
   };
@@ -43,8 +79,11 @@ const Modal = (props) => {
   return (
     <ModalBase isActive={isActive} onClick={closeModal}>
       <ModalWrapper>
-        <h1></h1>
-        <p></p>
+        <ModalTitle>
+          <h1>{titleOutputs[type]}</h1>
+          <p>{session}</p>
+        </ModalTitle>
+        <ModalList></ModalList>
       </ModalWrapper>
     </ModalBase>
   );

@@ -23,7 +23,7 @@ const PaymentStatus = () => {
   const { payments } = useContext(allPaymentContext);
   const sessionData = combinePaymentsWithSession(payments, sessions);
 
-  const [modalData, setModalData] = useState(null);
+  const [modalData, setModalData] = useState({});
   const [modlaIsActive, setModalIsActive] = useState(false);
 
   return (
