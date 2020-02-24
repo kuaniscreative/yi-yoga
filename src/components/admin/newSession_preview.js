@@ -49,13 +49,11 @@ const Preview = (props) => {
   };
 
   const handleClick = () => {
+    setLoadingBarActive(true);
     addNewSession(sessionSpan, classes).then(() => {
+      setLoadingBarActive(false);
       toNextStep();
     });
-  };
-
-  const test = () => {
-    setLoadingBarActive(true);
   };
 
   return (
@@ -90,10 +88,6 @@ const Preview = (props) => {
             prevHandler={toPrevStep}
           />
         </Nav>
-
-        <button className="oulineButton" onClick={test}>
-          測試用
-        </button>
       </div>
     </Block>
   );
