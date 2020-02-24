@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
 
 // components
 import Block from '../ui/block';
 import Subtitle from '../ui/subtitle';
+import NextStepButton from '../ui/nextStepButton';
 
 // contexts
 import { newSessionContext } from '../contexts/newSessionContext';
@@ -57,6 +59,10 @@ const YearSelect = (props) => {
     </select>
   );
 };
+
+const Nav = styled.div`
+  margin: 5rem 0 3rem 0;
+`;
 
 const initSpan = {
   start: {
@@ -122,7 +128,9 @@ const Setter = () => {
           <div className="seperator">/</div>
           <MonthSelect point="end" changeHandler={handleChange} />
         </div>
-        <button className="outlineButton">確認</button>
+        <Nav>
+          <NextStepButton action="預覽課程" hint="下一步" />
+        </Nav>
       </form>
     </Block>
   );

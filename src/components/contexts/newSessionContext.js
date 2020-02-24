@@ -35,6 +35,14 @@ const NewSessionContext = (props) => {
     setStep(fsm[step]);
   };
 
+  const toPrevStep = () => {
+    const fsm = {
+      setter: 'initial',
+      preview: 'setter'
+    };
+    setStep(fsm[step]);
+  };
+
   /**
    *  get Classes
    */
@@ -52,6 +60,7 @@ const NewSessionContext = (props) => {
       value={{
         step,
         toNextStep,
+        toPrevStep,
         sessionSpan,
         setSessionSpan,
         classes,

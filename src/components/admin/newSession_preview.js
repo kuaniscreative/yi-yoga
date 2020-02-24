@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 
 // components
 import Block from '../ui/block';
 import Subtitle from '../ui/subtitle';
 import ClassWrapper from './newSession_classWrapper';
+import ProcessNav from '../ui/processNav';
 
 // contexts
 import { newSessionContext } from '../contexts/newSessionContext';
@@ -11,6 +13,10 @@ import { newSessionContext } from '../contexts/newSessionContext';
 // functions
 import keyGen from '../../functions/keyGen';
 import { addNewSession } from '../../actions/adminActions';
+
+const Nav = styled.div`
+  margin: 3rem 0;
+`;
 
 const getMonths = (startMonth, endMonth) => {
   const total = [];
@@ -20,10 +26,15 @@ const getMonths = (startMonth, endMonth) => {
   }
   return total;
 };
+
 const Preview = (props) => {
-  const { sessionSpan, classes, setClasses, toNextStep } = useContext(
-    newSessionContext
-  );
+  const {
+    sessionSpan,
+    classes,
+    setClasses,
+    toNextStep,
+    toPrevStep
+  } = useContext(newSessionContext);
 
   const totalMonths = getMonths(sessionSpan.start.month, sessionSpan.end.month);
 
@@ -63,13 +74,16 @@ const Preview = (props) => {
             );
           })}
         </div>
-        <div className="container-fluid">
-          <div className="row justify-content-end">
-            <button className="outlineButton" onClick={handleClick}>
-              確認
-            </button>
-          </div>
-        </div>
+        <Nav>
+          <ProcessNav
+            nextHint="下一步"
+            nextAction="開放報名"
+            nextHandler={handleClick}
+            prevHint="上一步"
+            prevAction="設定課程期間"
+            prevHandler={toPrevStep}
+          />
+        </Nav>
       </div>
     </Block>
   );
