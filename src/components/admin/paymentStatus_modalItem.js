@@ -13,9 +13,22 @@ const Wrapper = styled.li`
   border-bottom: 1px solid ${theme.colors.gray1};
 `;
 
-const Infos = styled.p`
+const Infos = styled.div``;
+
+const Action = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  @media (max-width: 576px) {
+    justify-content: flex-start;
+    margin: 1rem 0 0.5rem 0;
+  }
+`;
+
+const PaymentInfos = styled.p`
   display: block;
   padding: 0.5rem 0;
+  line-height: 1.25em;
 `;
 
 const InfoItem = styled.span`
@@ -31,15 +44,27 @@ const ModalItem = (props) => {
       ? `於 ${payment.date} 匯款，帳號末四碼：${payment.account}`
       : `於 ${payment.date} 當面繳交學費`;
   return (
-    <Wrapper>
-      <NameTag name={payment.owner.name} nickName={payment.owner.nickName} />
-      <Infos>
-        <InfoItem>金額：{payment.amount}</InfoItem>
+    <div className="container-fluid px-0">
+      <Wrapper className="row">
+        <Infos className="col-12 col-md-8">
+          <NameTag
+            name={payment.owner.name}
+            nickName={payment.owner.nickName}
+          />
+          <PaymentInfos>
+            <InfoItem>金額：{payment.amount}</InfoItem>
+            {type === 'paid' ? (
+              <InfoItem>{` | ${timeAndMethodOuput}`}</InfoItem>
+            ) : null}
+          </PaymentInfos>
+        </Infos>
         {type === 'paid' ? (
-          <InfoItem>{` | ${timeAndMethodOuput}`}</InfoItem>
+          <Action className="col-12 col-md-4">
+            <button className="outlineButton">確認收款</button>
+          </Action>
         ) : null}
-      </Infos>
-    </Wrapper>
+      </Wrapper>
+    </div>
   );
 };
 
