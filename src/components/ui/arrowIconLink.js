@@ -10,9 +10,9 @@ const StyledLink = styled(Link)`
 `;
 
 const TextWrapper = styled.span`
-  padding-right: 4px;
+  padding-right: 0.5rem;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1.25rem;
 `;
 
 const ArrowIconLink = (props) => {
@@ -20,7 +20,7 @@ const ArrowIconLink = (props) => {
   return (
     <StyledLink to={to}>
       <TextWrapper>{children}</TextWrapper>
-      <Arrow width="28" height="28" />
+      <Arrow width="24" height="24" />
     </StyledLink>
   );
 };
