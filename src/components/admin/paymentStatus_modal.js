@@ -25,8 +25,7 @@ const ModalWrapper = styled.div`
   display: block;
   width: 92%;
   max-width: 720px;
-  height: 400px;
-  max-height: 92%;
+  padding-bottom: 0.75rem;
   border-radius: 16px;
   position: absolute;
   top: 50%;
@@ -62,6 +61,7 @@ const ModalList = styled(ModalContent)`
   display: block;
   position: relative;
   width: 100%;
+  max-height: 66vh;
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -82,8 +82,14 @@ const Modal = (props) => {
     setModalIsActive(false);
   };
 
+  const closeModalOnMask = (e) => {
+    if (e.target.getAttribute('name') === 'modalMask') {
+      setModalIsActive(false);
+    }
+  };
+
   return (
-    <ModalBase isActive={isActive} onClick={closeModal}>
+    <ModalBase isActive={isActive} onClick={closeModalOnMask} name="modalMask">
       <ModalWrapper>
         <ModalTitle>
           <h1>{titleOutputs[type]}</h1>
@@ -99,6 +105,13 @@ const Modal = (props) => {
               })}
           </ul>
         </ModalList>
+        <div className="container-fluid px-0">
+          <div className="row justify-content-center align-items-center py-2">
+            <button className="outlineButton" onClick={closeModal}>
+              關閉
+            </button>
+          </div>
+        </div>
       </ModalWrapper>
     </ModalBase>
   );
