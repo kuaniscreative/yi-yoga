@@ -9,6 +9,7 @@ import ProcessNav from '../ui/processNav';
 
 // contexts
 import { newSessionContext } from '../contexts/newSessionContext';
+import { loadingContext } from '../contexts/loadingContext';
 
 // functions
 import keyGen from '../../functions/keyGen';
@@ -35,6 +36,7 @@ const Preview = (props) => {
     toNextStep,
     toPrevStep
   } = useContext(newSessionContext);
+  const { setLoadingBarActive } = useContext(loadingContext);
 
   const totalMonths = getMonths(sessionSpan.start.month, sessionSpan.end.month);
 
@@ -50,6 +52,10 @@ const Preview = (props) => {
     addNewSession(sessionSpan, classes).then(() => {
       toNextStep();
     });
+  };
+
+  const test = () => {
+    setLoadingBarActive(true);
   };
 
   return (
@@ -84,6 +90,10 @@ const Preview = (props) => {
             prevHandler={toPrevStep}
           />
         </Nav>
+
+        <button className="oulineButton" onClick={test}>
+          測試用
+        </button>
       </div>
     </Block>
   );
