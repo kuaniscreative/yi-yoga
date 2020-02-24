@@ -30,3 +30,12 @@ export const combinePaymentsWithSession = (payments, sessions) => {
     };
   });
 };
+
+export const getVieingPayments = (sessionData, sessionId, type) => {
+  if (sessionId === undefined || type === undefined) {
+    return [];
+  }
+  return sessionData.find((session) => {
+    return sessionId === session.id;
+  }).payments[type];
+};

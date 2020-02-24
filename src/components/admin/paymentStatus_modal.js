@@ -6,6 +6,7 @@ import ModalItem from './paymentStatus_modalItem';
 
 // functions
 import keyGen from '../../functions/keyGen';
+import { getVieingPayments } from '../../functions/paymentStatusHelpers';
 
 // data
 import theme from '../../json/theme.json';
@@ -75,8 +76,9 @@ const titleOutputs = {
 };
 
 const Modal = (props) => {
-  const { modalData, setModalData, isActive, setModalIsActive } = props;
-  const { session, type, payments } = modalData;
+  const { sessionData, modalData, isActive, setModalIsActive } = props;
+  const { sessionName, sessionId, type } = modalData;
+  const payments = getVieingPayments(sessionData, sessionId, type);
 
   const closeModal = (e) => {
     setModalIsActive(false);
@@ -93,16 +95,13 @@ const Modal = (props) => {
       <ModalWrapper>
         <ModalTitle>
           <h1>{titleOutputs[type]}</h1>
-          <p>{session}</p>
+          <p>{sessionName}</p>
         </ModalTitle>
         <ModalList>
           <ul>
-            {payments &&
-              payments.map((payment) => {
-                return (
-                  <ModalItem payment={payment} type={type} key={keyGen()} />
-                );
-              })}
+            {payments.map((payment) => {
+              return <ModalItem payment={payment} type={type} key={keyGen()} />;
+            })}
           </ul>
         </ModalList>
         <div className="container-fluid px-0">

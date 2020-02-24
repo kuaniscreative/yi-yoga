@@ -33,7 +33,8 @@ const PaymentStatus = () => {
         {sessionData.map((sessionInfo) => {
           return (
             <SessionItem
-              name={sessionInfo.name}
+              sessionName={sessionInfo.name}
+              sessionId={sessionInfo.id}
               payments={sessionInfo.payments}
               setModalData={setModalData}
               setModalIsActive={setModalIsActive}
@@ -43,8 +44,8 @@ const PaymentStatus = () => {
         })}
       </Block>
       <Modal
+        sessionData={sessionData}
         modalData={modalData}
-        setModalData={setModalData}
         isActive={modlaIsActive}
         setModalIsActive={setModalIsActive}
       />

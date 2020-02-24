@@ -18,20 +18,21 @@ const Num = styled.u`
 `;
 
 const SessionItem = (props) => {
-  const { name, payments, setModalIsActive, setModalData } = props;
+  const {
+    sessionName,
+    sessionId,
+    payments,
+    setModalIsActive,
+    setModalData
+  } = props;
   const { finished, paid, pending } = payments;
-  const relaventData = {
-    pending: pending,
-    paid: paid,
-    finished: finished
-  };
 
   const handleClick = (e) => {
     const type = e.target.dataset.payment;
     const data = {
-      session: name,
-      type: type,
-      payments: relaventData[type]
+      sessionName: sessionName,
+      sessionId: sessionId,
+      type: type
     };
     setModalData(data);
     setModalIsActive(true);
@@ -39,7 +40,7 @@ const SessionItem = (props) => {
 
   return (
     <div>
-      <SessionTitle>{name}</SessionTitle>
+      <SessionTitle>{sessionName}</SessionTitle>
       <PaymentStatusButton data-payment="pending" onClick={handleClick}>
         未繳費：<Num>{pending.length}</Num>
       </PaymentStatusButton>
