@@ -1,6 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// components
+import ModalItem from './paymentStatus_modalItem';
+
+// functions
+import keyGen from '../../functions/keyGen';
+
 // data
 import theme from '../../json/theme.json';
 
@@ -52,7 +58,7 @@ const ModalTitle = styled(ModalContent)`
   }
 `;
 
-const ModalList = styled.ul`
+const ModalList = styled(ModalContent)`
   display: block;
   position: relative;
   width: 100%;
@@ -83,7 +89,16 @@ const Modal = (props) => {
           <h1>{titleOutputs[type]}</h1>
           <p>{session}</p>
         </ModalTitle>
-        <ModalList></ModalList>
+        <ModalList>
+          <ul>
+            {payments &&
+              payments.map((payment) => {
+                return (
+                  <ModalItem payment={payment} type={type} key={keyGen()} />
+                );
+              })}
+          </ul>
+        </ModalList>
       </ModalWrapper>
     </ModalBase>
   );
