@@ -7,7 +7,7 @@ import NewSession from '../admin/newSession';
 import ClassList from '../admin/classList';
 import PaymentStatus from '../admin/paymentStatus';
 import NewStudent from '../admin/newStudent';
-import Header from '../admin/header';
+import Header from '../ui/header';
 import Navigation from '../ui/navigation';
 
 // context
