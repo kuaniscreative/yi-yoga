@@ -21,6 +21,7 @@ import navData from '../../json/userNav';
 // contexts
 import { userContext } from '../contexts/userContext';
 import { navContext } from '../contexts/navContext';
+import RegisterClassContextProvider from '../contexts/registerClassContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
@@ -56,7 +57,11 @@ const UserPanel = () => {
       />
       <Route exact path="/" component={UserIndex} />
       <Route path="/reschedule" component={Reschedule} />
-      <Route path="/register-classes" component={RegisterClasses} />
+      <Route path="/register-classes">
+        <RegisterClassContextProvider>
+          <RegisterClasses />
+        </RegisterClassContextProvider>
+      </Route>
       <Route path="/leave-application" component={LeaveApplication} />
       <Route path="/userAccount" component={UserAccount} />
       <Route path="/userStatus" component={UserStatus} />
