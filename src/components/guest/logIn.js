@@ -34,7 +34,7 @@ class LogIn extends Component {
       <div>
         <TitleBlock title="登入" />
         <Block>
-          <ComfyForm onSubmit={this.handleSubmit}>
+          <ComfyForm submitHandler={this.handleSubmit}>
             <FormItemWrapper className="col-12">
               <label>帳號</label>
               <input

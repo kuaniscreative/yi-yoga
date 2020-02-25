@@ -53,9 +53,10 @@ const Form = styled.form`
 `;
 
 const ComfyForm = (props) => {
+  const { children, submitHandler } = props;
   return (
-    <Form className="container-fluid px-0">
-      <div className="row">{props.children}</div>
+    <Form className="container-fluid px-0" onSubmit={submitHandler}>
+      <div className="row">{children}</div>
     </Form>
   );
 };
