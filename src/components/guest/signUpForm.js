@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import firebase from '../../fbConfig';
-import styled from 'styled-components';
 
 // components
-import NextStepButtonsArea from '../ui/nextStepButtonArea';
 import ComfyForm, { FormItemWrapper } from '../ui/comfyForm';
 import ProcessNav from '../ui/processNav';
 import ArrowIconLink from '../ui/arrowIconLink';
@@ -53,7 +51,7 @@ class SignUpForm extends Component {
 
   render() {
     return (
-      <ComfyForm onSubmit={this.handleSubmit}>
+      <ComfyForm submitHandler={this.handleSubmit}>
         <FormItemWrapper className="col-12 col-md-6">
           <label>帳號</label>
           <input
@@ -123,12 +121,6 @@ class SignUpForm extends Component {
             <NextStepButton action="註冊" />
           </ProcessNav>
         </FormItemWrapper>
-        {/* <NextStepButtonsArea
-          cancel={(e) => {
-            e.preventDefault();
-            this.props.history.goBack();
-          }}
-        /> */}
       </ComfyForm>
     );
   }
