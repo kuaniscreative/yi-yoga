@@ -30,7 +30,7 @@ const NextStepButton = (props) => {
   const { hint, action, handler } = props;
   return (
     <div>
-      <Hint>{hint}</Hint>
+      {hint ? <Hint>{hint}</Hint> : null}
       <ActionButton onClick={handler}>
         {action}
         <ArrowIcon width="24" height="24" />
