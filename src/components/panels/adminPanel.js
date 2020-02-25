@@ -20,7 +20,7 @@ import AllPaymentContextProvider from '../contexts/allPaymentContext';
 import SessionContextProvider from '../contexts/sessionContext';
 
 // json
-import sideMenuData from '../../json/adminSideMenu';
+import navData from '../../json/adminNav';
 
 const AdminPanel = () => {
   const [navIsActive, setNavIsActive] = useState(true);
@@ -38,7 +38,7 @@ const AdminPanel = () => {
               setNavIsActive={setNavIsActive}
             />
             <Navigation
-              data={sideMenuData}
+              data={navData}
               navIsActive={navIsActive}
               setNavIsActive={setNavIsActive}
               setHeaderBackground={setHeaderBackground}

@@ -7,7 +7,7 @@ import Reschedule from '../users/reschedule';
 import LeaveApplication from '../users/leaveApplication';
 import RegisterClasses from '../users/registerClasses';
 import UserAccount from '../users/userAccount';
-import SideMenu from '../ui/sideMenu';
+import Navigation from '../ui/navigation';
 import Header from '../ui/header';
 import UserStatus from '../users/userStatus';
 import LocationInfo from '../locationInfo';
@@ -16,16 +16,16 @@ import RescheduleRule from '../rescheduleRule';
 import Payment from '../users/payment';
 
 // data
-import sideMenuData from '../../json/userSideMenu';
+import navData from '../../json/userNav';
 
 // contexts
 import { userContext } from '../contexts/userContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
-  const divisions = sideMenuData.divisions;
+  const divisions = navData.divisions;
   const filteredData = validated
-    ? sideMenuData
+    ? navData
     : {
         divisions: divisions.filter((division) => {
           return division.name !== '課程管理';
@@ -36,7 +36,7 @@ const UserPanel = () => {
   return (
     <div>
       <Header />
-      <SideMenu data={filteredData} />
+      <Navigation data={filteredData} />
       <Route exact path="/" component={UserIndex} />
       <Route path="/reschedule" component={Reschedule} />
       <Route path="/register-classes" component={RegisterClasses} />

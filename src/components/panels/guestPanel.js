@@ -5,7 +5,7 @@ import { Link, Route } from 'react-router-dom';
 import GuestIndex from '../guest/guestIndex';
 import LogIn from '../guest/logIn';
 import SignUp from '../guest/signUp';
-import SideMenu from '../ui/sideMenu';
+import Navigation from '../ui/navigation';
 import Header from '../ui/header';
 import LocationInfo from '../locationInfo';
 import LeaveRule from '../leaveRule';
@@ -15,14 +15,14 @@ import RescheduleRule from '../rescheduleRule';
 import SignUpContext from '../contexts/signUpContext';
 
 // json
-import sideMenuData from '../../json/guestSideMenu';
+import navData from '../../json/guestNav';
 
 const GuestPanel = () => {
   return (
     <SignUpContext>
       <div id="guestPanel">
         <Header />
-        <SideMenu data={sideMenuData} />
+        <Navigation data={navData} />
         <Route exact path="/" component={GuestIndex} />
         <Route path="/log-in" component={LogIn} />
         <Route path="/signUp" component={SignUp} />
