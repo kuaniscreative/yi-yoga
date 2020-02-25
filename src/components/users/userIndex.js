@@ -1,18 +1,43 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
+
+// components
+import TitleBlock from '../ui/titleBlock';
+import Block from '../ui/block';
+import ArrowIconLink from '../ui/arrowIconLink';
+
+// contexts
+import { userContext } from '../contexts/userContext';
+
+const LinkWrapper = styled.div`
+  margin-bottom: 2rem;
+`;
 
 const UserIndex = () => {
+  const { validated, nickName } = useContext(userContext);
+
   return (
     <div id="userPanel">
-      <div className="heroMessage">
-        <div className="heroMessage_main">
-          <p>親愛的</p>
-          <p>一起運動吧</p>
-        </div>
-        <div className="heroMessage_sub">
-          <p>麻煩的請假補課在這裡解決，</p>
-          <p>讓芝伊輕鬆無負擔</p>
-        </div>
-      </div>
+      <TitleBlock title={`嗨，${nickName}`}>今天運動了嗎？</TitleBlock>
+      {validated ? (
+        <Block>
+          <LinkWrapper>
+            <ArrowIconLink to="/register-classes">報名課程</ArrowIconLink>
+          </LinkWrapper>
+          <LinkWrapper>
+            <ArrowIconLink to="/leave-application">請假</ArrowIconLink>
+          </LinkWrapper>
+          <LinkWrapper>
+            <ArrowIconLink to="/reschedule">補課安排</ArrowIconLink>
+          </LinkWrapper>
+        </Block>
+      ) : (
+        <Block>
+          <ul className="comfyList">
+            <li>等待芝伊確認帳號之後才可以報名課程</li>
+          </ul>
+        </Block>
+      )}
     </div>
   );
 };
