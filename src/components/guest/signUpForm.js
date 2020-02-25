@@ -9,6 +9,9 @@ import ProcessNav from '../ui/processNav';
 import ArrowIconLink from '../ui/arrowIconLink';
 import NextStepButton from '../ui/nextStepButton';
 
+// contexts
+import { loadingContext } from '../contexts/loadingContext';
+
 // actions
 import { signUp } from '../../actions/authActions';
 
@@ -27,6 +30,16 @@ class SignUpForm extends Component {
     message: ''
   };
 
+  static contextType = loadingContext;
+
+  loadingStart = () => {
+    this.context.setLoadingBarActive(true);
+  };
+
+  loadingEnd = () => {
+    this.context.setLoadingBarActive(false);
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
     const password = this.state.password;
@@ -35,9 +48,9 @@ class SignUpForm extends Component {
     if (password !== passwordConfirm) {
       alert('密碼確認欄輸入錯誤');
     } else {
-      this.props.loading();
+      this.loadingStart();
       signUp(this.state).then(() => {
-        this.props.loaded();
+        this.loadingEnd();
         this.props.history.push('/signUpSuccess');
       });
     }
@@ -126,15 +139,4 @@ class SignUpForm extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loading: () => {
-      dispatch({ type: 'LOADING' });
-    },
-    loaded: () => {
-      dispatch({ type: 'LOADED' });
-    }
-  };
-};
-
-export default withRouter(connect(null, mapDispatchToProps)(SignUpForm));
+export default withRouter(SignUpForm);

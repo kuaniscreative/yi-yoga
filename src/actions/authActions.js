@@ -15,37 +15,39 @@ export const signOut = () => {
   };
 };
 
+function addUserInfo(uid, userInfo) {
+  return firestore
+    .collection('user')
+    .doc(uid)
+    .set({
+      name: userInfo.name || null,
+      nickName: userInfo.nickName || null,
+      email: userInfo.email || null,
+      message: userInfo.message || null,
+      validated: false
+    });
+}
+
+function updateLeaceRecord(uid) {
+  return firestore
+    .collection('leaveRecord')
+    .doc(uid)
+    .set({
+      records: [],
+      reschedulable: [],
+      reschedulePending: [],
+      rescheduled: [],
+      stamps: []
+    });
+}
+
 export const signUp = (userInfo) => {
   return firebase
     .auth()
     .createUserWithEmailAndPassword(userInfo.email, userInfo.password)
     .then((res) => {
       const uid = res.user.uid;
-      function updateLeaceRecord(uid) {
-        return firestore
-          .collection('leaveRecord')
-          .doc(uid)
-          .set({
-            records: [],
-            reschedulable: [],
-            reschedulePending: [],
-            rescheduled: [],
-            stamps: []
-          });
-      }
-      function addUserInfo(uid) {
-        return firestore
-          .collection('user')
-          .doc(res.user.uid)
-          .set({
-            name: userInfo.name || null,
-            nickName: userInfo.nickName || null,
-            email: userInfo.email || null,
-            message: userInfo.message || null,
-            validated: false
-          });
-      }
-      const tasks = [updateLeaceRecord(uid), addUserInfo(uid)];
+      const tasks = [updateLeaceRecord(uid), addUserInfo(uid, userInfo)];
 
       return Promise.all(tasks);
     })
