@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 // components
@@ -18,13 +18,18 @@ import AllClassContextProvider from '../contexts/allClassContext';
 import ClassListContextProvider from '../contexts/classListContext';
 import AllPaymentContextProvider from '../contexts/allPaymentContext';
 import SessionContextProvider from '../contexts/sessionContext';
+import { navContext } from '../contexts/navContext';
 
 // json
 import navData from '../../json/adminNav';
 
 const AdminPanel = () => {
-  const [navIsActive, setNavIsActive] = useState(true);
-  const [headerBackground, setHeaderBackground] = useState('white');
+  const {
+    navIsActive,
+    setNavIsActive,
+    headerBackground,
+    setHeaderBackground
+  } = useContext(navContext);
 
   return (
     <AllUserContextProvider>

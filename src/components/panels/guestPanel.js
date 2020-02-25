@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, Route } from 'react-router-dom';
 
 // components
@@ -13,16 +13,34 @@ import RescheduleRule from '../rescheduleRule';
 
 // contexts
 import SignUpContext from '../contexts/signUpContext';
+import { navContext } from '../contexts/navContext';
 
 // json
 import navData from '../../json/guestNav';
 
 const GuestPanel = () => {
+  const {
+    navIsActive,
+    setNavIsActive,
+    headerBackground,
+    setHeaderBackground
+  } = useContext(navContext);
+
   return (
     <SignUpContext>
       <div id="guestPanel">
-        <Header />
-        <Navigation data={navData} />
+        <Header
+          headerBackground={headerBackground}
+          setHeaderBackground={setHeaderBackground}
+          navIsActive={navIsActive}
+          setNavIsActive={setNavIsActive}
+        />
+        <Navigation
+          data={navData}
+          navIsActive={navIsActive}
+          setNavIsActive={setNavIsActive}
+          setHeaderBackground={setHeaderBackground}
+        />
         <Route exact path="/" component={GuestIndex} />
         <Route path="/log-in" component={LogIn} />
         <Route path="/signUp" component={SignUp} />

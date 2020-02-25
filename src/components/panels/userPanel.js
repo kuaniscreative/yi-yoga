@@ -20,6 +20,7 @@ import navData from '../../json/userNav';
 
 // contexts
 import { userContext } from '../contexts/userContext';
+import { navContext } from '../contexts/navContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
@@ -32,11 +33,27 @@ const UserPanel = () => {
         }),
         logoutSection: true
       };
+  const {
+    navIsActive,
+    setNavIsActive,
+    headerBackground,
+    setHeaderBackground
+  } = useContext(navContext);
 
   return (
     <div>
-      <Header />
-      <Navigation data={filteredData} />
+      <Header
+        headerBackground={headerBackground}
+        setHeaderBackground={setHeaderBackground}
+        navIsActive={navIsActive}
+        setNavIsActive={setNavIsActive}
+      />
+      <Navigation
+        data={filteredData}
+        navIsActive={navIsActive}
+        setNavIsActive={setNavIsActive}
+        setHeaderBackground={setHeaderBackground}
+      />
       <Route exact path="/" component={UserIndex} />
       <Route path="/reschedule" component={Reschedule} />
       <Route path="/register-classes" component={RegisterClasses} />

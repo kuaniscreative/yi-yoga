@@ -26,6 +26,7 @@ import AdminPanel from './components/panels/adminPanel';
 // contexts
 import { userContext } from './components/contexts/userContext';
 import LoadingContextProvider from './components/contexts/loadingContext';
+import NavContextProvider from './components/contexts/navContext';
 
 // actions
 import {
@@ -56,18 +57,19 @@ class App extends Component {
     return (
       <div className="App">
         <LoadingContextProvider>
-          <div id="loadingBar" className={this.props.loading ? 'active' : ''}>
-            <div id="loadingBar_bar"></div>
-          </div>
+          <NavContextProvider>
+            <div id="loadingBar" className={this.props.loading ? 'active' : ''}>
+              <div id="loadingBar_bar"></div>
+            </div>
 
-          {this.context.isAdmin ? (
-            <AdminPanel />
-          ) : this.context.uid ? (
-            <UserPanel />
-          ) : (
-            <GuestPanel />
-          )}
-          {/* <HashRouter basename='/'>
+            {this.context.isAdmin ? (
+              <AdminPanel />
+            ) : this.context.uid ? (
+              <UserPanel />
+            ) : (
+              <GuestPanel />
+            )}
+            {/* <HashRouter basename='/'>
                     <Header />
                     <SideMenu />
                         <Route exact path="/" component={Main} />
@@ -91,11 +93,12 @@ class App extends Component {
                         <Route path="/payment/:paymentId" component={Payment} />
                         <Route path='/rescheduleQuery/:result?/:userId?/:classId?/:date?' component={RescheduleQuery} />
                 </HashRouter> */}
-          <Route
-            path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
-            component={RescheduleQuery}
-          />
-          <Route path="/signUpSuccess" component={SignUpSuccess} />
+            <Route
+              path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
+              component={RescheduleQuery}
+            />
+            <Route path="/signUpSuccess" component={SignUpSuccess} />
+          </NavContextProvider>
         </LoadingContextProvider>
       </div>
     );
