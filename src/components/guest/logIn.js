@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 // components
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 import NextStepButton from '../ui/nextStepButton';
 import ComfyForm, { FormItemWrapper } from '../ui/comfyForm';
+
+// contexts
+import { loadingContext } from '../contexts/loadingContext';
 
 // actions
 import { signIn } from '../../actions/authActions';
@@ -15,6 +17,16 @@ class LogIn extends Component {
   state = {
     email: null,
     password: null
+  };
+
+  static contextType = loadingContext;
+
+  loadingStart = () => {
+    this.context.setLoadingBarActive(true);
+  };
+
+  loadingEnd = () => {
+    this.context.setLoadingBarActive(false);
   };
 
   handleChange = (e) => {
@@ -26,7 +38,11 @@ class LogIn extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.signIn(this.state);
+    this.loadingStart();
+    signIn(this.state).then(() => {
+      this.props.history.push('/');
+      this.loadingEnd();
+    });
   };
 
   render() {
@@ -65,19 +81,4 @@ class LogIn extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    test: state.firebase
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signIn: (cred) => {
-      dispatch({ type: 'LOADING' });
-      dispatch(signIn(cred));
-    }
-  };
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LogIn));
+export default withRouter(LogIn);

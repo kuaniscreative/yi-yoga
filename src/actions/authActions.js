@@ -2,21 +2,9 @@ import firebase from '../fbConfig';
 const firestore = firebase.firestore();
 
 export const signIn = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(() => {
-        document.location.href = '/';
-        dispatch({ type: 'LOGIN_SUCCESS' });
-        dispatch({ type: 'LOADED' });
-      })
-      .catch((err) => {
-        dispatch({ type: 'LOGIN_ERROR', err });
-      });
-  };
+  return firebase
+    .auth()
+    .signInWithEmailAndPassword(credentials.email, credentials.password);
 };
 
 export const signOut = () => {
