@@ -74,7 +74,7 @@ const Header = (props) => {
   };
 
   const hideMenu = () => {
-    setNavIsActive(true);
+    setNavIsActive(false);
   };
 
   return (

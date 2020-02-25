@@ -3,7 +3,7 @@ import React, { createContext, useState } from 'react';
 export const navContext = createContext();
 
 const NavContextProvider = (props) => {
-  const [navIsActive, setNavIsActive] = useState(true);
+  const [navIsActive, setNavIsActive] = useState(false);
   const [headerBackground, setHeaderBackground] = useState('white');
   return (
     <navContext.Provider

@@ -78,14 +78,19 @@ const Navigation = (props) => {
     setNavIsActive(!navIsActive);
   };
 
+  const signOutAndHideNav = () => {
+    setNavIsActive(false);
+    signOut();
+  };
+
   const handleTransition = () => {
     if (navIsActive) {
-      setHeaderBackground('white');
+      setHeaderBackground('transparent');
     }
   };
 
   return (
-    <NavWrapper collapse={navIsActive} onTransitionEnd={handleTransition}>
+    <NavWrapper collapse={!navIsActive} onTransitionEnd={handleTransition}>
       <Block>
         <div className="container-fluid px-0">
           <div className="row">
@@ -117,7 +122,7 @@ const Navigation = (props) => {
               <NavItemSmall
                 className={`col-10 col-md-3 offset-md-${logoutOffset}`}
               >
-                <button onClick={signOut}>登出</button>
+                <button onClick={signOutAndHideNav}>登出</button>
               </NavItemSmall>
             ) : (
               <NavItemSmall
