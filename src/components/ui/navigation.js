@@ -54,7 +54,8 @@ const NavItemSmall = styled.div`
   font-size: 0.75rem;
   text-align: right;
 
-  button {
+  button,
+  a {
     display: block;
     margin-left: auto;
     margin-right: 0;
@@ -122,8 +123,12 @@ const Navigation = (props) => {
               <NavItemSmall
                 className={`col-10 col-md-3 offset-md-${logoutOffset}`}
               >
-                <button>登入</button>
-                <button>註冊</button>
+                <Link to="/log-in" onClick={handleClick}>
+                  登入
+                </Link>
+                <Link to="/signUp" onClick={handleClick}>
+                  註冊
+                </Link>
               </NavItemSmall>
             )}
           </div>
