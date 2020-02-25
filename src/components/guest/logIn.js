@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 import NextStepButton from '../ui/nextStepButton';
+import ComfyForm, { FormItemWrapper } from '../ui/comfyForm';
 
 // actions
 import { signIn } from '../../actions/authActions';
@@ -33,25 +34,31 @@ class LogIn extends Component {
       <div>
         <TitleBlock title="登入" />
         <Block>
-          <form className="comfyForm innerContent" onSubmit={this.handleSubmit}>
-            <label>帳號</label>
-            <input
-              name="email"
-              type="text"
-              onChange={this.handleChange}
-              placeholder="請輸入你的信箱"
-              required
-            />
-            <label>密碼</label>
-            <input
-              name="password"
-              type="password"
-              onChange={this.handleChange}
-              placeholder="請輸入你的密碼"
-              required
-            />
-            <NextStepButton action="確認" />
-          </form>
+          <ComfyForm onSubmit={this.handleSubmit}>
+            <FormItemWrapper className="col-12">
+              <label>帳號</label>
+              <input
+                name="email"
+                type="text"
+                onChange={this.handleChange}
+                placeholder="請輸入你的信箱"
+                required
+              />
+            </FormItemWrapper>
+            <FormItemWrapper className="col-12">
+              <label>密碼</label>
+              <input
+                name="password"
+                type="password"
+                onChange={this.handleChange}
+                placeholder="請輸入你的密碼"
+                required
+              />
+            </FormItemWrapper>
+            <FormItemWrapper className="col-12">
+              <NextStepButton action="確認" />
+            </FormItemWrapper>
+          </ComfyForm>
         </Block>
       </div>
     );
