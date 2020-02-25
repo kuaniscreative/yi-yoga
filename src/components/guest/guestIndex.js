@@ -1,24 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+// components
+import TitleBlock from '../ui/titleBlock';
+import Block from '../ui/block';
+import ArrowIconLink from '../ui/arrowIconLink';
+
+const LinkWrapper = styled.div`
+  margin-bottom: 2rem;
+`;
 
 const GuestIndex = () => {
   return (
     <div>
-      <div className="heroMessage">
-        <div className="heroMessage_main">
-          <p>最強凍齡瑜伽</p>
-          <p>沒有芝伊</p>
-        </div>
-        <div className="heroMessage_sub">
-          <p>----的最強課程管理系統</p>
-        </div>
-      </div>
-      <Link to="/log-in" className="outlineButton">
-        登入
-      </Link>
-      <Link to="/signUp" className="outlineButton">
-        註冊
-      </Link>
+      <TitleBlock title="歡迎來到芝伊瑜珈">
+        透過不間斷的瑜珈練習，打開身體的覺知，也更能體驗生命的美
+      </TitleBlock>
+      <Block>
+        <LinkWrapper>
+          <ArrowIconLink to="/log-in">登入</ArrowIconLink>
+        </LinkWrapper>
+        <LinkWrapper>
+          <ArrowIconLink to="/signUp">註冊</ArrowIconLink>
+        </LinkWrapper>
+      </Block>
     </div>
   );
 };
