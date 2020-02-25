@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import firebase from '../../fbConfig';
+import { withRouter } from 'react-router-dom';
+// import firebase from '../../fbConfig';
 
 // components
 import ComfyForm, { FormItemWrapper } from '../ui/comfyForm';
@@ -16,9 +15,9 @@ import { loadingContext } from '../contexts/loadingContext';
 import { signUp } from '../../actions/authActions';
 
 //settings
-const sendNewUserNotification = firebase
-  .functions()
-  .httpsCallable('sendNewUserNotification');
+// const sendNewUserNotification = firebase
+//   .functions()
+//   .httpsCallable('sendNewUserNotification');
 
 class SignUpForm extends Component {
   state = {
