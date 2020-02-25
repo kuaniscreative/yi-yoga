@@ -4,33 +4,40 @@ import styled from 'styled-components';
 // components
 import { ReactComponent as Arrow } from '../../static/arrow.svg';
 
+// funcitons
+import keyGen from '../../functions/keyGen';
+
 // data
 import theme from '../../json/theme.json';
 
 const Right = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 `;
 
-const Left = styled.div``;
+const Left = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div`
   display: block;
   position: relative;
 `;
 
-const ItemWrapperRight = styled(ItemWrapper)`
+export const ItemWrapperRight = styled(ItemWrapper)`
   text-align: right;
 `;
 
-const Hint = styled.div`
+export const Hint = styled.div`
   padding-bottom: 1.5em;
   font-weight: 500;
   font-size: 0.75rem;
   color: ${theme.colors.gray3};
 `;
 
-const ActionButton = styled.button`
+export const ActionButton = styled.button`
   display: inline-flex;
   align-items: center;
   font-size: 1.25rem;
@@ -57,24 +64,28 @@ const ProcessNav = (props) => {
     nextHint,
     prevAction,
     prevHandler,
-    prevHint
+    prevHint,
+    children
   } = props;
 
   return (
     <div className="container-fluid px-0">
       <div className="row">
-        <Left className="col-6">
-          <ItemWrapper>
-            <Hint>{prevHint}</Hint>
-            <ActionButton onClick={prevHandler}>{prevAction}</ActionButton>
-          </ItemWrapper>
-        </Left>
-        <Right className="col-6">
-          <ItemWrapperRight>
-            <Hint>{nextHint}</Hint>
-            <ActionButton onClick={nextHandler}>{nextAction}</ActionButton>
-          </ItemWrapperRight>
-        </Right>
+        {children.map((child, i) => {
+          if (i === 0) {
+            return (
+              <Left className="col-6" key={keyGen()}>
+                {child}
+              </Left>
+            );
+          } else {
+            return (
+              <Right className="col-6" key={keyGen()}>
+                {child}
+              </Right>
+            );
+          }
+        })}
       </div>
     </div>
   );

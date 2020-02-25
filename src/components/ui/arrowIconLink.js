@@ -14,9 +14,27 @@ const TextWrapper = styled.span`
   font-weight: 500;
   font-size: 1.25rem;
 `;
+const TextWrapperLeft = styled.span`
+  padding-left: 0.5rem;
+  font-weight: 500;
+  font-size: 1.25rem;
+`;
+
+const ArrowFlip = styled(Arrow)`
+  transform: rotate(180deg);
+`;
 
 const ArrowIconLink = (props) => {
-  const { to, children } = props;
+  const { to, pointTo, children } = props;
+
+  if (pointTo === 'left') {
+    return (
+      <StyledLink to={to}>
+        <ArrowFlip width="24" height="24" />
+        <TextWrapperLeft>{children}</TextWrapperLeft>
+      </StyledLink>
+    );
+  }
   return (
     <StyledLink to={to}>
       <TextWrapper>{children}</TextWrapper>

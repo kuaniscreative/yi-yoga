@@ -7,6 +7,9 @@ import styled from 'styled-components';
 // components
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 import ComfyForm, { FormItemWrapper } from '../ui/comfyForm';
+import ProcessNav from '../ui/processNav';
+import ArrowIconLink from '../ui/arrowIconLink';
+import NextStepButton from '../ui/nextStepButton';
 
 // actions
 import { signUp } from '../../actions/authActions';
@@ -112,7 +115,14 @@ class SignUpForm extends Component {
             required
           ></textarea>
         </FormItemWrapper>
-        <FormItemWrapper className="col-12"></FormItemWrapper>
+        <FormItemWrapper className="col-12">
+          <ProcessNav>
+            <ArrowIconLink to="/" pointTo="left">
+              取消
+            </ArrowIconLink>
+            <NextStepButton action="註冊" />
+          </ProcessNav>
+        </FormItemWrapper>
         {/* <NextStepButtonsArea
           cancel={(e) => {
             e.preventDefault();

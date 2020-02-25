@@ -5,7 +5,12 @@ import styled from 'styled-components';
 import Block from '../ui/block';
 import Subtitle from '../ui/subtitle';
 import ClassWrapper from './newSession_classWrapper';
-import ProcessNav from '../ui/processNav';
+import ProcessNav, {
+  ItemWrapper,
+  ItemWrapperRight,
+  Hint,
+  ActionButton
+} from '../ui/processNav';
 
 // contexts
 import { newSessionContext } from '../contexts/newSessionContext';
@@ -79,14 +84,16 @@ const Preview = (props) => {
           })}
         </div>
         <Nav>
-          <ProcessNav
-            nextHint="下一步"
-            nextAction="開放報名"
-            nextHandler={handleClick}
-            prevHint="上一步"
-            prevAction="設定課程期間"
-            prevHandler={toPrevStep}
-          />
+          <ProcessNav>
+            <ItemWrapper>
+              <Hint>上一步</Hint>
+              <ActionButton onClick={toPrevStep}>設定課程期間</ActionButton>
+            </ItemWrapper>
+            <ItemWrapperRight>
+              <Hint>下一步</Hint>
+              <ActionButton onClick={handleClick}>開放報名</ActionButton>
+            </ItemWrapperRight>
+          </ProcessNav>
         </Nav>
       </div>
     </Block>
