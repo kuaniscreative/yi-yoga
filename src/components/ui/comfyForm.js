@@ -37,6 +37,7 @@ const Form = styled.form`
     margin-top: 0.5em;
     padding: 1.5rem 1rem;
     border: 1px solid ${theme.colors.gray1};
+    line-height: 1.75em;
   }
 
   ::placeholder {
