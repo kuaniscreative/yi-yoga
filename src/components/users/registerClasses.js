@@ -6,7 +6,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 // components
 import Preview from './registerClasses_preview';
 import RegisterClassSuccess from './registerClasses_success';
-import SelectClassPanel from './registerClasses_selectClassPanel';
+import Picker from './registerClasses_picker';
 import TitleBlock from '../ui/titleBlock';
 import Block from '../ui/block';
 
@@ -22,7 +22,7 @@ const RegisterClasses = () => {
   return (
     <div>
       <TitleBlock title="報名課程" />
-      <Block></Block>
+      <Block>{step === 'initial' ? <Picker /> : null}</Block>
     </div>
   );
 };
