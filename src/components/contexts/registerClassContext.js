@@ -1,8 +1,18 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext } from 'react';
+
+// contexts
+import { openingSessionContext } from './openingSessionContext';
+import { allClassContext } from './allClassContext';
+
+// functions
+import { reconstruct } from '../../functions/registerClassHelpers';
 
 export const registerClassContext = createContext();
 
 const RegisterClassContextProvider = (props) => {
+  /**
+   *  Setting Steps
+   */
   const stepMachine = {
     initial: 'preview',
     preview: 'result',
@@ -19,8 +29,17 @@ const RegisterClassContextProvider = (props) => {
     setStep(prevStep);
   };
 
+  /**
+   *  Reconstruct data from contexts
+   */
+  const { classes } = useContext(allClassContext);
+  const { session } = useContext(openingSessionContext);
+  const mappedSession = reconstruct(session, classes);
+
   return (
-    <registerClassContext.Provider value={{ step, toNextStep, toPrevStep }}>
+    <registerClassContext.Provider
+      value={{ step, toNextStep, toPrevStep, session: mappedSession }}
+    >
       {props.children}
     </registerClassContext.Provider>
   );

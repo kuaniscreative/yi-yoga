@@ -5,7 +5,7 @@ export const openingSessionContext = createContext();
 const firestore = firebase.firestore();
 
 const OpeningSessionContextProvider = (props) => {
-  const [session, setSession] = useState([]);
+  const [session, setSession] = useState({});
   const realTimeUpdateListener = () => {
     return firestore
       .collection('session')
@@ -29,9 +29,8 @@ const OpeningSessionContextProvider = (props) => {
     return listener;
   }, [preventMultipleCall]);
 
-  console.log('session', session);
   return (
-    <openingSessionContext.Provider>
+    <openingSessionContext.Provider value={{ session }}>
       {props.children}
     </openingSessionContext.Provider>
   );

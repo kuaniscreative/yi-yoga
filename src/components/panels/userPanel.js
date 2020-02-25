@@ -23,6 +23,7 @@ import { userContext } from '../contexts/userContext';
 import { navContext } from '../contexts/navContext';
 import RegisterClassContextProvider from '../contexts/registerClassContext';
 import OpeningSessionContextProvider from '../contexts/openingSessionContext';
+import AllClassContextProvider from '../contexts/allClassContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
@@ -59,11 +60,13 @@ const UserPanel = () => {
       <Route exact path="/" component={UserIndex} />
       <Route path="/reschedule" component={Reschedule} />
       <Route path="/register-classes">
-        <OpeningSessionContextProvider>
-          <RegisterClassContextProvider>
-            <RegisterClasses />
-          </RegisterClassContextProvider>
-        </OpeningSessionContextProvider>
+        <AllClassContextProvider>
+          <OpeningSessionContextProvider>
+            <RegisterClassContextProvider>
+              <RegisterClasses />
+            </RegisterClassContextProvider>
+          </OpeningSessionContextProvider>
+        </AllClassContextProvider>
       </Route>
       <Route path="/leave-application" component={LeaveApplication} />
       <Route path="/userAccount" component={UserAccount} />
