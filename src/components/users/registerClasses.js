@@ -12,6 +12,7 @@ import Block from '../ui/block';
 
 // contexts
 import { registerClassContext } from '../contexts/registerClassContext';
+import CalendarContextProvider from '../contexts/calendarContext';
 
 // actions
 import { registerToCourse } from '../../actions/userActions';
@@ -21,8 +22,10 @@ const RegisterClasses = () => {
 
   return (
     <div>
-      <TitleBlock title="報名課程" />
-      <Block>{step === 'initial' ? <Picker /> : null}</Block>
+      <CalendarContextProvider>
+        <TitleBlock title="報名課程" />
+        <Block>{step === 'initial' ? <Picker /> : null}</Block>
+      </CalendarContextProvider>
     </div>
   );
 };

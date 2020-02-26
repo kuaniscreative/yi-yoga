@@ -19,7 +19,10 @@ const getAmountOfCells = (month, year) => {
   }
 };
 
-export const createCellData = (month, year) => {
+export const createCellData = ({ month, year }) => {
+  if (!month || !year) {
+    return [];
+  }
   const date = new Date(year, month, 1);
   const amountOfCells = getAmountOfCells(month, year);
   const daysInMonth = getDaysInMonth(date);
@@ -30,14 +33,73 @@ export const createCellData = (month, year) => {
       // it means empty cell
       cellData.push({
         empty: true,
-        date: null
+        date: null,
+        classes: []
       });
     } else {
       cellData.push({
         empty: false,
-        date: new Date(year, month, i - startDay + 1)
+        date: new Date(year, month, i - startDay + 1),
+        classes: []
       });
     }
   }
   return cellData;
+};
+
+const mapClassesToCalendar = (calendar, classes) => {
+  let searchIndex = 0;
+  const pending = {};
+
+  for (const classInfo of classes) {
+    const year = classInfo.date.getFullYear();
+    const month = classInfo.date.getMonth();
+    const date = classInfo.date.getDate();
+    const matchPattern = new Date(year, month, date).valueOf();
+
+    if (pending[matchPattern]) {
+      const index = pending[matchPattern];
+      calendar[index].classes.push(classInfo);
+      continue;
+    }
+
+    while (calendar.length > searchIndex) {
+      if (calendar[searchIndex].date === null) {
+        break;
+      }
+
+      const currentValue = calendar[searchIndex].date.valueOf();
+      if (currentValue === matchPattern) {
+        calendar[searchIndex].classes.push(classInfo);
+        break;
+      } else {
+        pending[currentValue] = searchIndex;
+        searchIndex += 1;
+      }
+    }
+  }
+};
+
+export const createCalendarData = (span = [], classes) => {
+  if (span.length === 0 || classes.length === 0) {
+    return [];
+  }
+
+  const destructedSpan = span.map((spanTag) => {
+    const [month, year] = spanTag.split('/');
+    return {
+      month: parseInt(month, 10) - 1,
+      year: parseInt(year, 10)
+    };
+  });
+
+  const calendarWithCellData = destructedSpan.map((span) => {
+    return createCellData(span);
+  });
+
+  calendarWithCellData.forEach((calendar) => {
+    mapClassesToCalendar(calendar, classes);
+  });
+
+  return calendarWithCellData;
 };
