@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 // components
 import UserIndex from '../users/userIndex';
@@ -57,24 +57,26 @@ const UserPanel = () => {
         setNavIsActive={setNavIsActive}
         setHeaderBackground={setHeaderBackground}
       />
-      <Route exact path="/" component={UserIndex} />
-      <Route path="/reschedule" component={Reschedule} />
-      <Route path="/register-classes">
-        <AllClassContextProvider>
-          <OpeningSessionContextProvider>
-            <RegisterClassContextProvider>
-              <RegisterClasses />
-            </RegisterClassContextProvider>
-          </OpeningSessionContextProvider>
-        </AllClassContextProvider>
-      </Route>
-      <Route path="/leave-application" component={LeaveApplication} />
-      <Route path="/userAccount" component={UserAccount} />
-      <Route path="/userStatus" component={UserStatus} />
-      <Route path="/locationInfo" component={LocationInfo} />
-      <Route path="/leaveRule" component={LeaveRule} />
-      <Route path="/rescheduleRule" component={RescheduleRule} />
-      <Route path="/payment/:paymentId" component={Payment} />
+      <Switch>
+        <Route exact path="/" component={UserIndex} />
+        <Route path="/reschedule" component={Reschedule} />
+        <Route path="/register-classes">
+          <AllClassContextProvider>
+            <OpeningSessionContextProvider>
+              <RegisterClassContextProvider>
+                <RegisterClasses />
+              </RegisterClassContextProvider>
+            </OpeningSessionContextProvider>
+          </AllClassContextProvider>
+        </Route>
+        <Route path="/leave-application" component={LeaveApplication} />
+        <Route path="/userAccount" component={UserAccount} />
+        <Route path="/userStatus" component={UserStatus} />
+        <Route path="/locationInfo" component={LocationInfo} />
+        <Route path="/leaveRule" component={LeaveRule} />
+        <Route path="/rescheduleRule" component={RescheduleRule} />
+        <Route path="/payment/:paymentId" component={Payment} />
+      </Switch>
     </div>
   );
 };
