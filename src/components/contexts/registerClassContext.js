@@ -38,9 +38,21 @@ const RegisterClassContextProvider = (props) => {
     return classInfo.session === session.id;
   });
 
+  /**
+   * user selection
+   */
+  const [selectedClasses, setSelectedClasses] = useState([]);
+
   return (
     <registerClassContext.Provider
-      value={{ step, toNextStep, toPrevStep, classes: targetClasses }}
+      value={{
+        step,
+        toNextStep,
+        toPrevStep,
+        classes: targetClasses,
+        selectedClasses,
+        setSelectedClasses
+      }}
     >
       {props.children}
     </registerClassContext.Provider>
