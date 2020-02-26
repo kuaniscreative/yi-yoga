@@ -34,11 +34,13 @@ const RegisterClassContextProvider = (props) => {
    */
   const { classes } = useContext(allClassContext);
   const { session } = useContext(openingSessionContext);
-  const mappedSession = reconstruct(session, classes);
+  const targetClasses = classes.filter((classInfo) => {
+    return classInfo.session === session.id;
+  });
 
   return (
     <registerClassContext.Provider
-      value={{ step, toNextStep, toPrevStep, session: mappedSession }}
+      value={{ step, toNextStep, toPrevStep, classes: targetClasses }}
     >
       {props.children}
     </registerClassContext.Provider>
