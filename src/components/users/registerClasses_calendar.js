@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 // components
 import CalendarCellWithClassInfo from './registerClasses_calendarCellWithClassInfo';
@@ -26,18 +26,39 @@ const WeekDay = styled(CellWrapper)`
 
 const Cell = styled.div`
   flex: 1 0 ${`${100 / 7}%`};
-  padding: 5% 0;
-  text-align: center;
-  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: ccenter;
+`;
+
+const CellContentStyle = css`
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  margin: 12px 4px;
   user-select: none;
+  font-weight: 500;
+  letter-spacing: normal;
   color: ${theme.colors.black};
 `;
 
-const WeekDayCell = styled(Cell)`
+const CellContent = styled.div`
+  ${CellContentStyle}
+`;
+
+const ClickableCell = styled.button`
+  ${CellContentStyle}
+`;
+
+const WeekDayContent = styled(CellContent)`
   color: ${theme.colors.gray5};
 `;
 
-const NoClassCell = styled(Cell)`
+const NoClassContent = styled(CellContent)`
   color: ${theme.colors.gray3};
 `;
 
@@ -53,7 +74,11 @@ const Calendar = (props) => {
     <CalendarBase>
       <WeekDay>
         {days.map((day) => {
-          return <WeekDayCell key={keyGen()}>{day}</WeekDayCell>;
+          return (
+            <Cell key={keyGen()}>
+              <WeekDayContent>{day}</WeekDayContent>
+            </Cell>
+          );
         })}
       </WeekDay>
       <CellWrapper>
@@ -62,18 +87,19 @@ const Calendar = (props) => {
             return cellInfo.empty ? (
               <Cell key={keyGen()}></Cell>
             ) : cellInfo.classes.length ? (
-              <Cell
-                onClick={() => {
-                  handleClick(cellInfo.classes);
-                }}
-                key={keyGen()}
-              >
-                {cellInfo.date.getDate()}
+              <Cell key={keyGen()}>
+                <ClickableCell
+                  onClick={() => {
+                    handleClick(cellInfo.classes);
+                  }}
+                >
+                  {cellInfo.date.getDate()}
+                </ClickableCell>
               </Cell>
             ) : (
-              <NoClassCell key={keyGen()}>
-                {cellInfo.date.getDate()}
-              </NoClassCell>
+              <Cell key={keyGen()}>
+                <NoClassContent>{cellInfo.date.getDate()}</NoClassContent>
+              </Cell>
             );
           })}
       </CellWrapper>
