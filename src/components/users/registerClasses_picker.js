@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -8,8 +8,28 @@ import Calendar from './registerClasses_calendar';
 import SelectTimeModal from './registerClasses_selectTimeModal';
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
+// contexts
+import { calendarContext } from '../contexts/calendarContext';
+
+// functions
+import { toChineseString } from '../../functions/toChineseString';
+import keyGen from '../../functions/keyGen';
+
 const Picker = () => {
-  return <div>Picker</div>;
+  const { calendars, span } = useContext(calendarContext);
+  return (
+    <div>
+      Picker
+      {span.map((option) => {
+        return (
+          <button key={keyGen()}>{`${toChineseString(
+            option.month + 1
+          )}`}</button>
+        );
+      })}
+      <Calendar data={calendars[0] || []} />
+    </div>
+  );
 };
 
 export default Picker;
