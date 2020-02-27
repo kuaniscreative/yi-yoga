@@ -80,20 +80,22 @@ const mapClassesToCalendar = (calendar, classes) => {
   }
 };
 
-export const createCalendarData = (span = [], classes) => {
-  if (span.length === 0 || classes.length === 0) {
-    return [];
-  }
-
-  const destructedSpan = span.map((spanTag) => {
+export const deconstructSpan = (span) => {
+  return span.map((spanTag) => {
     const [month, year] = spanTag.split('/');
     return {
       month: parseInt(month, 10) - 1,
       year: parseInt(year, 10)
     };
   });
+};
 
-  const calendarWithCellData = destructedSpan.map((span) => {
+export const createCalendarData = (span = [], classes) => {
+  if (span.length === 0 || classes.length === 0) {
+    return [];
+  }
+
+  const calendarWithCellData = span.map((span) => {
     return createCellData(span);
   });
 
