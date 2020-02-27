@@ -1,4 +1,5 @@
-import React, { Component, useContext } from 'react';
+import React, { Component, useContext, useState } from 'react';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -15,19 +16,41 @@ import { calendarContext } from '../contexts/calendarContext';
 import { toChineseString } from '../../functions/toChineseString';
 import keyGen from '../../functions/keyGen';
 
+// data
+import theme from '../../json/theme.json';
+
+const { gray6 } = theme.colors;
+
+const MonthButton = styled.button`
+  padding: 8px 24px;
+  border-radius: 3em;
+  border: 1px solid black;
+  font-weight: 500;
+  margin-right: 1rem;
+  background: ${(props) => (props.active ? gray6 : 'white')};
+  color: ${(props) => (props.active ? 'white' : gray6)};
+`;
+
 const Picker = () => {
   const { calendars, span } = useContext(calendarContext);
+  const [inView, setInView] = useState(0);
+  console.log(calendars);
   return (
     <div>
-      {/* Picker
-      {span.map((option) => {
+      {span.map((option, i) => {
         return (
-          <button key={keyGen()}>{`${toChineseString(
-            option.month + 1
-          )}`}</button>
+          <MonthButton
+            active={inView === i}
+            onClick={() => {
+              setInView(i);
+            }}
+            key={keyGen()}
+          >
+            {`${toChineseString(option.month + 1)}月`}
+          </MonthButton>
         );
-      })} */}
-      <Calendar data={calendars[0] || []} />
+      })}
+      <Calendar data={calendars[inView] || []} />
     </div>
   );
 };
