@@ -51,7 +51,7 @@ const mapClassesToCalendar = (calendar, classes) => {
   let searchIndex = 0;
   const pending = {};
 
-  for (const classInfo of classes) {
+  for (let classInfo of classes) {
     const year = classInfo.date.getFullYear();
     const month = classInfo.date.getMonth();
     const date = classInfo.date.getDate();
@@ -65,7 +65,8 @@ const mapClassesToCalendar = (calendar, classes) => {
 
     while (calendar.length > searchIndex) {
       if (calendar[searchIndex].date === null) {
-        break;
+        searchIndex += 1;
+        continue;
       }
 
       const currentValue = calendar[searchIndex].date.valueOf();

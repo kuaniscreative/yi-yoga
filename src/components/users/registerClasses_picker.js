@@ -34,7 +34,7 @@ const MonthButton = styled.button`
 const Picker = () => {
   const { calendars, span } = useContext(calendarContext);
   const [inView, setInView] = useState(0);
-  console.log(calendars);
+
   return (
     <div>
       {span.map((option, i) => {
