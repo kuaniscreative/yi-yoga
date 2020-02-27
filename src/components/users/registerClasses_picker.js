@@ -19,14 +19,14 @@ const Picker = () => {
   const { calendars, span } = useContext(calendarContext);
   return (
     <div>
-      Picker
+      {/* Picker
       {span.map((option) => {
         return (
           <button key={keyGen()}>{`${toChineseString(
             option.month + 1
           )}`}</button>
         );
-      })}
+      })} */}
       <Calendar data={calendars[0] || []} />
     </div>
   );

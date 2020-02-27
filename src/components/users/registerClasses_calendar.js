@@ -12,7 +12,7 @@ import theme from '../../json/theme.json';
 
 const CalendarBase = styled.div`
   width: 100%;
-  max-width: 480px;
+  max-width: 424px;
 `;
 const CellWrapper = styled.div`
   display: flex;
@@ -21,33 +21,54 @@ const CellWrapper = styled.div`
   flex-wrap: wrap;
 `;
 const WeekDay = styled(CellWrapper)`
-  color: ${theme.colors.gray3};
+  border-bottom: 1px solid ${theme.colors.gray1};
 `;
 
 const Cell = styled.div`
   flex: 1 0 ${`${100 / 7}%`};
-  padding: 0.5rem 0;
+  padding: 5% 0;
   text-align: center;
+  font-weight: 500;
+  user-select: none;
+  color: ${theme.colors.black};
+`;
+
+const WeekDayCell = styled(Cell)`
+  color: ${theme.colors.gray5};
+`;
+
+const NoClassCell = styled(Cell)`
+  color: ${theme.colors.gray3};
 `;
 
 const Calendar = (props) => {
   const { data } = props;
   const days = ['日', '一', '二', '三', '四', '五', '六'];
-  console.log(data);
+  const handler = () => {
+    console.log('clicked');
+  };
+
   return (
     <CalendarBase>
       <WeekDay>
         {days.map((day) => {
-          return <Cell key={keyGen()}>{day}</Cell>;
+          return <WeekDayCell key={keyGen()}>{day}</WeekDayCell>;
         })}
       </WeekDay>
       <CellWrapper>
         {data.length &&
           data.map((cellInfo) => {
-            if (cellInfo.empty) {
-              return <Cell key={keyGen()}></Cell>;
-            }
-            return <Cell key={keyGen()}>{cellInfo.date.getDate()}</Cell>;
+            return cellInfo.empty ? (
+              <Cell key={keyGen()}></Cell>
+            ) : cellInfo.classes.length ? (
+              <Cell onClick={handler} key={keyGen()}>
+                {cellInfo.date.getDate()}
+              </Cell>
+            ) : (
+              <NoClassCell key={keyGen()}>
+                {cellInfo.date.getDate()}
+              </NoClassCell>
+            );
           })}
       </CellWrapper>
     </CalendarBase>
