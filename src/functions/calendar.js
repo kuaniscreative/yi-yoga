@@ -29,7 +29,7 @@ export const createCellData = ({ month, year }) => {
   const startDay = date.getDay();
   const cellData = [];
   for (let i = 0; i < amountOfCells; i++) {
-    if (i < startDay || i > daysInMonth + startDay) {
+    if (i < startDay || i > daysInMonth + startDay - 1) {
       // it means empty cell
       cellData.push({
         empty: true,
