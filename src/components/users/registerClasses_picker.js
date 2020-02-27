@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 // components
 import StepIndicator from '../stepIndicator';
 import Calendar from './registerClasses_calendar';
+import Modal from './registerClasses_modal';
 import SelectTimeModal from './registerClasses_selectTimeModal';
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
@@ -21,6 +22,10 @@ import theme from '../../json/theme.json';
 
 const { gray6 } = theme.colors;
 
+const MonthOptionArea = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
 const MonthButton = styled.button`
   padding: 8px 24px;
   border-radius: 3em;
@@ -34,23 +39,36 @@ const MonthButton = styled.button`
 const Picker = () => {
   const { calendars, span } = useContext(calendarContext);
   const [inView, setInView] = useState(0);
+  const [modalInView, setModalInView] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
   return (
     <div>
-      {span.map((option, i) => {
-        return (
-          <MonthButton
-            active={inView === i}
-            onClick={() => {
-              setInView(i);
-            }}
-            key={keyGen()}
-          >
-            {`${toChineseString(option.month + 1)}月`}
-          </MonthButton>
-        );
-      })}
-      <Calendar data={calendars[inView] || []} />
+      <MonthOptionArea>
+        {span.map((option, i) => {
+          return (
+            <MonthButton
+              active={inView === i}
+              onClick={() => {
+                setInView(i);
+              }}
+              key={keyGen()}
+            >
+              {`${toChineseString(option.month + 1)}月`}
+            </MonthButton>
+          );
+        })}
+      </MonthOptionArea>
+      <Calendar
+        data={calendars[inView] || []}
+        setModalInView={setModalInView}
+        setModalData={setModalData}
+      />
+      <Modal
+        isActive={modalInView}
+        setModalIsActive={setModalInView}
+        modalData={modalData}
+      />
     </div>
   );
 };

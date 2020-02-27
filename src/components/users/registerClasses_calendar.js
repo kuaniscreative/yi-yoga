@@ -42,10 +42,11 @@ const NoClassCell = styled(Cell)`
 `;
 
 const Calendar = (props) => {
-  const { data } = props;
+  const { data, setModalInView, setModalData } = props;
   const days = ['日', '一', '二', '三', '四', '五', '六'];
-  const handler = () => {
-    console.log('clicked');
+  const handleClick = (classes = []) => {
+    setModalData(classes);
+    setModalInView(true);
   };
 
   return (
@@ -61,7 +62,12 @@ const Calendar = (props) => {
             return cellInfo.empty ? (
               <Cell key={keyGen()}></Cell>
             ) : cellInfo.classes.length ? (
-              <Cell onClick={handler} key={keyGen()}>
+              <Cell
+                onClick={() => {
+                  handleClick(cellInfo.classes);
+                }}
+                key={keyGen()}
+              >
                 {cellInfo.date.getDate()}
               </Cell>
             ) : (
