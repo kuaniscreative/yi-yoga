@@ -45,3 +45,27 @@ export const reconstruct = (session, classes) => {
     span: mappedSpan
   };
 };
+
+export const markSelectionOnClasses = (selections = [], classes = []) => {
+  if (classes.length === 0) {
+    return [];
+  }
+  if (selections.length === 0) {
+    return classes;
+  }
+
+  return classes.map((classProfile) => {
+    if (selections.indexOf(classProfile.id) > -1) {
+      console.log('match!!!!');
+      return {
+        ...classProfile,
+        selected: true
+      };
+    } else {
+      return {
+        ...classProfile,
+        selected: false
+      };
+    }
+  });
+};
