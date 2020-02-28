@@ -47,11 +47,15 @@ const CellContentStyle = css`
 `;
 
 const CellContent = styled.div`
-  ${CellContentStyle}
+  ${CellContentStyle};
 `;
 
 const ClickableCell = styled.button`
-  ${CellContentStyle}
+  ${CellContentStyle};
+  color: ${({ hasSelectedClass }) =>
+    hasSelectedClass ? 'white' : theme.colors.black};
+  background: ${({ hasSelectedClass }) =>
+    hasSelectedClass ? theme.colors.green : 'white'};
 `;
 
 const WeekDayContent = styled(CellContent)`
@@ -61,6 +65,15 @@ const WeekDayContent = styled(CellContent)`
 const NoClassContent = styled(CellContent)`
   color: ${theme.colors.gray3};
 `;
+
+const hasSelectedClass = (classes = []) => {
+  for (let classInfo of classes) {
+    if (classInfo.selected) {
+      return true;
+    }
+  }
+  return false;
+};
 
 const Calendar = (props) => {
   const { data, setModalInView, setModalSearchPattern, calendarIndex } = props;
@@ -92,6 +105,7 @@ const Calendar = (props) => {
             ) : cellInfo.classes.length ? (
               <Cell key={keyGen()}>
                 <ClickableCell
+                  hasSelectedClass={hasSelectedClass(cellInfo.classes)}
                   onClick={() => {
                     handleClick(i);
                   }}
