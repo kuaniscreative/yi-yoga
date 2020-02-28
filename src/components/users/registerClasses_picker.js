@@ -1,4 +1,4 @@
-import React, { Component, useContext, useState } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -40,7 +40,17 @@ const Picker = () => {
   const { calendars, span } = useContext(calendarContext);
   const [inView, setInView] = useState(0);
   const [modalInView, setModalInView] = useState(false);
+  const [modalSearchPattern, setModalSearchPattern] = useState({
+    calendar: 0,
+    dateIndex: 0
+  });
   const [modalData, setModalData] = useState([]);
+  useEffect(() => {
+    if (calendars.length && modalSearchPattern.hasOwnProperty('calendar')) {
+      const { calendar, dateIndex } = modalSearchPattern;
+      setModalData(calendars[calendar][dateIndex].classes);
+    }
+  }, [modalSearchPattern, calendars]);
 
   return (
     <div>
@@ -61,8 +71,9 @@ const Picker = () => {
       </MonthOptionArea>
       <Calendar
         data={calendars[inView] || []}
+        calendarIndex={inView}
         setModalInView={setModalInView}
-        setModalData={setModalData}
+        setModalSearchPattern={setModalSearchPattern}
       />
       <Modal
         isActive={modalInView}

@@ -63,10 +63,13 @@ const NoClassContent = styled(CellContent)`
 `;
 
 const Calendar = (props) => {
-  const { data, setModalInView, setModalData } = props;
+  const { data, setModalInView, setModalSearchPattern, calendarIndex } = props;
   const days = ['日', '一', '二', '三', '四', '五', '六'];
-  const handleClick = (classes = []) => {
-    setModalData(classes);
+  const handleClick = (index) => {
+    setModalSearchPattern({
+      calendar: calendarIndex,
+      dateIndex: index
+    });
     setModalInView(true);
   };
 
@@ -83,14 +86,14 @@ const Calendar = (props) => {
       </WeekDay>
       <CellWrapper>
         {data.length &&
-          data.map((cellInfo) => {
+          data.map((cellInfo, i) => {
             return cellInfo.empty ? (
               <Cell key={keyGen()}></Cell>
             ) : cellInfo.classes.length ? (
               <Cell key={keyGen()}>
                 <ClickableCell
                   onClick={() => {
-                    handleClick(cellInfo.classes);
+                    handleClick(i);
                   }}
                 >
                   {cellInfo.date.getDate()}

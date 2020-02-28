@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+
+// contexts
+import { registerClassContext } from '../contexts/registerClassContext';
 
 // functions
 import keyGen from '../../functions/keyGen';
@@ -66,11 +69,31 @@ const ModalItem = (props) => {
       : 'available';
   const inputAnchor = keyGen();
   const selected = classInfo.selected;
+  const { selectedClasses, setSelectedClasses } = useContext(
+    registerClassContext
+  );
+
+  const handleclick = () => {
+    const classId = classInfo.id;
+    if (selectedClasses.indexOf(classId) > -1) {
+      const newSelection = selectedClasses.filter((id) => {
+        return id !== classId;
+      });
+      setSelectedClasses(newSelection);
+    }
+    const newSelection = [...selectedClasses, classId];
+    setSelectedClasses(newSelection);
+  };
 
   return (
     <div className="container-fluid px-0">
       <Wrapper className="row">
-        <ItemWrapper htmlFor={inputAnchor} className="col-12" status={status}>
+        <ItemWrapper
+          htmlFor={inputAnchor}
+          className="col-12"
+          status={status}
+          onClick={handleclick}
+        >
           <Left>
             <Item status={status}>{classInfo.type}</Item>
           </Left>

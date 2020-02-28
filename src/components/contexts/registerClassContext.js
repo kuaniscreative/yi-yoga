@@ -65,6 +65,7 @@ const RegisterClassContextProvider = (props) => {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [markedClasses, setMarkedClasses] = useState([]);
   useEffect(() => {
+    console.log('we do map');
     const newClasses = markSelectionOnClasses(selectedClasses, targetClasses);
     setMarkedClasses(newClasses);
   }, [selectedClasses, targetClasses]);
