@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 // contexts
 import { openingSessionContext } from './openingSessionContext';
 import { allClassContext } from './allClassContext';
+import { userContext } from './userContext';
 
 // functions
 import {
@@ -37,15 +38,26 @@ const RegisterClassContextProvider = (props) => {
    */
   const { classes } = useContext(allClassContext);
   const { session } = useContext(openingSessionContext);
+  const { uid } = useContext(userContext);
   const [targetClasses, setTargetClasses] = useState([]);
   useEffect(() => {
-    if (classes.length && session.hasOwnProperty('id')) {
-      const targetClasses = classes.filter((classInfo) => {
-        return classInfo.session === session.id;
-      });
+    if (uid && classes.length && session.hasOwnProperty('id')) {
+      const targetClasses = classes
+        .filter((classInfo) => {
+          return classInfo.session === session.id;
+        })
+        .map((classInfo) => {
+          const userRegistered =
+            classInfo.students.indexOf(uid) > -1 ||
+            classInfo.rescheduleStudents.indexOf(uid) > -1;
+          return {
+            ...classInfo,
+            userRegistered
+          };
+        });
       setTargetClasses(targetClasses);
     }
-  }, [classes, session]);
+  }, [classes, session, uid]);
 
   /**
    * user selection
