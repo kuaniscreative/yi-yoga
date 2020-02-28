@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
+// functions
+import keyGen from '../../functions/keyGen';
 
 // data
 import theme from '../../json/theme.json';
@@ -15,6 +16,7 @@ const Wrapper = styled.li`
 const ItemWrapper = styled.label`
   display: flex;
   cursor: pointer;
+  pointer-events: ${({ status }) => (status !== 'available' ? 'none' : 'auto')};
 `;
 
 const Left = styled.div`
@@ -29,28 +31,58 @@ const Right = styled.div`
 const Item = styled.div`
   font-weight: 500;
   letter-spacing: normal;
+  color: ${({ status }) =>
+    status !== 'available' ? theme.colors.gray3 : 'black'};
 `;
 
-const AvailableCheckMark = () => {
+const DisableText = styled.div`
+  color: ${theme.colors.gray3};
+  user-select: none;
+`;
+
+const AvailableCheckMark = (props) => {
+  const { inputAnchor, selected } = props;
   return (
     <div className="checkboxContainer">
-      <input type="checkbox" id="check" />
+      <input type="checkbox" id={inputAnchor} defaultChecked={selected} />
       <div className="checkmark"></div>
     </div>
   );
 };
 
+const DisableMark = (props) => {
+  const { status } = props;
+  const output = status === 'full' ? '已額滿' : '已報名';
+  return <DisableText>{output}</DisableText>;
+};
+
 const ModalItem = (props) => {
   const { classInfo } = props;
+  const status =
+    classInfo && classInfo.isFull
+      ? 'full'
+      : classInfo.userRegistered
+      ? 'registered'
+      : 'available';
+  const inputAnchor = keyGen();
+  const selected = classInfo.selected;
+
   return (
     <div className="container-fluid px-0">
       <Wrapper className="row">
-        <ItemWrapper htmlFor="check" className="col-12">
+        <ItemWrapper htmlFor={inputAnchor} className="col-12" status={status}>
           <Left>
-            <Item>{classInfo.type}</Item>
+            <Item status={status}>{classInfo.type}</Item>
           </Left>
           <Right>
-            <AvailableCheckMark />
+            {status === 'available' ? (
+              <AvailableCheckMark
+                inputAnchor={inputAnchor}
+                selected={selected}
+              />
+            ) : (
+              <DisableMark status={status} />
+            )}
           </Right>
         </ItemWrapper>
       </Wrapper>

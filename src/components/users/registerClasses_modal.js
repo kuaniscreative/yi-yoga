@@ -88,11 +88,8 @@ const Modal = (props) => {
         <ModalList>
           <ul>
             {modalData.map((classInfo) => {
-              return <ModalItem classInfo={classInfo} />;
+              return <ModalItem classInfo={classInfo} key={keyGen()} />;
             })}
-            {/* {payments.map((payment) => {
-              return <ModalItem payment={payment} type={type} key={keyGen()} />;
-            })} */}
           </ul>
         </ModalList>
         <div className="container-fluid px-0">
