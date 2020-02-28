@@ -46,6 +46,11 @@ const Nav = styled.div`
   margin: 5rem 0 3rem 0;
 `;
 
+const Instruction = styled.div`
+  margin-bottom: 4rem;
+  font-weight: 500;
+`;
+
 const Picker = (props) => {
   const { calendars, span } = useContext(calendarContext);
   const [inView, setInView] = useState(0);
@@ -69,6 +74,7 @@ const Picker = (props) => {
 
   return (
     <div>
+      <Instruction>請使用日曆選取所有想上的課堂</Instruction>
       <MonthOptionArea>
         {span.map((option, i) => {
           return (

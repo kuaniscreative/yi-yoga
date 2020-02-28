@@ -95,7 +95,7 @@ const Modal = (props) => {
         <div className="container-fluid px-0">
           <div className="row justify-content-center align-items-center py-2">
             <button className="outlineButton" onClick={closeModal}>
-              關閉
+              確認
             </button>
           </div>
         </div>
