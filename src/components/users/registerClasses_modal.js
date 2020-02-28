@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-// import ModalItem from './paymentStatus_modalItem';
 import ModalItem from './registerClasses_modalItem';
 
 // functions
