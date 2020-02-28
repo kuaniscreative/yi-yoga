@@ -1,12 +1,18 @@
 import React, { Component, useContext, useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 // components
 import StepIndicator from '../stepIndicator';
 import Calendar from './registerClasses_calendar';
 import Modal from './registerClasses_modal';
+import ProcessNav, {
+  ItemWrapper,
+  ItemWrapperRight,
+  Hint,
+  ActionButton
+} from '../ui/processNav';
 import SelectTimeModal from './registerClasses_selectTimeModal';
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 
@@ -36,7 +42,11 @@ const MonthButton = styled.button`
   color: ${(props) => (props.active ? 'white' : gray6)};
 `;
 
-const Picker = () => {
+const Nav = styled.div`
+  margin: 5rem 0 3rem 0;
+`;
+
+const Picker = (props) => {
   const { calendars, span } = useContext(calendarContext);
   const [inView, setInView] = useState(0);
   const [modalInView, setModalInView] = useState(false);
@@ -51,6 +61,11 @@ const Picker = () => {
       setModalData(calendars[calendar][dateIndex].classes);
     }
   }, [modalSearchPattern, calendars]);
+
+  const { toNextStep, history } = props;
+  const toIndex = () => {
+    history.push('/');
+  };
 
   return (
     <div>
@@ -80,11 +95,23 @@ const Picker = () => {
         setModalIsActive={setModalInView}
         modalData={modalData}
       />
+      <Nav>
+        <ProcessNav>
+          <ItemWrapper>
+            <Hint>上一步</Hint>
+            <ActionButton onClick={toIndex}>回首頁</ActionButton>
+          </ItemWrapper>
+          <ItemWrapperRight>
+            <Hint>下一步</Hint>
+            <ActionButton onClick={toNextStep}>預覽所選課程</ActionButton>
+          </ItemWrapperRight>
+        </ProcessNav>
+      </Nav>
     </div>
   );
 };
 
-export default Picker;
+export default withRouter(Picker);
 
 // class Picker extends Component {
 

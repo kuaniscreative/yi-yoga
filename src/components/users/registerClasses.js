@@ -24,7 +24,9 @@ const RegisterClasses = () => {
     <div>
       <CalendarContextProvider>
         <TitleBlock title="報名課程" />
-        <Block>{step === 'initial' ? <Picker /> : null}</Block>
+        <Block>
+          {step === 'initial' ? <Picker toNextStep={toNextStep} /> : null}
+        </Block>
       </CalendarContextProvider>
     </div>
   );
