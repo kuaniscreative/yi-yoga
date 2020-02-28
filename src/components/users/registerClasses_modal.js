@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 // components
 // import ModalItem from './paymentStatus_modalItem';
+import ModalItem from './registerClasses_modalItem';
 
 // functions
 import keyGen from '../../functions/keyGen';
@@ -48,10 +49,6 @@ const ModalTitle = styled(ModalContent)`
   h1 {
     font-size: 1rem;
     line-height: 2em;
-    color: white;
-  }
-  p {
-    font-size: 0.75rem;
     letter-spacing: normal;
     color: white;
   }
@@ -68,15 +65,9 @@ const ModalList = styled(ModalContent)`
   }
 `;
 
-const titleOutputs = {
-  pending: '未付款',
-  paid: '待確認',
-  finished: '已完成'
-};
-
 const Modal = (props) => {
   const { modalData, isActive, setModalIsActive } = props;
-  //   const { sessionName, sessionId, type } = modalData;
+  const modalName = modalData.length && modalData[0].name;
 
   const closeModal = (e) => {
     setModalIsActive(false);
@@ -92,10 +83,13 @@ const Modal = (props) => {
     <ModalBase isActive={isActive} onClick={closeModalOnMask} name="modalMask">
       <ModalWrapper>
         <ModalTitle>
-          <h1>123</h1>
+          <h1>{modalName}</h1>
         </ModalTitle>
         <ModalList>
           <ul>
+            {modalData.map((classInfo) => {
+              return <ModalItem classInfo={classInfo} />;
+            })}
             {/* {payments.map((payment) => {
               return <ModalItem payment={payment} type={type} key={keyGen()} />;
             })} */}
