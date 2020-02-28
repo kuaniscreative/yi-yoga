@@ -80,9 +80,10 @@ const ModalItem = (props) => {
         return id !== classId;
       });
       setSelectedClasses(newSelection);
+    } else {
+      const newSelection = [...selectedClasses, classId];
+      setSelectedClasses(newSelection);
     }
-    const newSelection = [...selectedClasses, classId];
-    setSelectedClasses(newSelection);
   };
 
   return (

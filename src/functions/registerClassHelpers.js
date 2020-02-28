@@ -56,7 +56,6 @@ export const markSelectionOnClasses = (selections = [], classes = []) => {
 
   return classes.map((classProfile) => {
     if (selections.indexOf(classProfile.id) > -1) {
-      console.log('match!!!!');
       return {
         ...classProfile,
         selected: true
