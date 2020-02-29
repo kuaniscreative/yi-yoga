@@ -7,7 +7,6 @@ import { userContext } from './userContext';
 
 // functions
 import {
-  reconstruct,
   markSelectionOnClasses,
   hasStudent
 } from '../../functions/registerClassHelpers';
