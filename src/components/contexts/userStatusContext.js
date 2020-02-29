@@ -27,7 +27,7 @@ const UserStatusContextProvider = (props) => {
       const userClasses = getClasses('students');
       const rescheduleClasses = getClasses('rescheduleStudents');
       const pendingClasses = getClasses('pendingStudents');
-      const absenceClasses = getClasses('absense');
+      const absenceClasses = getClasses('absence');
       setUserClasses(userClasses);
       setRescheduleClasses(rescheduleClasses);
       setPendingClasses(pendingClasses);
