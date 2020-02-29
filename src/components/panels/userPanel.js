@@ -24,6 +24,7 @@ import { navContext } from '../contexts/navContext';
 import RegisterClassContextProvider from '../contexts/registerClassContext';
 import OpeningSessionContextProvider from '../contexts/openingSessionContext';
 import AllClassContextProvider from '../contexts/allClassContext';
+import UserStatusContextProvider from '../contexts/userStatusContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
@@ -57,26 +58,30 @@ const UserPanel = () => {
         setNavIsActive={setNavIsActive}
         setHeaderBackground={setHeaderBackground}
       />
-      <Switch>
-        <Route exact path="/" component={UserIndex} />
-        <Route path="/reschedule" component={Reschedule} />
-        <Route path="/register-classes">
-          <AllClassContextProvider>
+      <AllClassContextProvider>
+        <Switch>
+          <Route exact path="/" component={UserIndex} />
+          <Route path="/reschedule" component={Reschedule} />
+          <Route path="/register-classes">
             <OpeningSessionContextProvider>
               <RegisterClassContextProvider>
                 <RegisterClasses />
               </RegisterClassContextProvider>
             </OpeningSessionContextProvider>
-          </AllClassContextProvider>
-        </Route>
-        <Route path="/leave-application" component={LeaveApplication} />
-        <Route path="/userAccount" component={UserAccount} />
-        <Route path="/userStatus" component={UserStatus} />
-        <Route path="/locationInfo" component={LocationInfo} />
-        <Route path="/leaveRule" component={LeaveRule} />
-        <Route path="/rescheduleRule" component={RescheduleRule} />
-        <Route path="/payment/:paymentId" component={Payment} />
-      </Switch>
+          </Route>
+          <Route path="/leave-application" component={LeaveApplication} />
+          <Route path="/userAccount" component={UserAccount} />
+          <Route path="/userStatus">
+            <UserStatusContextProvider>
+              <UserStatus />
+            </UserStatusContextProvider>
+          </Route>
+          <Route path="/locationInfo" component={LocationInfo} />
+          <Route path="/leaveRule" component={LeaveRule} />
+          <Route path="/rescheduleRule" component={RescheduleRule} />
+          <Route path="/payment/:paymentId" component={Payment} />
+        </Switch>
+      </AllClassContextProvider>
     </div>
   );
 };

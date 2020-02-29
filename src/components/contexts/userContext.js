@@ -12,6 +12,7 @@ const initState = {
   name: '',
   nickName: '',
   email: '',
+  allClasses: [],
   isAdmin: false,
   validated: false
 };
