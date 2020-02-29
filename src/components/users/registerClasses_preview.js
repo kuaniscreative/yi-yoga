@@ -1,24 +1,129 @@
-import React, { Component } from 'react';
+import React, { Component, useContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 // components
 import StepIndicator from '../stepIndicator';
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 import ItemBarWithAction from '../ui/itemBarWithAction';
+import DeleteIcon from '../ui/deleteIcon';
+
+// contexts
+import { registerClassContext } from '../contexts/registerClassContext';
+
+// functions
+import keyGen from '../../functions/keyGen';
 
 // actions
 import { registerToCourse } from '../../actions/userActions';
+
+// data
+import theme from '../../json/theme.json';
+
+const { black, gray3, gray1 } = theme.colors;
 
 const Instruction = styled.div`
   margin-bottom: 4rem;
   font-weight: 500;
 `;
 
+const List = styled.ul`
+  padding: 24px 16px;
+  border-radius: 16px;
+  box-shadow: 0 0 16px -8px ${gray3};
+`;
+
+const ListTitle = styled.div`
+  font-weight: 500;
+  padding: 16px 0;
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  padding: 16px;
+  border-bottom: 1px solid ${gray1};
+  @media (max-width: 576px) {
+    padding: 16px 8px;
+  }
+`;
+
+const ListContextStyle = css`
+  display: flex;
+  align-items: center;
+`;
+
+const ListContent = styled.div`
+  ${ListContextStyle};
+  flex: 1 0 75%;
+  font-weight: 500;
+`;
+const ListAction = styled.div`
+  ${ListContextStyle};
+  flex: 1 0 25%;
+  justify-content: flex-end;
+`;
+
+const ClassDate = styled.span`
+  display: inline-block;
+  letter-spacing: normal;
+  margin-right: 16px;
+`;
+
+const ClassType = styled.span`
+  display: inline-block;
+  letter-spacing: normal;
+  font-size: 0.75rem;
+`;
+
+const Price = styled(ListTitle)`
+  margin-top: 1rem;
+`;
+
+function mapClassesToSelections(selections = [], classes = []) {
+  if (selections.length === 0 || classes.length === 0) {
+    return [];
+  }
+
+  return selections.map((selection) => {
+    return classes.find((classInfo) => {
+      return classInfo.id === selection;
+    });
+  });
+}
+
 const Preview = () => {
+  const { classes, selectedClasses } = useContext(registerClassContext);
+  const [selections, setSelections] = useState([]);
+  useEffect(() => {
+    if (selectedClasses.length !== 0 && classes.length !== 0) {
+      const selections = mapClassesToSelections(selectedClasses, classes);
+      setSelections(selections);
+    }
+  }, [classes, selectedClasses]);
+
   return (
     <div>
       <Instruction>請確認所選課堂及費用</Instruction>
+      <List>
+        {selections.map((selection) => {
+          return (
+            <ListItem key={keyGen()}>
+              <ListContent>
+                <div>
+                  <ClassDate>{selection.name}</ClassDate>
+                  <ClassType>{selection.type}</ClassType>
+                </div>
+              </ListContent>
+              <ListAction>
+                <button>
+                  <DeleteIcon />
+                </button>
+              </ListAction>
+            </ListItem>
+          );
+        })}
+        <Price>共選取 5 堂課，學費為 1500 元</Price>
+      </List>
     </div>
   );
 };
