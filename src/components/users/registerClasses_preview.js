@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 
 // components
 import DeleteIcon from '../ui/deleteIcon';
+import List, { ListTitle, ListItem } from '../ui/bottomLineList';
 import ProcessNav, {
   ItemWrapper,
   ItemWrapperRight,
@@ -25,31 +26,9 @@ import { registerToCourse } from '../../actions/registerToCourse';
 // data
 import theme from '../../json/theme.json';
 
-const { gray3, gray1 } = theme.colors;
-
 const Instruction = styled.div`
   margin-bottom: 4rem;
   font-weight: 500;
-`;
-
-const List = styled.ul`
-  padding: 24px 16px;
-  border-radius: 16px;
-  box-shadow: 0 0 16px -8px ${gray3};
-`;
-
-const ListTitle = styled.div`
-  font-weight: 500;
-  padding: 16px 0;
-`;
-
-const ListItem = styled.li`
-  display: flex;
-  padding: 16px;
-  border-bottom: 1px solid ${gray1};
-  @media (max-width: 576px) {
-    padding: 16px 8px;
-  }
 `;
 
 const ListContextStyle = css`
