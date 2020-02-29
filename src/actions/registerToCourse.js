@@ -28,12 +28,11 @@ function addStudentToClasses(classIds, userData) {
           name: userData.name,
           nickName: userData.nickName,
           email: userData.email,
-          id: userData.id
+          id: userData.uid
         })
       });
     tasks.push(task);
   });
-
   return Promise.all(tasks);
 }
 
@@ -44,7 +43,7 @@ function addPaymentStatus(userData, sessionName, sessionId, amount) {
     owner: {
       name: userData.name,
       nickName: userData.nickName,
-      id: userData.id
+      id: userData.uid
     },
     sessionName: sessionName,
     sessionId: sessionId,
@@ -61,7 +60,7 @@ export const registerToCourse = (
   amount
 ) => {
   const tasks = [
-    updateUserData(classes, userData.id),
+    updateUserData(classes, userData.uid),
     addStudentToClasses(classes, userData),
     addPaymentStatus(userData, sessionName, sessionId, amount)
   ];

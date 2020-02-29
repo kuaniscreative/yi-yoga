@@ -16,12 +16,14 @@ import ProcessNav, {
 
 // contexts
 import { registerClassContext } from '../contexts/registerClassContext';
+import { userContext } from '../contexts/userContext';
+import { openingSessionContext } from '../contexts/openingSessionContext';
 
 // functions
 import keyGen from '../../functions/keyGen';
 
 // actions
-import { registerToCourse } from '../../actions/userActions';
+import { registerToCourse } from '../../actions/registerToCourse';
 
 // data
 import theme from '../../json/theme.json';
@@ -101,7 +103,19 @@ function mapClassesToSelections(selections = [], classes = []) {
   });
 }
 
+function getAmount(num) {
+  if (num >= 8) {
+    return num * 250;
+  } else if (num >= 4) {
+    return num * 300;
+  } else {
+    return num * 350;
+  }
+}
+
 const Preview = () => {
+  const userData = useContext(userContext);
+  const { session } = useContext(openingSessionContext);
   const {
     classes,
     selectedClasses,
@@ -122,6 +136,20 @@ const Preview = () => {
       return selected !== selection;
     });
     setSelectedClasses(newSelection);
+  };
+
+  const amount = getAmount(selectedClasses.length);
+
+  const signUpToCourse = () => {
+    registerToCourse(
+      selectedClasses,
+      userData,
+      session.name,
+      session.id,
+      amount
+    ).then(() => {
+      toNextStep();
+    });
   };
 
   return (
@@ -149,7 +177,7 @@ const Preview = () => {
             </ListItem>
           );
         })}
-        <Price>共選取 5 堂課，學費為 1500 元</Price>
+        <Price>{`共選取 ${selectedClasses.length} 堂課，學費為 ${amount} 元`}</Price>
       </List>
       <Nav>
         <ProcessNav>
@@ -159,7 +187,7 @@ const Preview = () => {
           </ItemWrapper>
           <ItemWrapperRight>
             <Hint>下一步</Hint>
-            <ActionButton>報名</ActionButton>
+            <ActionButton onClick={signUpToCourse}>報名</ActionButton>
           </ItemWrapperRight>
         </ProcessNav>
       </Nav>
