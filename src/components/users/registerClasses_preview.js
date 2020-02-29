@@ -7,6 +7,12 @@ import StepIndicator from '../stepIndicator';
 import NextStepButtonsArea from '../ui/nextStepButtonArea';
 import ItemBarWithAction from '../ui/itemBarWithAction';
 import DeleteIcon from '../ui/deleteIcon';
+import ProcessNav, {
+  ItemWrapper,
+  ItemWrapperRight,
+  Hint,
+  ActionButton
+} from '../ui/processNav';
 
 // contexts
 import { registerClassContext } from '../contexts/registerClassContext';
@@ -79,6 +85,10 @@ const Price = styled(ListTitle)`
   margin-top: 1rem;
 `;
 
+const Nav = styled.div`
+  margin: 5rem 0 3rem 0;
+`;
+
 function mapClassesToSelections(selections = [], classes = []) {
   if (selections.length === 0 || classes.length === 0) {
     return [];
@@ -92,7 +102,13 @@ function mapClassesToSelections(selections = [], classes = []) {
 }
 
 const Preview = () => {
-  const { classes, selectedClasses } = useContext(registerClassContext);
+  const {
+    classes,
+    selectedClasses,
+    setSelectedClasses,
+    toNextStep,
+    toPrevStep
+  } = useContext(registerClassContext);
   const [selections, setSelections] = useState([]);
   useEffect(() => {
     if (selectedClasses.length !== 0 && classes.length !== 0) {
@@ -100,6 +116,13 @@ const Preview = () => {
       setSelections(selections);
     }
   }, [classes, selectedClasses]);
+
+  const removeClass = (selection) => {
+    const newSelection = selectedClasses.filter((selected) => {
+      return selected !== selection;
+    });
+    setSelectedClasses(newSelection);
+  };
 
   return (
     <div>
@@ -115,7 +138,11 @@ const Preview = () => {
                 </div>
               </ListContent>
               <ListAction>
-                <button>
+                <button
+                  onClick={() => {
+                    removeClass(selection.id);
+                  }}
+                >
                   <DeleteIcon />
                 </button>
               </ListAction>
@@ -124,6 +151,18 @@ const Preview = () => {
         })}
         <Price>共選取 5 堂課，學費為 1500 元</Price>
       </List>
+      <Nav>
+        <ProcessNav>
+          <ItemWrapper>
+            <Hint>上一步</Hint>
+            <ActionButton onClick={toPrevStep}>選取課堂</ActionButton>
+          </ItemWrapper>
+          <ItemWrapperRight>
+            <Hint>下一步</Hint>
+            <ActionButton>報名</ActionButton>
+          </ItemWrapperRight>
+        </ProcessNav>
+      </Nav>
     </div>
   );
 };
