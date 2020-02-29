@@ -1,60 +1,38 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 // comopnent
-import StepIndicator from "../stepIndicator";
-class RegisterClassSuccess extends Component {
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
+import ArrowIconLink from '../ui/arrowIconLink';
 
-    render() {
-        const id = this.props.paymentId;
-        return (
-            <div id='registerClass_success' className="layout_contentBlock">
-                <div id="selectClassPanel_instruction">
-                    <StepIndicator indicator="報名結果" />
-                </div>
-                <p className="resultMessage_title">報名成功</p>
-                <ul className="comfyList">
-                    <li>
-                        這個程式沒有線上付款服務，請在繳交學費後填寫繳費資料並等候芝伊確認款項
-                    </li>
-                    <li>
-                            <Link to={`/payment/${id}`}>
-                                如果你已經付款，
-                                <span className="underline">
-                                    點此通知芝伊 &rarr;
-                                </span>
-                            </Link>
-                    </li>
-                    <li>
-                            你也可以在 「選單 > 課程狀態」 填寫付款資料
-                    </li>
-                </ul>
-                <div className="nextStepButtonsArea--notFixed">
-                    <Link to="/" className="outlineButton" onClick={this.props.clearSuccessMessage}>
-                        回首頁
-                    </Link>
-                </div>
-            </div>
-        );
-    }
-}
+const ResultTitle = styled.div`
+  margin-bottom: 3rem;
+  font-weight: 500;
+  font-size: 1.5rem;
+`;
 
-const mapStateToProps = state => {
-    return {
-        paymentId: state.user.paymentId
-    };
+const ActionWrapper = styled.div`
+  margin: 3rem 0;
+`;
+
+const Success = () => {
+  return (
+    <div>
+      <ResultTitle>報名成功</ResultTitle>
+      <ul className="comfyList">
+        <li>
+          請在付款後前往{' '}
+          <Link to="/userStatus">
+            <u>課程狀態</u>
+          </Link>{' '}
+          填寫付款通知
+        </li>
+      </ul>
+      <ActionWrapper>
+        <ArrowIconLink to="/">回首頁</ArrowIconLink>
+      </ActionWrapper>
+    </div>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        clearSuccessMessage: () => {
-            dispatch({type: 'CLEAR_SUCCESS_MESSAGE_REGISTER_CLASS'})
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterClassSuccess);
+export default Success;
