@@ -68,3 +68,12 @@ export const markSelectionOnClasses = (selections = [], classes = []) => {
     }
   });
 };
+
+export const hasStudent = (students, targetId) => {
+  for (let student of students) {
+    if (student.id === targetId) {
+      return true;
+    }
+  }
+  return false;
+};

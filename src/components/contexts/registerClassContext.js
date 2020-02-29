@@ -8,7 +8,8 @@ import { userContext } from './userContext';
 // functions
 import {
   reconstruct,
-  markSelectionOnClasses
+  markSelectionOnClasses,
+  hasStudent
 } from '../../functions/registerClassHelpers';
 
 export const registerClassContext = createContext();
@@ -48,8 +49,8 @@ const RegisterClassContextProvider = (props) => {
         })
         .map((classInfo) => {
           const userRegistered =
-            classInfo.students.indexOf(uid) > -1 ||
-            classInfo.rescheduleStudents.indexOf(uid) > -1;
+            hasStudent(classInfo.students, uid) ||
+            hasStudent(classInfo.rescheduleStudents, uid);
           return {
             ...classInfo,
             userRegistered
