@@ -14,6 +14,7 @@ import ProcessNav, {
 import { registerClassContext } from '../contexts/registerClassContext';
 import { userContext } from '../contexts/userContext';
 import { openingSessionContext } from '../contexts/openingSessionContext';
+import { loadingContext } from '../contexts/loadingContext';
 
 // functions
 import keyGen from '../../functions/keyGen';
@@ -110,6 +111,9 @@ function getAmount(num) {
 }
 
 const Preview = () => {
+  /**
+   * get selected classes data
+   */
   const userData = useContext(userContext);
   const { session } = useContext(openingSessionContext);
   const {
@@ -127,6 +131,9 @@ const Preview = () => {
     }
   }, [classes, selectedClasses]);
 
+  /**
+   * function for remove classes
+   */
   const removeClass = (selection) => {
     const newSelection = selectedClasses.filter((selected) => {
       return selected !== selection;
@@ -134,9 +141,13 @@ const Preview = () => {
     setSelectedClasses(newSelection);
   };
 
+  /**
+   *  function for sign up courses
+   */
+  const { setLoadingBarActive } = useContext(loadingContext);
   const amount = getAmount(selectedClasses.length);
-
   const signUpToCourse = () => {
+    setLoadingBarActive(true);
     registerToCourse(
       selectedClasses,
       userData,
@@ -144,6 +155,7 @@ const Preview = () => {
       session.id,
       amount
     ).then(() => {
+      setLoadingBarActive(false);
       toNextStep();
     });
   };
