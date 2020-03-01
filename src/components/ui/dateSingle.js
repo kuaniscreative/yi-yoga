@@ -9,6 +9,7 @@ const Wrapper = styled.div``;
 const FullDate = styled.div`
   font-weight: 500;
   line-height: 2em;
+  letter-spacing: normal;
 `;
 const Time = styled.div`
   font-size: 0.9rem;
@@ -17,6 +18,7 @@ const Time = styled.div`
 `;
 const TimeItem = styled.span`
   padding-right: 0.5rem;
+  letter-spacing: normal;
 `;
 
 const DateSingle = ({ date }) => {
