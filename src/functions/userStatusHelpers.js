@@ -4,7 +4,7 @@ export const getUserClasses = (uid, key, classes) => {
       if (student.id === uid) {
         return true;
       }
-      return false;
     }
+    return false;
   });
 };
