@@ -25,6 +25,7 @@ import RegisterClassContextProvider from '../contexts/registerClassContext';
 import OpeningSessionContextProvider from '../contexts/openingSessionContext';
 import AllClassContextProvider from '../contexts/allClassContext';
 import UserStatusContextProvider from '../contexts/userStatusContext';
+import LeaveContextProvider from '../contexts/leaveContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
@@ -70,7 +71,11 @@ const UserPanel = () => {
                 </RegisterClassContextProvider>
               </OpeningSessionContextProvider>
             </Route>
-            <Route path="/leave-application" component={LeaveApplication} />
+            <Route path="/leave-application">
+              <LeaveContextProvider>
+                <LeaveApplication />
+              </LeaveContextProvider>
+            </Route>
             <Route path="/userAccount" component={UserAccount} />
             <Route path="/userStatus" component={UserStatus} />
             <Route path="/locationInfo" component={LocationInfo} />

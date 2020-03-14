@@ -21,7 +21,7 @@ const ClassList = () => {
       <div className="row">
         <ul className="col-12 col-md-6">
           {userClasses.map((classInfo) => {
-            return <ClassListItem date={classInfo.date} key={keyGen()} />;
+            return <ClassListItem classInfo={classInfo} key={keyGen()} />;
           })}
         </ul>
       </div>

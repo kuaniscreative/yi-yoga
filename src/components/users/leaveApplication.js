@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
@@ -17,15 +17,19 @@ import ProcessNav, {
   ActionButton
 } from '../ui/processNav';
 
+// contexts
+import { leaveContext } from '../contexts/leaveContext';
+
 // actions
 
 const Instruction = styled.div`
   margin-bottom: 3rem;
 `;
 
-const LeaveApplivation = () => {
+const LeaveApplivation = ({ history }) => {
+  const { leaveTargetId } = useContext(leaveContext);
   const toIndex = () => {
-    console.log('to index');
+    history.push('/');
   };
 
   const leaveApplicate = () => {
@@ -55,7 +59,7 @@ const LeaveApplivation = () => {
   );
 };
 
-export default LeaveApplivation;
+export default withRouter(LeaveApplivation);
 
 // class LeaveApplication extends Component {
 //     checkLeaveRecord = date => {
