@@ -1,34 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from 'react-redux';
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // components
-import StepIndicator from '../stepIndicator';
+import TitleBlock from '../ui/titleBlock';
+import Block from '../ui/block';
+import ArrowIconLink from '../ui/arrowIconLink';
 
-const LeaveApplicationSuccess = ({clearSuccessMessage}) => {
-    return (
-        <div className="layout_contentBlock">
-            <StepIndicator indicator='請假結果'/>
-            <p className="resultMessage_title">請假成功</p>
-            <p className="resultMessage_action">
-                <Link to='/reschedule'>現在去安排補課 &rarr;</Link>
-            </p>
-            <div className="nextStepButtonsArea--notFixed">
-                <Link to="/" className="outlineButton" onClick={() => {clearSuccessMessage('RESCHEDULE')}}>
-                    回首頁
-                </Link>
-            </div>
-        </div>
-    );
+const ActionWrapper = styled.div`
+  margin: 3rem 0;
+`;
+
+const Success = () => {
+  return (
+    <div>
+      <TitleBlock title="請假成功" />
+      <Block>
+        <ul className="comfyList">
+          <li>
+            記得前往{' '}
+            <Link to="/reschedule">
+              <u>補課頁面</u>
+            </Link>{' '}
+            安排補課
+          </li>
+        </ul>
+        <ActionWrapper>
+          <ArrowIconLink to="/">回首頁</ArrowIconLink>
+        </ActionWrapper>
+      </Block>
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        clearSuccessMessage: target => {
-            const output = `CLEAR_SUCCESS_MESSAGE_${target}`;
-            dispatch({ type: output });
-        }
-    };
-};
-
-export default connect(null, mapDispatchToProps)(LeaveApplicationSuccess);
+export default Success;
