@@ -19,21 +19,24 @@ import ProcessNav, {
 
 // contexts
 import { leaveContext } from '../contexts/leaveContext';
+import { userContext } from '../contexts/userContext';
 
 // actions
+import { leaveApplication } from '../../actions/leaveApplication';
 
 const Instruction = styled.div`
   margin-bottom: 3rem;
 `;
 
-const LeaveApplivation = ({ history }) => {
+const LeaveApplication = ({ history }) => {
   const { leaveTargetId } = useContext(leaveContext);
+  const userInfo = useContext(userContext);
   const toIndex = () => {
     history.push('/');
   };
 
   const leaveApplicate = () => {
-    console.log('lets do it');
+    leaveApplication(userInfo, leaveTargetId);
   };
 
   return (
@@ -59,7 +62,7 @@ const LeaveApplivation = ({ history }) => {
   );
 };
 
-export default withRouter(LeaveApplivation);
+export default withRouter(LeaveApplication);
 
 // class LeaveApplication extends Component {
 //     checkLeaveRecord = date => {
