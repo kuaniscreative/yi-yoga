@@ -59,28 +59,26 @@ const UserPanel = () => {
         setHeaderBackground={setHeaderBackground}
       />
       <AllClassContextProvider>
-        <Switch>
-          <Route exact path="/" component={UserIndex} />
-          <Route path="/reschedule" component={Reschedule} />
-          <Route path="/register-classes">
-            <OpeningSessionContextProvider>
-              <RegisterClassContextProvider>
-                <RegisterClasses />
-              </RegisterClassContextProvider>
-            </OpeningSessionContextProvider>
-          </Route>
-          <Route path="/leave-application" component={LeaveApplication} />
-          <Route path="/userAccount" component={UserAccount} />
-          <Route path="/userStatus">
-            <UserStatusContextProvider>
-              <UserStatus />
-            </UserStatusContextProvider>
-          </Route>
-          <Route path="/locationInfo" component={LocationInfo} />
-          <Route path="/leaveRule" component={LeaveRule} />
-          <Route path="/rescheduleRule" component={RescheduleRule} />
-          <Route path="/payment/:paymentId" component={Payment} />
-        </Switch>
+        <UserStatusContextProvider>
+          <Switch>
+            <Route exact path="/" component={UserIndex} />
+            <Route path="/reschedule" component={Reschedule} />
+            <Route path="/register-classes">
+              <OpeningSessionContextProvider>
+                <RegisterClassContextProvider>
+                  <RegisterClasses />
+                </RegisterClassContextProvider>
+              </OpeningSessionContextProvider>
+            </Route>
+            <Route path="/leave-application" component={LeaveApplication} />
+            <Route path="/userAccount" component={UserAccount} />
+            <Route path="/userStatus" component={UserStatus} />
+            <Route path="/locationInfo" component={LocationInfo} />
+            <Route path="/leaveRule" component={LeaveRule} />
+            <Route path="/rescheduleRule" component={RescheduleRule} />
+            <Route path="/payment/:paymentId" component={Payment} />
+          </Switch>
+        </UserStatusContextProvider>
       </AllClassContextProvider>
     </div>
   );
