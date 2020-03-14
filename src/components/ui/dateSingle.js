@@ -10,18 +10,21 @@ const FullDate = styled.div`
   font-weight: 500;
   line-height: 2em;
   letter-spacing: normal;
+  color: ${({ disabled }) =>
+    disabled ? theme.colors.gray2 : theme.colors.black};
 `;
 const Time = styled.div`
   font-size: 0.9rem;
   line-height: 1em;
-  color: ${theme.colors.gray4};
+  color: ${({ disabled }) =>
+    disabled ? theme.colors.gray2 : theme.colors.gray4};
 `;
 const TimeItem = styled.span`
   padding-right: 0.5rem;
   letter-spacing: normal;
 `;
 
-const DateSingle = ({ date }) => {
+const DateSingle = ({ date, disabled }) => {
   const yyyy = date.getFullYear();
   const mm = date.getMonth();
   const dd = date.getDate();
@@ -32,8 +35,8 @@ const DateSingle = ({ date }) => {
   const dayOutput = `週${day.toLocaleString('zh-u-nu-hanidec')}`;
   return (
     <Wrapper>
-      <FullDate>{`${yyyy}年${mm + 1}月${dd}日`}</FullDate>
-      <Time>
+      <FullDate disabled={disabled}>{`${yyyy}年${mm + 1}月${dd}日`}</FullDate>
+      <Time disabled={disabled}>
         <TimeItem>{dayOutput}</TimeItem>
         <TimeItem>{startAt}</TimeItem>
       </Time>

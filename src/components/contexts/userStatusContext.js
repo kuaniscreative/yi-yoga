@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import firebase from '../../fbConfig';
 
 // contexts
 import { userContext } from './userContext';
@@ -8,6 +9,7 @@ import { allClassContext } from './allClassContext';
 import { getUserClasses } from '../../functions/userStatusHelpers';
 
 export const userStatusContext = createContext();
+const firestore = firebase.firestore();
 
 const UserStatusContextProvider = (props) => {
   /**
@@ -35,9 +37,34 @@ const UserStatusContextProvider = (props) => {
     }
   }, [uid, classes]);
 
+  /**
+   * get leave record
+   */
+  const [leaveRecord, setLeaveRecord] = useState({});
+  const leaveRecordUpdateListener = () => {
+    return firestore
+      .collection('leaveRecord')
+      .doc(uid)
+      .onSnapshot((snapshot) => {
+        const record = snapshot.data();
+        setLeaveRecord(record);
+      });
+  };
+
+  useEffect(() => {
+    const listener = leaveRecordUpdateListener();
+    return listener;
+  }, []);
+
   return (
     <userStatusContext.Provider
-      value={{ userClasses, rescheduleClasses, pendingClasses, absenceClasses }}
+      value={{
+        userClasses,
+        rescheduleClasses,
+        pendingClasses,
+        absenceClasses,
+        leaveRecord
+      }}
     >
       {props.children}
     </userStatusContext.Provider>
