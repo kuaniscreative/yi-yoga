@@ -1,4 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useContext, useMemo } from 'react';
+
+// contexts
+import { allClassContext } from './allClassContext';
 
 export const rescheduleContext = createContext();
 
@@ -23,9 +26,33 @@ function RescheduleContextProvider({ children }) {
   /** leave class selection */
   const [leaveClass, setLeaveClass] = useState(null);
 
+  /** find available classes */
+  const { classes } = useContext(allClassContext);
+  const availableClasses = useMemo(() => {
+    if (classes.length && leaveClass) {
+      const leaveClassMonth = leaveClass.getMonth();
+      const leaveClassYear = leaveClass.getFullYear();
+      const nextMonthDate = new Date(leaveClassYear, leaveClassMonth + 1);
+      const nextMonth = nextMonthDate.getMonth();
+      const availableOptions = classes.filter((classInfo) => {
+        const currentMonth = classInfo.date.getMonth();
+        return currentMonth === leaveClassMonth || currentMonth === nextMonth;
+      });
+      return availableOptions;
+    }
+    return [];
+  }, [classes, leaveClass]);
+
   return (
     <rescheduleContext.Provider
-      value={{ leaveClass, setLeaveClass, toNextStep, toPrevStep }}
+      value={{
+        leaveClass,
+        setLeaveClass,
+        toNextStep,
+        toPrevStep,
+        step,
+        availableClasses
+      }}
     >
       {children}
     </rescheduleContext.Provider>
