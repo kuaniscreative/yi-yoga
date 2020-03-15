@@ -20,11 +20,7 @@ const ClassSelectorBlock = () => {
   return (
     <Block>
       <Hint>請選擇請假課堂</Hint>
-      <div className="container-fluid px-0">
-        <div className="row">
-          <LeaveClassList />
-        </div>
-      </div>
+      <LeaveClassList />
     </Block>
   );
 };
