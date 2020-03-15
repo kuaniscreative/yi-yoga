@@ -10,6 +10,7 @@ import Block from '../ui/block';
 import Preview from './reschedule_preview';
 import RescheduleSuccess from './reschedule_success';
 import DefaultBlock from './reschedule_defaultBlock';
+import ClassSelectorBlock from './reschedule_classSelectorBlock';
 
 // contexts
 import { userStatusContext } from '../contexts/userStatusContext';
@@ -20,12 +21,11 @@ import { reschedulePending, rescheduleAdd } from '../../actions/userActions';
 const Reschedule = () => {
   const { leaveRecord } = useContext(userStatusContext);
   const { reschedulable = [] } = leaveRecord;
-  console.log(reschedulable);
 
   return (
     <div>
       <TitleBlock title="補課" />
-      {reschedulable.length ? null : <DefaultBlock />}
+      {reschedulable.length ? <ClassSelectorBlock /> : <DefaultBlock />}
     </div>
   );
 };

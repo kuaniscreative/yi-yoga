@@ -47,6 +47,12 @@ const UserStatusContextProvider = (props) => {
       .doc(uid)
       .onSnapshot((snapshot) => {
         const record = snapshot.data();
+        record.reschedulable = record.reschedulable.map((timestamp) => {
+          return timestamp.toDate();
+        });
+        record.records = record.records.map((timestamp) => {
+          return timestamp.toDate();
+        });
         setLeaveRecord(record);
       });
   };

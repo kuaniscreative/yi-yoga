@@ -26,6 +26,7 @@ import OpeningSessionContextProvider from '../contexts/openingSessionContext';
 import AllClassContextProvider from '../contexts/allClassContext';
 import UserStatusContextProvider from '../contexts/userStatusContext';
 import LeaveContextProvider from '../contexts/leaveContext';
+import RescheduleContextProvider from '../contexts/rescheduleContext';
 
 const UserPanel = () => {
   const { validated } = useContext(userContext);
@@ -63,7 +64,11 @@ const UserPanel = () => {
         <UserStatusContextProvider>
           <Switch>
             <Route exact path="/" component={UserIndex} />
-            <Route path="/reschedule" component={Reschedule} />
+            <Route path="/reschedule">
+              <RescheduleContextProvider>
+                <Reschedule />
+              </RescheduleContextProvider>
+            </Route>
             <Route path="/register-classes">
               <OpeningSessionContextProvider>
                 <RegisterClassContextProvider>
