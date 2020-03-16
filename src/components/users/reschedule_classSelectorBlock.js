@@ -4,23 +4,18 @@ import styled from 'styled-components';
 // components
 import Block from '../ui/block';
 import LeaveClassList from './reschedule_LeaveClassList';
+import AvailableClassList from './reschedule_availableClassList';
 
 // contexts
-import { userStatusContext } from '../contexts/userStatusContext';
-
-const Hint = styled.p`
-  font-weight: 500;
-  margin-bottom: 3rem;
-`;
+import { rescheduleContext } from '../contexts/rescheduleContext';
 
 const ClassSelectorBlock = () => {
-  const { leaveRecord } = useContext(userStatusContext);
-  const { reschedulable = [] } = leaveRecord;
+  const { step } = useContext(rescheduleContext);
 
   return (
     <Block>
-      <Hint>請選擇請假課堂</Hint>
-      <LeaveClassList />
+      {step === 'selectLeaveClass' ? <LeaveClassList /> : null}
+      {step === 'selectRescheduleClass' ? <AvailableClassList /> : null}
     </Block>
   );
 };
