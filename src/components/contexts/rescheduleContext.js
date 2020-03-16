@@ -43,6 +43,9 @@ function RescheduleContextProvider({ children }) {
     return [];
   }, [classes, leaveClass]);
 
+  /** reschedule class selection  */
+  const [rescheduleTarget, setRescheduleTarget] = useState(null);
+
   return (
     <rescheduleContext.Provider
       value={{
@@ -51,7 +54,9 @@ function RescheduleContextProvider({ children }) {
         toNextStep,
         toPrevStep,
         step,
-        availableClasses
+        availableClasses,
+        rescheduleTarget,
+        setRescheduleTarget
       }}
     >
       {children}

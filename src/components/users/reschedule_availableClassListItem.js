@@ -103,19 +103,23 @@ const ClassInfo = ({ classInfo }) => {
 
 const ClassListItem = ({ classInfo, selected, changeHandler }) => {
   /** checked logic */
-  //   const { leaveClass, setLeaveClass } = useContext(rescheduleContext);
-  //   const selectTarget = useCallback(() => {
-  //     setLeaveClass(date);
-  //   }, [date, setLeaveClass]);
-  //   const isChecked = leaveClass
-  //     ? leaveClass.valueOf() === date.valueOf()
-  //     : false;
+  const { rescheduleTarget, setRescheduleTarget } = useContext(
+    rescheduleContext
+  );
+  const isChecked = rescheduleTarget
+    ? rescheduleTarget.id === classInfo.id
+    : false;
+
+  /** change handler */
+  const selectTarget = useCallback(() => {
+    setRescheduleTarget(classInfo);
+  }, [classInfo, setRescheduleTarget]);
 
   return (
     <ListItem>
       <ListWrapper>
         <CheckmarkWrapper>
-          <Checkmark />
+          <Checkmark checked={isChecked} changeHandler={selectTarget} />
         </CheckmarkWrapper>
         <DateWrapper>
           <ClassInfo classInfo={classInfo} />
