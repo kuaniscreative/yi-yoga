@@ -27,7 +27,7 @@ const Instruction = styled.p`
   margin-bottom: 3rem;
 `;
 
-const LeaveClassList = ({ historty }) => {
+const LeaveClassList = ({ history }) => {
   /** Get reschedulable classes from leaveRecord */
   const { leaveRecord } = useContext(userStatusContext);
   const { reschedulable = [] } = leaveRecord;
@@ -35,7 +35,7 @@ const LeaveClassList = ({ historty }) => {
   /** nav handlers */
   const { leaveClass, toNextStep } = useContext(rescheduleContext);
   const toIndex = () => {
-    historty.push('/');
+    history.push('/');
   };
   const nextStepHandler = () => {
     if (!leaveClass) {
