@@ -1,8 +1,5 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-
-// components
-import DateSingle from '../ui/dateSingle';
 
 // contexts
 import { rescheduleContext } from '../contexts/rescheduleContext';
@@ -101,7 +98,7 @@ const ClassInfo = ({ classInfo }) => {
   );
 };
 
-const ClassListItem = ({ classInfo, selected, changeHandler }) => {
+const ClassListItem = ({ classInfo }) => {
   /** checked logic */
   const { rescheduleTarget, setRescheduleTarget } = useContext(
     rescheduleContext
@@ -111,9 +108,9 @@ const ClassListItem = ({ classInfo, selected, changeHandler }) => {
     : false;
 
   /** change handler */
-  const selectTarget = useCallback(() => {
+  const selectTarget = () => {
     setRescheduleTarget(classInfo);
-  }, [classInfo, setRescheduleTarget]);
+  };
 
   return (
     <ListItem>

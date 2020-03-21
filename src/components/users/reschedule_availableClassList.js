@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -13,6 +13,11 @@ import ProcessNav, {
 
 // contexts
 import { rescheduleContext } from '../contexts/rescheduleContext';
+import { userContext } from '../contexts/userContext';
+
+// actions
+import rescheduleAdd from '../../actions/rescheduleAdd';
+import reschedulePending from '../../actions/reschedulePending';
 
 // functions
 import keyGen from '../../functions/keyGen';
@@ -27,19 +32,32 @@ const Instruction = styled.p`
   margin-bottom: 3rem;
 `;
 
-const AvailableClassList = ({ historty }) => {
-  const { leaveClass, availableClasses, toNextStep, toPrevStep } = useContext(
-    rescheduleContext
-  );
+const AvailableClassList = ({ history }) => {
+  const {
+    rescheduleTarget,
+    leaveClass,
+    availableClasses,
+    toNextStep,
+    toPrevStep
+  } = useContext(rescheduleContext);
+  const userInfo = useContext(userContext);
 
   /** nav handlers */
   const nextStepHandler = () => {
-    if (!leaveClass) {
-      alert('請選擇補課課堂');
+    if (!rescheduleTarget) {
+      alert('請選擇想補課的課堂');
     } else {
       toNextStep();
     }
   };
+
+  const reschedule = useCallback(() => {
+    const handler = rescheduleTarget.isFull ? reschedulePending : rescheduleAdd;
+    return () => {
+      console.log('should go to result depend on handler type ');
+      // handler(rescheduleTarget.id, userInfo, leaveClass)
+    };
+  }, [rescheduleTarget, userInfo, leaveClass]);
 
   return (
     <div className="container-fluid px-0">
@@ -61,7 +79,7 @@ const AvailableClassList = ({ historty }) => {
             </ItemWrapper>
             <ItemWrapperRight>
               <Hint>下一步</Hint>
-              <ActionButton onClick={nextStepHandler}>登記補課</ActionButton>
+              <ActionButton onClick={reschedule}>登記補課</ActionButton>
             </ItemWrapperRight>
           </ProcessNav>
         </NavWrapper>
