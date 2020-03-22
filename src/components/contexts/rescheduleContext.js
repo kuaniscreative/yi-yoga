@@ -46,6 +46,15 @@ function RescheduleContextProvider({ children }) {
   /** reschedule class selection  */
   const [rescheduleTarget, setRescheduleTarget] = useState(null);
 
+  /** Reschedule type */
+  const rescheduleType = useMemo(() => {
+    if (!rescheduleTarget) {
+      return null;
+    }
+
+    return rescheduleTarget.isFull ? 'pending' : 'add';
+  }, [rescheduleTarget]);
+
   return (
     <rescheduleContext.Provider
       value={{
@@ -56,7 +65,8 @@ function RescheduleContextProvider({ children }) {
         step,
         availableClasses,
         rescheduleTarget,
-        setRescheduleTarget
+        setRescheduleTarget,
+        rescheduleType
       }}
     >
       {children}

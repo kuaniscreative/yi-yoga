@@ -2,7 +2,7 @@ import firebase from '../fbConfig';
 const firestore = firebase.firestore();
 
 function updateClassProfile(classId, userInfo) {
-  const { name, nickName, email, id } = userInfo;
+  const { name, nickName, email, uid } = userInfo;
   return firestore
     .collection('classProfile')
     .doc(classId)
@@ -11,7 +11,7 @@ function updateClassProfile(classId, userInfo) {
         name,
         nickName,
         email,
-        id
+        id: uid
       })
     });
 }
@@ -34,7 +34,7 @@ function updateLeaveRecord(classId, userId, leaveClassDate) {
 export default function reschedulePending(classId, userInfo, leaveClassDate) {
   const tasks = [
     updateClassProfile(classId, userInfo),
-    updateLeaveRecord(classId, userInfo.id, leaveClassDate)
+    updateLeaveRecord(classId, userInfo.uid, leaveClassDate)
   ];
 
   return Promise.all(tasks);

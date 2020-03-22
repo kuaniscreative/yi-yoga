@@ -1,5 +1,4 @@
-import React, { useContext, useCallback } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -14,6 +13,7 @@ import ProcessNav, {
 // contexts
 import { rescheduleContext } from '../contexts/rescheduleContext';
 import { userContext } from '../contexts/userContext';
+import { loadingContext } from '../contexts/loadingContext';
 
 // actions
 import rescheduleAdd from '../../actions/rescheduleAdd';
@@ -32,7 +32,8 @@ const Instruction = styled.p`
   margin-bottom: 3rem;
 `;
 
-const AvailableClassList = ({ history }) => {
+const AvailableClassList = () => {
+  /** Get variables from context */
   const {
     rescheduleTarget,
     leaveClass,
@@ -41,23 +42,17 @@ const AvailableClassList = ({ history }) => {
     toPrevStep
   } = useContext(rescheduleContext);
   const userInfo = useContext(userContext);
+  const { setLoadingBarActive } = useContext(loadingContext);
 
-  /** nav handlers */
-  const nextStepHandler = () => {
-    if (!rescheduleTarget) {
-      alert('請選擇想補課的課堂');
-    } else {
-      toNextStep();
-    }
-  };
-
-  const reschedule = useCallback(() => {
+  /** reschedule action */
+  const reschedule = () => {
+    setLoadingBarActive(true);
     const handler = rescheduleTarget.isFull ? reschedulePending : rescheduleAdd;
-    return () => {
-      console.log('should go to result depend on handler type ');
-      // handler(rescheduleTarget.id, userInfo, leaveClass)
-    };
-  }, [rescheduleTarget, userInfo, leaveClass]);
+    return handler(rescheduleTarget.id, userInfo, leaveClass).then(() => {
+      setLoadingBarActive(false);
+      toNextStep();
+    });
+  };
 
   return (
     <div className="container-fluid px-0">
@@ -79,7 +74,13 @@ const AvailableClassList = ({ history }) => {
             </ItemWrapper>
             <ItemWrapperRight>
               <Hint>下一步</Hint>
-              <ActionButton onClick={reschedule}>登記補課</ActionButton>
+              <ActionButton
+                onClick={() => {
+                  reschedule();
+                }}
+              >
+                登記補課
+              </ActionButton>
             </ItemWrapperRight>
           </ProcessNav>
         </NavWrapper>
@@ -88,4 +89,4 @@ const AvailableClassList = ({ history }) => {
   );
 };
 
-export default withRouter(AvailableClassList);
+export default AvailableClassList;

@@ -1,55 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
 
 // components
-import StepIndicator from "../stepIndicator";
+import Block from '../ui/block';
+import ArrowIconLink from '../ui/arrowIconLink';
 
-const RescheduleSuccess = ({ status }) => {
-    const pendingOutput = () => {
-        return (
-            <div className="innerContent">
-                <p className="resultMessage_title">已安排補課</p>
-                <p className="resultMessage_text">
-                    有人請假的時候會照候補順序自動安排。候補上時會寄email通知你。
-                </p>
-                <div className="nextStepButtonsArea--notFixed">
-                    <Link to="/" className="outlineButton">
-                        回首頁
-                    </Link>
-                </div>
-            </div>
-        );
-    };
+const ResultTitle = styled.div`
+  margin-bottom: 3rem;
+  font-weight: 500;
+  font-size: 1.5rem;
+`;
 
-    const successOutput = () => {
-        return (
-            <div className="innerContent">
-                <p className="resultMessage_title">補課完成</p>
-                <p className="resultMessage_text">親愛的我們到時見</p>
-                <div className="nextStepButtonsArea--notFixed">
-                    <Link to="/" className="outlineButton">
-                        回首頁
-                    </Link>
-                </div>
-            </div>
-        );
-    };
-    const output = () => {
-        switch (status) {
-            case "success":
-                return successOutput();
-            case "pending":
-                return pendingOutput();
-            default:
-                break;
-        }
-    };
-    return (
-        <div id='reschedule_success'>
-            <StepIndicator indicator="補課結果" />
-            {output()}
-        </div>
-    );
+const ActionWrapper = styled.div`
+  margin: 6rem 0 3rem;
+`;
+
+const Success = ({ rescheduleType }) => {
+  return (
+    <Block>
+      <ResultTitle>
+        {rescheduleType === 'add' ? '補課安排完成' : '已安排候補'}
+      </ResultTitle>
+      {rescheduleType === 'pending' ? (
+        <ul className="comfyList">
+          <li>有人請假的時候會照候補順序自動安排。候補上時會寄email通知你。</li>
+        </ul>
+      ) : null}
+      <ActionWrapper>
+        <ArrowIconLink to="/">回首頁</ArrowIconLink>
+      </ActionWrapper>
+    </Block>
+  );
 };
 
-export default RescheduleSuccess;
+export default Success;
