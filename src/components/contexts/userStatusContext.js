@@ -62,6 +62,25 @@ const UserStatusContextProvider = (props) => {
     return listener;
   }, []);
 
+  /** get payments */
+  const [payments, setPayments] = useState([]);
+  const paymentsUpdateListener = () => {
+    return firestore
+      .collection('paymentStatus')
+      .where('owner.id', '==', uid)
+      .onSnapshot((snapshot) => {
+        const payments = snapshot.docs.map((doc) => {
+          return doc.data();
+        });
+        setPayments(payments);
+      });
+  };
+
+  useEffect(() => {
+    const listener = paymentsUpdateListener();
+    return listener;
+  }, []);
+
   return (
     <userStatusContext.Provider
       value={{
@@ -69,7 +88,8 @@ const UserStatusContextProvider = (props) => {
         rescheduleClasses,
         pendingClasses,
         absenceClasses,
-        leaveRecord
+        leaveRecord,
+        payments
       }}
     >
       {props.children}
