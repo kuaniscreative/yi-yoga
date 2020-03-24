@@ -41,17 +41,17 @@ class App extends Component {
 
   static contextType = userContext;
 
-  componentDidMount() {
-    this.props.removeExpireClassProfile();
-    const firebase = getFirebase();
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.props.removeExpireUserClasses(user.uid);
-      } else {
-        console.log('Nouser');
-      }
-    });
-  }
+  // componentDidMount() {
+  //   this.props.removeExpireClassProfile();
+  //   const firebase = getFirebase();
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if (user) {
+  //       this.props.removeExpireUserClasses(user.uid);
+  //     } else {
+  //       console.log('Nouser');
+  //     }
+  //   });
+  // }
 
   render() {
     return (

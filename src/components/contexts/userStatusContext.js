@@ -92,18 +92,37 @@ const UserStatusContextProvider = (props) => {
     if (!Object.keys(leaveRecord).length || !classes.length) {
       return [];
     }
+    const reschedulableValues = leaveRecord.reschedulable.map((date) => {
+      return date.valueOf();
+    });
 
     return classes.filter((classInfo) => {
-      const reschedulableValues = leaveRecord.reschedulable.map((date) => {
-        return date.valueOf();
-      });
-
       return ~reschedulableValues.indexOf(classInfo.date.valueOf());
     });
   }, [leaveRecord, classes]);
-  console.log(reschedulableClasses);
 
-  /** Get rescheduled classes */
+  /** Get rescheduled Infos */
+  const rescheduledInfos = useMemo(() => {
+    if (!Object.keys(leaveRecord).length || !classes.length) {
+      return [];
+    }
+
+    return leaveRecord.rescheduled.map((rescheduledInfo) => {
+      const { leaveDate, rescheduleClassId } = rescheduledInfo;
+      const leaveDateValue = leaveDate.hasOwnProperty('seconds')
+        ? leaveDate.toDate().valueOf()
+        : leaveDate.valueOf();
+
+      return {
+        leaveClass: classes.find((classInfo) => {
+          return classInfo.date.valueOf() === leaveDateValue;
+        }),
+        rescheduleClass: classes.find((classInfo) => {
+          return classInfo.id === rescheduleClassId;
+        })
+      };
+    });
+  }, [leaveRecord, classes]);
 
   return (
     <userStatusContext.Provider
@@ -114,7 +133,8 @@ const UserStatusContextProvider = (props) => {
         absenceClasses,
         leaveRecord,
         payments,
-        reschedulableClasses
+        reschedulableClasses,
+        rescheduledInfos
       }}
     >
       {props.children}
