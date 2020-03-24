@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo
+} from 'react';
 import firebase from '../../fbConfig';
 
 // contexts
@@ -81,6 +87,24 @@ const UserStatusContextProvider = (props) => {
     return listener;
   }, []);
 
+  /** Get reschedulable classes */
+  const reschedulableClasses = useMemo(() => {
+    if (!Object.keys(leaveRecord).length || !classes.length) {
+      return [];
+    }
+
+    return classes.filter((classInfo) => {
+      const reschedulableValues = leaveRecord.reschedulable.map((date) => {
+        return date.valueOf();
+      });
+
+      return ~reschedulableValues.indexOf(classInfo.date.valueOf());
+    });
+  }, [leaveRecord, classes]);
+  console.log(reschedulableClasses);
+
+  /** Get rescheduled classes */
+
   return (
     <userStatusContext.Provider
       value={{
@@ -89,7 +113,8 @@ const UserStatusContextProvider = (props) => {
         pendingClasses,
         absenceClasses,
         leaveRecord,
-        payments
+        payments,
+        reschedulableClasses
       }}
     >
       {props.children}
