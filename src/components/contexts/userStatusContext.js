@@ -107,6 +107,10 @@ const UserStatusContextProvider = (props) => {
       return [];
     }
 
+    if (!leaveRecord.rescheduled) {
+      return [];
+    }
+
     return leaveRecord.rescheduled.map((rescheduledInfo) => {
       const { leaveDate, rescheduleClassId } = rescheduledInfo;
       const leaveDateValue = leaveDate.hasOwnProperty('seconds')
@@ -124,6 +128,33 @@ const UserStatusContextProvider = (props) => {
     });
   }, [leaveRecord, classes]);
 
+  /** Get reschedule pending classes */
+  const reschedulePending = useMemo(() => {
+    if (!Object.keys(leaveRecord).length || !classes.length) {
+      return [];
+    }
+
+    if (!leaveRecord.reschedulePending) {
+      return [];
+    }
+
+    return leaveRecord.reschedulePending.map((pendingInfo) => {
+      const { leaveDate, pendingClassId } = pendingInfo;
+      const leaveDateValue = leaveDate.hasOwnProperty('seconds')
+        ? leaveDate.toDate().valueOf()
+        : leaveDate.valueOf();
+
+      return {
+        leaveClass: classes.find((classInfo) => {
+          return classInfo.date.valueOf() === leaveDateValue;
+        }),
+        pendingClass: classes.find((classInfo) => {
+          return classInfo.id === pendingClassId;
+        })
+      };
+    });
+  }, [leaveRecord, classes]);
+
   return (
     <userStatusContext.Provider
       value={{
@@ -134,7 +165,8 @@ const UserStatusContextProvider = (props) => {
         leaveRecord,
         payments,
         reschedulableClasses,
-        rescheduledInfos
+        rescheduledInfos,
+        reschedulePending
       }}
     >
       {props.children}
