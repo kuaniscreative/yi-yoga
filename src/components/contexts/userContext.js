@@ -1,9 +1,19 @@
-import React, { Component, createContext } from 'react';
+import React, { Component, createContext, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import firebase from '../../fbConfig';
 
+// actions
+import removeExpireUserClasses from '../../actions/removeExpireUserClasses';
+
 const firestore = firebase.firestore();
 const auth = firebase.auth();
+
+function getUserData(uid) {
+  return firestore
+    .collection('user')
+    .doc(uid)
+    .get();
+}
 
 export const userContext = createContext();
 
@@ -17,61 +27,38 @@ const initState = {
   validated: false
 };
 
-class UserContextProvider extends Component {
-  state = { ...initState };
+const UserContextProvider = ({ children, history }) => {
+  /** User data as state */
+  const [userInfo, setUserInfo] = useState(initState);
 
-  componentDidMount() {
-    // 監聽 firebase auth 狀態，更動 data 並監聽 firestore 資料變動
-    auth.onAuthStateChanged((user) => {
+  /** 監聽 firebase auth 狀態，更動 data 並監聽 firestore 資料變動 */
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        this.getUserData(user.uid).then((snapshot) => {
+        getUserData(user.uid).then((snapshot) => {
           const data = snapshot.data();
-          this.setState({
+          setUserInfo({
             uid: user.uid,
-            listener: this.realTimeUpdateListener(user.uid),
             ...data
           });
+          removeExpireUserClasses(user.uid);
         });
       } else {
-        this.setState(initState, this.redirectToIndex);
+        setUserInfo(initState);
+        history.push('/');
       }
     });
-  }
 
-  realTimeUpdateListener = (uid) => {
-    return firestore
-      .collection('user')
-      .doc(uid)
-      .onSnapshot((snapshot) => {
-        const data = snapshot.data();
-        this.updateUserData(data);
-      });
-  };
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
-  getUserData = (uid) => {
-    return firestore
-      .collection('user')
-      .doc(uid)
-      .get();
-  };
-
-  updateUserData = (data = {}) => {
-    this.setState({
-      ...data
-    });
-  };
-
-  redirectToIndex = () => {
-    this.props.history.push('/');
-  };
-
-  render() {
-    return (
-      <userContext.Provider value={{ ...this.state }}>
-        {this.props.children}
-      </userContext.Provider>
-    );
-  }
-}
+  return (
+    <userContext.Provider value={{ ...userInfo }}>
+      {children}
+    </userContext.Provider>
+  );
+};
 
 export default withRouter(UserContextProvider);

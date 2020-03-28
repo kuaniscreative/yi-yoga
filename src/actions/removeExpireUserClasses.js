@@ -7,33 +7,65 @@ function timeIsDue(date) {
 }
 
 /** 兩個大任務： 移除 user.allClasses & leaveRecord.reschedulable 中的過期課堂 */
-function updateUserClasses(uid) {
+function getClassProfile() {
+  return firestore
+    .collection('classProfile')
+    .get()
+    .then((res) => {
+      return res.docs.map((snap) => {
+        return {
+          ...snap.data(),
+          id: snap.id
+        };
+      });
+    });
+}
+
+function getUserProfile(uid) {
   return firestore
     .collection('user')
     .doc(uid)
     .get()
-    .then((snap) => {
-      const userData = snap.data();
-      const allClasses = userData.allClasses;
-      const dueClasses = allClasses.filter((classInfo) => {
+    .then((res) => {
+      return res.data();
+    });
+}
+
+function updateUserClasses(uid) {
+  const tasks = [getClassProfile(), getUserProfile(uid)];
+
+  return Promise.all(tasks).then((res) => {
+    const [classProfiles, userData] = res;
+    const { allClasses = [] } = userData;
+    const dueClasses = allClasses
+      .map((userClassId) => {
+        return classProfiles.find((classInfo) => {
+          return classInfo.id === userClassId;
+        });
+      })
+      .filter((classInfo) => {
         const date = classInfo.date.toDate();
         return timeIsDue(date);
       });
 
-      if (dueClasses.length) {
-        return firestore
-          .collection('user')
-          .doc(uid)
-          .update({
-            allClasses: firebase.firestore.FieldValue.arrayRemove(
-              ...dueClasses
-            ),
-            classHistory: firebase.firestore.FieldValue.arrayUnion(
-              ...dueClasses
-            )
-          });
-      }
-    });
+    if (dueClasses.length) {
+      return firestore
+        .collection('user')
+        .doc(uid)
+        .update({
+          allClasses: firebase.firestore.FieldValue.arrayRemove(
+            ...dueClasses.map((classInfo) => {
+              return classInfo.id;
+            })
+          ),
+          classHistory: firebase.firestore.FieldValue.arrayUnion(
+            ...dueClasses.map((classInfo) => {
+              return classInfo.id;
+            })
+          )
+        });
+    }
+  });
 }
 
 function updateLeaveRecord(uid) {
