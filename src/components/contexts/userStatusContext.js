@@ -92,6 +92,11 @@ const UserStatusContextProvider = (props) => {
     if (!Object.keys(leaveRecord).length || !classes.length) {
       return [];
     }
+
+    if (!leaveRecord.reschedulable) {
+      return [];
+    }
+
     const reschedulableValues = leaveRecord.reschedulable.map((date) => {
       return date.valueOf();
     });

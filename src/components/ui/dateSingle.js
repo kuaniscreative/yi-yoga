@@ -24,7 +24,21 @@ const TimeItem = styled.span`
   letter-spacing: normal;
 `;
 
-const DateSingle = ({ date, disabled }) => {
+const DateAndMonth = styled.span`
+  margin-right: 1rem;
+`;
+
+const Infos = styled.div`
+  span {
+    font-size: 0.9rem;
+    line-height: 1em;
+    margin-right: 16px;
+    letter-spacing: normal;
+    color: ${theme.colors.gray4};
+  }
+`;
+
+const DateSingle = ({ date, time, disabled, oneline, extraInfo }) => {
   const yyyy = date.getFullYear();
   const mm = date.getMonth();
   const dd = date.getDate();
@@ -35,11 +49,17 @@ const DateSingle = ({ date, disabled }) => {
   const dayOutput = `週${day.toLocaleString('zh-u-nu-hanidec')}`;
   return (
     <Wrapper>
-      <FullDate disabled={disabled}>{`${yyyy}年${mm + 1}月${dd}日`}</FullDate>
-      <Time disabled={disabled}>
-        <TimeItem>{dayOutput}</TimeItem>
-        <TimeItem>{startAt}</TimeItem>
-      </Time>
+      <FullDate disabled={disabled}>
+        <DateAndMonth>{`${yyyy}年${mm + 1}月${dd}日`}</DateAndMonth>
+        {oneline ? <Time>{time}</Time> : null}
+      </FullDate>
+      {oneline ? null : (
+        <Time disabled={disabled}>
+          <TimeItem>{dayOutput}</TimeItem>
+          <TimeItem>{startAt}</TimeItem>
+        </Time>
+      )}
+      {extraInfo ? <Infos>{extraInfo}</Infos> : null}
     </Wrapper>
   );
 };

@@ -1,0 +1,100 @@
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+
+// components
+import DateSingle from '../ui/dateSingle';
+
+// contexts
+import { userContext } from '../contexts/userContext';
+
+// data
+import theme from '../../json/theme.json';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+`;
+
+const listWrapperStyle = {
+  margin: '16px 0 0 0'
+};
+
+const listStyle = {
+  fontSize: '14px',
+  lineHeight: '1.5em',
+  letterSpacing: 'normal',
+  color: theme.colors.gray4
+};
+
+function getPendingOrder(students, uid) {
+  for (let i = 0; i < students.length; i += 1) {
+    if (students[i].id === uid) {
+      return i + 1;
+    }
+  }
+
+  return 0;
+}
+
+function ArrangementSingle({ leaveClass, classInfo, status }) {
+  /** get user data */
+  const { uid } = useContext(userContext);
+
+  switch (status) {
+    case 'reschedulable':
+      return (
+        <Container>
+          <DateSingle date={leaveClass.date} time={leaveClass.type} oneline />
+          <ul className="comfyList" style={listWrapperStyle}>
+            <li style={listStyle}>
+              尚未補課，
+              <Link to="/reschedule">
+                <u>現在去安排</u>
+              </Link>
+            </li>
+          </ul>
+        </Container>
+      );
+
+    case 'rescheduled':
+      return (
+        <Container>
+          <DateSingle date={leaveClass.date} time={leaveClass.type} oneline />
+          <ul className="comfyList" style={listWrapperStyle}>
+            <li
+              style={listStyle}
+            >{`已安排 ${classInfo.name} ${classInfo.type} 補課`}</li>
+          </ul>
+        </Container>
+      );
+
+    case 'pending':
+      const pendingOrder = getPendingOrder(classInfo.pendingStudents, uid);
+      return (
+        <Container>
+          <DateSingle date={leaveClass.date} time={leaveClass.type} oneline />
+          <ul className="comfyList" style={listWrapperStyle}>
+            <li
+              style={listStyle}
+            >{`候補 ${classInfo.name} ${classInfo.type}，順位 ${pendingOrder}`}</li>
+            <li style={listStyle}>
+              <button
+                onClick={() => {
+                  console.log('取消候補');
+                }}
+              >
+                <u style={listStyle}>取消候補</u>
+              </button>
+            </li>
+          </ul>
+        </Container>
+      );
+
+    default:
+      return null;
+  }
+}
+
+export default ArrangementSingle;
