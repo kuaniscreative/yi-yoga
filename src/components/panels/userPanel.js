@@ -6,7 +6,6 @@ import UserIndex from '../users/userIndex';
 import Reschedule from '../users/reschedule';
 import LeaveApplication from '../users/leaveApplication';
 import RegisterClasses from '../users/registerClasses';
-import UserAccount from '../users/userAccount';
 import Navigation from '../ui/navigation';
 import Header from '../ui/header';
 import UserStatus from '../users/userStatus';
@@ -81,7 +80,7 @@ const UserPanel = () => {
                 <LeaveApplication />
               </LeaveContextProvider>
             </Route>
-            <Route path="/userAccount" component={UserAccount} />
+
             <Route path="/userStatus" component={UserStatus} />
             <Route path="/locationInfo" component={LocationInfo} />
             <Route path="/leaveRule" component={LeaveRule} />
