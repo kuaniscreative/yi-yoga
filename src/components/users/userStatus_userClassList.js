@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
-import DateSingle from '../ui/dateSingle';
-
 // functions
 import keyGen from '../../functions/keyGen';
 
