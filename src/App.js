@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 
 // Components
-import RescheduleQuery from './components/users/rescheduleQuery';
+// import RescheduleQuery from './components/users/rescheduleQuery';
 import SignUpSuccess from './components/users/signUpSuccess';
 import GuestPanel from './components/panels/guestPanel';
 import UserPanel from './components/panels/userPanel';
@@ -29,10 +29,10 @@ const App = () => {
       <LoadingContextProvider>
         <NavContextProvider>
           {isAdmin ? <AdminPanel /> : uid ? <UserPanel /> : <GuestPanel />}
-          <Route
+          {/* <Route
             path="/rescheduleQuery/:result?/:userId?/:classId?/:date?"
             component={RescheduleQuery}
-          />
+          /> */}
           <Route path="/signUpSuccess" component={SignUpSuccess} />
         </NavContextProvider>
       </LoadingContextProvider>

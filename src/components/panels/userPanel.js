@@ -12,7 +12,7 @@ import UserStatus from '../users/userStatus';
 import LocationInfo from '../locationInfo';
 import LeaveRule from '../leaveRule';
 import RescheduleRule from '../rescheduleRule';
-import Payment from '../users/payment';
+// import Payment from '../users/payment';
 
 // data
 import navData from '../../json/userNav';
@@ -85,7 +85,7 @@ const UserPanel = () => {
             <Route path="/locationInfo" component={LocationInfo} />
             <Route path="/leaveRule" component={LeaveRule} />
             <Route path="/rescheduleRule" component={RescheduleRule} />
-            <Route path="/payment/:paymentId" component={Payment} />
+            {/* <Route path="/payment/:paymentId" component={Payment} /> */}
           </Switch>
         </UserStatusContextProvider>
       </AllClassContextProvider>
