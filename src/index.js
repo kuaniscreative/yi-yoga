@@ -4,40 +4,15 @@ import './style.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-// redux
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-
-// firebase
-import thunk from 'redux-thunk';
-import { applyMiddleware } from 'redux';
-import { compose } from 'redux';
-import { getFirebase, reactReduxFirebase } from 'react-redux-firebase';
-import { getFirestore, reduxFirestore } from 'redux-firestore';
-import fbConfig from './fbConfig';
-
-// reducers
-import rootReducer from './reducers/rootReducer';
 
 // contexts
 import UserContext from './components/contexts/userContext';
 
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reactReduxFirebase(fbConfig),
-    reduxFirestore(fbConfig)
-  )
-);
-
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <UserContext>
-        <App />
-      </UserContext>
-    </Provider>
+    <UserContext>
+      <App />
+    </UserContext>
   </BrowserRouter>,
   document.getElementById('root')
 );

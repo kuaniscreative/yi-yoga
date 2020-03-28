@@ -17,7 +17,7 @@ const UserIndex = () => {
   const { validated, nickName } = useContext(userContext);
 
   return (
-    <div id="userPanel">
+    <div>
       <TitleBlock title={`嗨，${nickName}`}>今天運動了嗎？</TitleBlock>
       {validated ? (
         <Block>

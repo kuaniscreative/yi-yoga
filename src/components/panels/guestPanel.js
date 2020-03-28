@@ -28,7 +28,7 @@ const GuestPanel = () => {
 
   return (
     <SignUpContext>
-      <div id="guestPanel">
+      <div>
         <Header
           headerBackground={headerBackground}
           setHeaderBackground={setHeaderBackground}
