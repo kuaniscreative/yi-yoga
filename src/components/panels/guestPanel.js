@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 // components
 import GuestIndex from '../guest/guestIndex';

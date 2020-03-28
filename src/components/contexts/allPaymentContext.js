@@ -1,14 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import firebase from '../../fbConfig';
-
-// contexts
-import { allUserContext } from './allUserContext';
 
 export const allPaymentContext = createContext();
 const firestore = firebase.firestore();
 
 const AllPaymentContextProvider = (props) => {
-  const { students } = useContext(allUserContext);
   const [payments, setPayments] = useState([]);
 
   const realTimeUpdateListener = () => {

@@ -1,4 +1,4 @@
-import React, { Component, createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import firebase from '../../fbConfig';
 

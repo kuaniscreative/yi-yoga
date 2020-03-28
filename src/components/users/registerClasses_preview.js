@@ -23,9 +23,6 @@ import keyGen from '../../functions/keyGen';
 // actions
 import { registerToCourse } from '../../actions/registerToCourse';
 
-// data
-import theme from '../../json/theme.json';
-
 const Instruction = styled.div`
   margin-bottom: 4rem;
   font-weight: 500;

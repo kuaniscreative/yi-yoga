@@ -33,6 +33,7 @@ export function getCourseOption(regularCourse) {
     if (acc.indexOf(day) < 0) {
       return [...acc, day];
     }
+    return acc;
   }, []);
 }
 

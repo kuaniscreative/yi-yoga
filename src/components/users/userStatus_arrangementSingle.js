@@ -1,6 +1,6 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 // components
 import DateSingle from '../ui/dateSingle';
@@ -48,13 +48,15 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
 
   /** Click handler for cancel */
   const { setLoadingBarActive } = useContext(loadingContext);
-  const clickHandler = useCallback(() => {
+  const clickHandler = () => {
     window.confirm(`是否取消候補 ${classInfo.name} ${classInfo.type} 的課程？`);
+
     setLoadingBarActive(true);
+
     cancelReschedulePending(uid, leaveClass.date, classInfo.id).then(() => {
       setLoadingBarActive(false);
     });
-  });
+  };
 
   switch (status) {
     case 'reschedulable':

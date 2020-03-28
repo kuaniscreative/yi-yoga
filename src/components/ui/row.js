@@ -9,9 +9,9 @@ const Section = styled.section`
 const Row = (props) => {
   const { extraClass, children } = props;
   return (
-    <section className={`row justify-content-center ${extraClass}`}>
+    <Section className={`row justify-content-center ${extraClass}`}>
       {children}
-    </section>
+    </Section>
   );
 };
 

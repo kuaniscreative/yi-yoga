@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// components
-import { ReactComponent as Arrow } from '../../static/arrow.svg';
-
 // funcitons
 import keyGen from '../../functions/keyGen';
 
@@ -45,28 +42,8 @@ export const ActionButton = styled.button`
   color: ${theme.colors.black};
 `;
 
-// const ArrowIcon = styled(Arrow)`
-//   width: 20px;
-//   height: 20px;
-//   margin-left: 0.5rem;
-// `;
-
-// const ArrowIconLeft = styled(ArrowIcon)`
-//   margin: 0;
-//   margin-right: 0.5rem;
-//   transform: rotate(180deg);
-// `;
-
 const ProcessNav = (props) => {
-  const {
-    nextAction,
-    nextHandler,
-    nextHint,
-    prevAction,
-    prevHandler,
-    prevHint,
-    children
-  } = props;
+  const { children } = props;
 
   return (
     <div className="container-fluid px-0">
