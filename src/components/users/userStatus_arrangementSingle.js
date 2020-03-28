@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
@@ -7,6 +7,10 @@ import DateSingle from '../ui/dateSingle';
 
 // contexts
 import { userContext } from '../contexts/userContext';
+import { loadingContext } from '../contexts/loadingContext';
+
+// actions
+import cancelReschedulePending from '../../actions/cancelReschedulePending';
 
 // data
 import theme from '../../json/theme.json';
@@ -42,6 +46,16 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
   /** get user data */
   const { uid } = useContext(userContext);
 
+  /** Click handler for cancel */
+  const { setLoadingBarActive } = useContext(loadingContext);
+  const clickHandler = useCallback(() => {
+    window.confirm(`是否取消候補 ${classInfo.name} ${classInfo.type} 的課程？`);
+    setLoadingBarActive(true);
+    cancelReschedulePending(uid, leaveClass.date, classInfo.id).then(() => {
+      setLoadingBarActive(false);
+    });
+  });
+
   switch (status) {
     case 'reschedulable':
       return (
@@ -51,7 +65,7 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
             <li style={listStyle}>
               尚未補課，
               <Link to="/reschedule">
-                <u>現在去安排</u>
+                <u style={listStyle}>現在去安排</u>
               </Link>
             </li>
           </ul>
@@ -80,11 +94,7 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
               style={listStyle}
             >{`候補 ${classInfo.name} ${classInfo.type}，順位 ${pendingOrder}`}</li>
             <li style={listStyle}>
-              <button
-                onClick={() => {
-                  console.log('取消候補');
-                }}
-              >
+              <button onClick={clickHandler}>
                 <u style={listStyle}>取消候補</u>
               </button>
             </li>

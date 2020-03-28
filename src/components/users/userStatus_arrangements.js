@@ -7,6 +7,9 @@ import ArrangementSingle from './userStatus_arrangementSingle';
 // contexts
 import { userStatusContext } from '../contexts/userStatusContext';
 
+// functions
+import keyGen from '../../functions/keyGen';
+
 const Title = styled.div`
   font-size: 1rem;
   font-weight: 500;
@@ -30,7 +33,8 @@ const Arrangements = () => {
               return (
                 <ArrangementSingle
                   leaveClass={classInfo}
-                  status="rescheduled"
+                  status="reschedulable"
+                  key={keyGen()}
                 />
               );
             })}
@@ -44,6 +48,7 @@ const Arrangements = () => {
                   leaveClass={infos.leaveClass}
                   classInfo={infos.rescheduleClass}
                   status="rescheduled"
+                  key={keyGen()}
                 />
               );
             })}
@@ -57,6 +62,7 @@ const Arrangements = () => {
                   leaveClass={infos.leaveClass}
                   classInfo={infos.pendingClass}
                   status="pending"
+                  key={keyGen()}
                 />
               );
             })}
