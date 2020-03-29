@@ -78,7 +78,6 @@ const ListCard = (props) => {
       <ListWrapper>
         {students.length ? (
           <List>
-            <ListTitle>補課學生</ListTitle>
             {students.map((student) => {
               return (
                 <ListItem key={keyGen()}>
@@ -104,7 +103,7 @@ const ListCard = (props) => {
         ) : null}
         {pendingStudents.length ? (
           <List>
-            <ListTitle>補課學生</ListTitle>
+            <ListTitle>候補學生</ListTitle>
             {pendingStudents.map((student) => {
               return (
                 <ListItem key={keyGen()}>
