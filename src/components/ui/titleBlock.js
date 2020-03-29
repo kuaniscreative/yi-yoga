@@ -19,6 +19,7 @@ const Text = styled.p`
   margin-bottom: 2em;
   font-weight: 400;
   line-height: 2em;
+  letter-spacing: normal;
   color: ${theme.colors.gray6};
   @media (max-width: 720px) {
     max-width: 100%;

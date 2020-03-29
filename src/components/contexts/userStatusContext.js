@@ -76,7 +76,10 @@ const UserStatusContextProvider = (props) => {
       .where('owner.id', '==', uid)
       .onSnapshot((snapshot) => {
         const payments = snapshot.docs.map((doc) => {
-          return doc.data();
+          return {
+            ...doc.data(),
+            id: doc.id
+          };
         });
         setPayments(payments);
       });
