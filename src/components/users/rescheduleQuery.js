@@ -1,76 +1,70 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState, useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+
+// components
+import TitleBlock from '../ui/titleBlock';
+import Block from '../ui/block';
+import ArrowIconLink from '../ui/arrowIconLink';
+
+// contexts
+import { loadingContext } from '../contexts/loadingContext';
 
 // actions
-import {
-    rescheduleQueryAccept,
-    rescheduleQueryDecline
-} from "../../actions/userActions";
-class RescheduleQuery extends Component {
-    state = {};
+import rescheduleQueryAccept from '../../actions/rescheduleQueryAccept';
+import rescheduleQueryDecline from '../../actions/rescheduleQueryDecline';
 
-    componentDidMount() {
-        const params = this.props.match.params;
-        const result = params.result;
-        const userId = params.userId;
-        const classId = params.classId;
-        const rescheduleQueryAccept = this.props.rescheduleQueryAccept;
-        const rescheduleQueryDecline = this.props.rescheduleQueryDecline;
+const LinkWrapper = styled.div`
+  margin-bottom: 2rem;
+`;
 
-        if (result === "accept") {
-            rescheduleQueryAccept(userId, classId);
-        } else if (result === "decline") {
-            rescheduleQueryDecline(userId, classId);
-        }
+const RescheduleQuery = () => {
+  const { result, userId, classId } = useParams();
+  const [processed, setProcessed] = useState(false);
+  const { setLoadingBarActive } = useContext(loadingContext);
+
+  /** When landed, fire update functions */
+  useEffect(() => {
+    setLoadingBarActive(true);
+    if (result === 'accept') {
+      rescheduleQueryAccept(userId, classId).then(() => {
+        setLoadingBarActive(false);
+        setProcessed(true);
+      });
+    } else {
+      rescheduleQueryDecline(userId, classId).then(() => {
+        setLoadingBarActive(false);
+        setProcessed(true);
+      });
     }
+  }, []);
 
-    render() {
-        const params = this.props.match.params;
-        const result = params.result;
-        const title = result === "accept" ? "補課成功" : "已取消候補";
-        return (
-            <div>
-                {this.props.rescheduleQueryProcessed ? (
-                    <div className="layout_pageTitle">
-                        <div className="wrapper">
-                            <h1>{title}</h1>
-                        </div>
-                    </div>
-                ) : null}
-                {this.props.rescheduleQueryProcessed ? (
-                    <div className="layout_contentBlock">
-                        {result === "accept" ? (
-                            <ul className="comfyList">
-                                <li>親愛的，我們晚點見</li>
-                            </ul>
-                        ) : (
-                            <ul className="comfyList">
-                                <li>已取消本堂課的候補，並退還補課機會</li>
-                                <li>記得請假的課堂要在兩個月內補課完畢</li>
-                            </ul>
-                        )}
-                    </div>
-                ) : null}
-            </div>
-        );
-    }
-}
+  if (!processed) {
+    return null;
+  }
 
-const mapStateToProps = state => {
-    return {
-        rescheduleQueryProcessed: state.user.rescheduleQueryProcessed
-    };
+  return (
+    <div>
+      <TitleBlock title={result === 'accept' ? '補課成功' : '已取消候補'} />
+      <Block>
+        {result === 'accept' ? (
+          <ul className="comfyList">
+            <li>親愛的我們晚點見</li>
+          </ul>
+        ) : (
+          <ul className="comfyList">
+            <li>已取消本堂課的候補，並退還補課機會</li>
+            <li>記得請假的課堂要在兩個月內補課完畢</li>
+          </ul>
+        )}
+      </Block>
+      <Block>
+        <LinkWrapper>
+          <ArrowIconLink to="/">回首頁</ArrowIconLink>
+        </LinkWrapper>
+      </Block>
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        rescheduleQueryAccept: (userId, classId) => {
-            dispatch(rescheduleQueryAccept(userId, classId));
-        },
-        rescheduleQueryDecline: (userId, classId) => {
-            dispatch(rescheduleQueryDecline(userId, classId));
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RescheduleQuery);
+export default RescheduleQuery;
