@@ -10,6 +10,7 @@ const { gray1, gray4 } = theme.colors;
 const PaymentContainer = styled.div`
   padding-bottom: 0.5rem;
   border-bottom: 1px solid ${gray1};
+  margin-bottom: 1em;
 `;
 
 const PaymentTitle = styled.div`

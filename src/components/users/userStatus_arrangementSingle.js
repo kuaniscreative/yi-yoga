@@ -42,7 +42,7 @@ function getPendingOrder(students, uid) {
   return 0;
 }
 
-function ArrangementSingle({ leaveClass, classInfo, status }) {
+function ArrangementSingle({ leaveDate, leaveClass, classInfo, status }) {
   /** get user data */
   const { uid } = useContext(userContext);
 
@@ -62,7 +62,10 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
     case 'reschedulable':
       return (
         <Container>
-          <DateSingle date={leaveClass.date} time={leaveClass.type} oneline />
+          <DateSingle
+            date={leaveClass.date}
+            time={leaveClass ? leaveClass.type : null}
+          />
           <ul className="comfyList" style={listWrapperStyle}>
             <li style={listStyle}>
               尚未補課，
@@ -77,7 +80,10 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
     case 'rescheduled':
       return (
         <Container>
-          <DateSingle date={leaveClass.date} time={leaveClass.type} oneline />
+          <DateSingle
+            date={leaveDate}
+            time={leaveClass ? leaveClass.type : null}
+          />
           <ul className="comfyList" style={listWrapperStyle}>
             <li
               style={listStyle}
@@ -90,7 +96,10 @@ function ArrangementSingle({ leaveClass, classInfo, status }) {
       const pendingOrder = getPendingOrder(classInfo.pendingStudents, uid);
       return (
         <Container>
-          <DateSingle date={leaveClass.date} time={leaveClass.type} oneline />
+          <DateSingle
+            date={leaveDate}
+            time={leaveClass ? leaveClass.type : null}
+          />
           <ul className="comfyList" style={listWrapperStyle}>
             <li
               style={listStyle}

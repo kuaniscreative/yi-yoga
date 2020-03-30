@@ -126,6 +126,8 @@ const UserStatusContextProvider = (props) => {
         : leaveDate.valueOf();
 
       return {
+        leaveDate: leaveDate.toDate(),
+        rescheduleClassId,
         leaveClass: classes.find((classInfo) => {
           return classInfo.date.valueOf() === leaveDateValue;
         }),
@@ -153,6 +155,8 @@ const UserStatusContextProvider = (props) => {
         : leaveDate.valueOf();
 
       return {
+        leaveDate: leaveDate.toDate(),
+        pendingClassId,
         leaveClass: classes.find((classInfo) => {
           return classInfo.date.valueOf() === leaveDateValue;
         }),

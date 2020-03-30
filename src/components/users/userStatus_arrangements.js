@@ -45,6 +45,7 @@ const Arrangements = () => {
             {rescheduledInfos.map((infos) => {
               return (
                 <ArrangementSingle
+                  leaveDate={infos.leaveDate}
                   leaveClass={infos.leaveClass}
                   classInfo={infos.rescheduleClass}
                   status="rescheduled"
@@ -59,6 +60,7 @@ const Arrangements = () => {
             {reschedulePending.map((infos) => {
               return (
                 <ArrangementSingle
+                  leaveDate={infos.leaveDate}
                   leaveClass={infos.leaveClass}
                   classInfo={infos.pendingClass}
                   status="pending"
