@@ -13,7 +13,10 @@ const NewStudentList = (props) => {
       <div className="row">
         {newStudents.map((student) => {
           return (
-            <div className="col-12 col-md-6 col-lg-4" key={keyGen()}>
+            <div
+              className="col-12 col-md-6 col-lg-4 px-0 px-md-2"
+              key={keyGen()}
+            >
               <StudentCard data={student} />
             </div>
           );

@@ -10,9 +10,9 @@ const NickName = styled.span`
 `;
 
 const NameTag = (props) => {
-  const { name, nickName } = props;
+  const { name, nickName, customWrapperStyle } = props;
   return (
-    <div>
+    <div style={customWrapperStyle}>
       <Name>{name}</Name>
       <NickName>{nickName}</NickName>
     </div>

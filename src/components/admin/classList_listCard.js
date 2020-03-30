@@ -46,20 +46,24 @@ const ListWrapper = styled.div`
   }
 `;
 
-const List = styled.ul``;
+const List = styled.ul`
+  margin-bottom: 2rem;
+`;
 
 const ListTitle = styled.h6`
   font-size: 0.75rem;
   color: ${theme.colors.gray3};
+  margin: 0.5em 0;
 `;
 
 const ListItem = styled.li`
   position: relative;
-  padding: 16px 0;
+  padding: 0.75em 0;
   border-bottom: 1px solid ${theme.colors.gray1};
 `;
 
 const NoStudentMessage = styled.p`
+  font-size: 0.75rem;
   color: ${theme.colors.gray3};
 `;
 
@@ -78,6 +82,7 @@ const ListCard = (props) => {
       <ListWrapper>
         {students.length ? (
           <List>
+            <ListTitle>學生</ListTitle>
             {students.map((student) => {
               return (
                 <ListItem key={keyGen()}>

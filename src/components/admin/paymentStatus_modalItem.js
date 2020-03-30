@@ -30,14 +30,12 @@ const Action = styled.div`
 
 const PaymentInfos = styled.p`
   display: block;
-  padding: 0.5rem 0;
   line-height: 1.25em;
 `;
 
 const InfoItem = styled.span`
   color: ${theme.colors.gray4};
   font-size: 0.75rem;
-  padding-top: 1em;
 `;
 
 const ModalItem = (props) => {
@@ -59,6 +57,7 @@ const ModalItem = (props) => {
           <NameTag
             name={payment.owner.name}
             nickName={payment.owner.nickName}
+            customWrapperStyle={{ padding: '8px 0' }}
           />
           <PaymentInfos>
             <InfoItem>金額：{payment.amount}</InfoItem>

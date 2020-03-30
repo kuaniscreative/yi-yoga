@@ -80,7 +80,6 @@ const UserPanel = () => {
                 <LeaveApplication />
               </LeaveContextProvider>
             </Route>
-
             <Route path="/userStatus" component={UserStatus} />
             <Route path="/locationInfo" component={LocationInfo} />
             <Route path="/leaveRule" component={LeaveRule} />
