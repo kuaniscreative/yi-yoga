@@ -21,7 +21,7 @@ exports.rescheduleSuccessNotification = functions.https.onCall(
         const userName = userInfo.name;
         const email = new Email({
           message: {
-            from: '芝伊瑜珈 <yiyoga.official@gmail.com>'
+            from: '芝伊瑜珈 <yiyoga.official@gmail.com>',
           },
           // uncomment below to send emails in development/test env:
           // send: true,
@@ -29,21 +29,21 @@ exports.rescheduleSuccessNotification = functions.https.onCall(
             service: 'gmail',
             auth: {
               user: account,
-              pass: password
-            }
-          }
+              pass: password,
+            },
+          },
         });
 
         return email.send({
           template: 'rescheduleSuccess',
           message: {
-            to: userEmail
+            to: userEmail,
           },
           locals: {
             name: userName,
             date: data.dateString,
-            time: data.startAt
-          }
+            time: data.startAt,
+          },
         });
       });
   }
@@ -63,7 +63,7 @@ exports.rescheduleQuery = functions.https.onCall((data, context) => {
       const userId = data.studentId;
       const email = new Email({
         message: {
-          from: '芝伊瑜珈 <yiyoga.official@gmail.com>'
+          from: '芝伊瑜珈 <yiyoga.official@gmail.com>',
         },
         // uncomment below to send emails in development/test env:
         // send: true,
@@ -71,55 +71,26 @@ exports.rescheduleQuery = functions.https.onCall((data, context) => {
           service: 'gmail',
           auth: {
             user: account,
-            pass: password
-          }
-        }
+            pass: password,
+          },
+        },
       });
 
       return email.send({
         template: 'rescheduleQuery',
         message: {
-          to: userEmail
+          to: userEmail,
         },
         locals: {
           name: userName,
           date: data.dateString,
           time: data.startAt,
-          acceptLink: `https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/accept/${userId}/${classId}`,
-          declineLink: `https://class-manage-80e60.firebaseapp.com/#/rescheduleQuery/decline/${userId}/${classId}`
-        }
+          acceptLink: `https://class-manage-80e60.firebaseapp.com/rescheduleQuery/accept/${userId}/${classId}`,
+          declineLink: `https://class-manage-80e60.firebaseapp.com/rescheduleQuery/decline/${userId}/${classId}`,
+        },
       });
     });
 });
-
-// exports.accountValidationSuccess = functions.https.onCall(
-//   (userInfo, context) => {
-//     const email = new Email({
-//       message: {
-//         from: '芝伊瑜珈 <yiyoga.official@gmail.com>'
-//       },
-//       // uncomment below to send emails in development/test env:
-//       // send: true,
-//       transport: {
-//         service: 'gmail',
-//         auth: {
-//           user: account,
-//           pass: password
-//         }
-//       }
-//     });
-//     return email.send({
-//       template: 'accountValidationSuccess',
-//       message: {
-//         to: userInfo.email
-//       },
-//       locals: {
-//         name: userInfo.name,
-//         url: 'https://class-manage-80e60.firebaseapp.com/'
-//       }
-//     });
-//   }
-// );
 
 exports.accountValidationSuccess = functions.firestore
   .document('user/{userId}')
@@ -129,7 +100,7 @@ exports.accountValidationSuccess = functions.firestore
     if (before.validated === false && after.validated === true) {
       const email = new Email({
         message: {
-          from: '芝伊瑜珈 <yiyoga.official@gmail.com>'
+          from: '芝伊瑜珈 <yiyoga.official@gmail.com>',
         },
         // uncomment below to send emails in development/test env:
         // send: true,
@@ -137,57 +108,31 @@ exports.accountValidationSuccess = functions.firestore
           service: 'gmail',
           auth: {
             user: account,
-            pass: password
-          }
-        }
+            pass: password,
+          },
+        },
       });
       return email.send({
         template: 'accountValidationSuccess',
         message: {
-          to: after.email
+          to: after.email,
         },
         locals: {
           name: after.name,
-          url: 'https://class-manage-80e60.firebaseapp.com/'
-        }
+          url: 'https://class-manage-80e60.firebaseapp.com/',
+        },
       });
     } else {
       return;
     }
   });
 
-// exports.sendNewStudentNotification = functions.https.onCall(() => {
-//   const email = new Email({
-//     message: {
-//       from: '芝伊瑜珈 <yiyoga.official@gmail.com>'
-//     },
-//     // uncomment below to send emails in development/test env:
-//     // send: true,
-//     transport: {
-//       service: 'gmail',
-//       auth: {
-//         user: account,
-//         pass: password
-//       }
-//     }
-//   });
-//   return email.send({
-//     template: 'sendNewStudentNotification',
-//     message: {
-//       to: 'kuan.thisis@gmail.com'
-//     },
-//     locals: {
-//       url: 'https://class-manage-80e60.firebaseapp.com/'
-//     }
-//   });
-// });
-
 exports.sendNewStudentNotification = functions.firestore
   .document('user/{userId}')
   .onCreate((change, context) => {
     const email = new Email({
       message: {
-        from: '芝伊瑜珈 <yiyoga.official@gmail.com>'
+        from: '芝伊瑜珈 <yiyoga.official@gmail.com>',
       },
       // uncomment below to send emails in development/test env:
       // send: true,
@@ -195,17 +140,17 @@ exports.sendNewStudentNotification = functions.firestore
         service: 'gmail',
         auth: {
           user: account,
-          pass: password
-        }
-      }
+          pass: password,
+        },
+      },
     });
     return email.send({
       template: 'sendNewStudentNotification',
       message: {
-        to: 'yiyoga.official@gmail.com'
+        to: 'yiyoga.official@gmail.com',
       },
       locals: {
-        url: 'https://class-manage-80e60.firebaseapp.com/'
-      }
+        url: 'https://class-manage-80e60.firebaseapp.com/',
+      },
     });
   });
