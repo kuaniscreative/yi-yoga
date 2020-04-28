@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const Container = styled.div`
+  margin-bottom: 56px;
+`;
+
 const SessionTitle = styled.div`
   font-size: 1.5rem;
   letter-spacing: normal;
@@ -23,23 +27,27 @@ const SessionItem = (props) => {
     sessionId,
     payments,
     setModalIsActive,
-    setModalData
+    setModalData,
   } = props;
-  const { finished, paid, pending } = payments;
+  const { finished, paid, pending } = payments || {
+    finished: [],
+    paid: [],
+    pending: [],
+  };
 
   const handleClick = (e) => {
     const type = e.target.dataset.payment;
     const data = {
       sessionName: sessionName,
       sessionId: sessionId,
-      type: type
+      type: type,
     };
     setModalData(data);
     setModalIsActive(true);
   };
 
   return (
-    <div>
+    <Container>
       <SessionTitle>{sessionName}</SessionTitle>
       <PaymentStatusButton data-payment="pending" onClick={handleClick}>
         未繳費：<Num>{pending.length}</Num>
@@ -50,7 +58,7 @@ const SessionItem = (props) => {
       <PaymentStatusButton data-payment="finished" onClick={handleClick}>
         已完成：<Num>{finished.length}</Num>
       </PaymentStatusButton>
-    </div>
+    </Container>
   );
 };
 
