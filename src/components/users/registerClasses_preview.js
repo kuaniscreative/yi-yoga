@@ -77,7 +77,7 @@ function mapClassesToSelections(selections = [], classes = []) {
 }
 
 function getAmount(num) {
-  if (num >= 9) {
+  if (num >= 8) {
     return num * 300;
   } else {
     return num * 350;
