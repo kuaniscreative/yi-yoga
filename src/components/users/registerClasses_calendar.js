@@ -78,7 +78,7 @@ const Calendar = (props) => {
   const handleClick = (index) => {
     setModalSearchPattern({
       calendar: calendarIndex,
-      dateIndex: index
+      dateIndex: index,
     });
     setModalInView(true);
   };
@@ -95,7 +95,7 @@ const Calendar = (props) => {
         })}
       </WeekDay>
       <CellWrapper>
-        {data.length &&
+        {!!data.length &&
           data.map((cellInfo, i) => {
             return cellInfo.empty ? (
               <Cell key={keyGen()}></Cell>

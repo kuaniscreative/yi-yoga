@@ -2,8 +2,11 @@ import firebase from '../fbConfig';
 const firestore = firebase.firestore();
 
 function timeIsDue(date) {
+  if (!date) {
+    return false;
+  }
   const currentTime = new Date();
-  return date - currentTime < 0;
+  return !(currentTime - date < 5529600000); // 64 days;
 }
 
 /** 功能：退還補課機會 */
@@ -27,7 +30,7 @@ function returnReschedulable(userId, pendingClassId) {
         .doc(userId)
         .update({
           reschedulePending: newPending,
-          reschedulable: firebase.firestore.FieldValue.arrayUnion(leaveDate)
+          reschedulable: firebase.firestore.FieldValue.arrayUnion(leaveDate),
         });
     });
 }
@@ -65,7 +68,7 @@ function createClassHistory(dueClasses) {
       .collection('classHistory')
       .doc(classInfo.id)
       .set({
-        ...classInfo
+        ...classInfo,
       });
     tasks.push(task);
   });
@@ -81,7 +84,7 @@ export default function removeExpireClassProfile() {
       const classProfile = res.docs.map((snap) => {
         return {
           ...snap.data(),
-          id: snap.id
+          id: snap.id,
         };
       });
       const dueClasses = classProfile.filter((classInfo) => {
@@ -96,7 +99,7 @@ export default function removeExpireClassProfile() {
       if (dueClasses.length) {
         const tasks = [
           removeFromClassProfile(dueClasses),
-          createClassHistory(dueClasses)
+          createClassHistory(dueClasses),
         ];
 
         if (hasPendingStudent.length) {

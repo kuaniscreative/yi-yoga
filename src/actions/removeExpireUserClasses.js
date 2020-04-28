@@ -2,8 +2,11 @@ import firebase from '../fbConfig';
 const firestore = firebase.firestore();
 
 function timeIsDue(date) {
+  if (!date) {
+    return false;
+  }
   const currentTime = new Date();
-  return date - currentTime < 0;
+  return !(currentTime - date < 5529600000); // 64 days
 }
 
 /** 兩個大任務： 移除 user.allClasses & leaveRecord.reschedulable 中的過期課堂 */
@@ -15,7 +18,7 @@ function getClassProfile() {
       return res.docs.map((snap) => {
         return {
           ...snap.data(),
-          id: snap.id
+          id: snap.id,
         };
       });
     });
@@ -44,6 +47,10 @@ function updateUserClasses(uid) {
         });
       })
       .filter((classInfo) => {
+        if (!classInfo) {
+          return false;
+        }
+
         const date = classInfo.date.toDate();
         return timeIsDue(date);
       });
@@ -62,7 +69,7 @@ function updateUserClasses(uid) {
             ...dueClasses.map((classInfo) => {
               return classInfo.id;
             })
-          )
+          ),
         });
     }
   });
@@ -82,7 +89,7 @@ function updateLeaveRecord(uid) {
         const classDate = timestamp.toDate();
         const available = [
           classDate.getMonth(),
-          (classDate.getMonth() + 1) % 12
+          (classDate.getMonth() + 1) % 12,
         ];
         return available.indexOf(currentMonth) < 0;
       });
@@ -92,7 +99,7 @@ function updateLeaveRecord(uid) {
           .collection('leaveRecord')
           .doc(uid)
           .update({
-            reschedulable: firebase.firestore.FieldValue.arrayRemove(...due)
+            reschedulable: firebase.firestore.FieldValue.arrayRemove(...due),
           });
       }
     });
