@@ -8,7 +8,7 @@ import ProcessNav, {
   ItemWrapper,
   ItemWrapperRight,
   Hint,
-  ActionButton
+  ActionButton,
 } from '../ui/processNav';
 
 // contexts
@@ -77,9 +77,7 @@ function mapClassesToSelections(selections = [], classes = []) {
 }
 
 function getAmount(num) {
-  if (num >= 8) {
-    return num * 250;
-  } else if (num >= 4) {
+  if (num >= 9) {
     return num * 300;
   } else {
     return num * 350;
@@ -97,7 +95,7 @@ const Preview = () => {
     selectedClasses,
     setSelectedClasses,
     toNextStep,
-    toPrevStep
+    toPrevStep,
   } = useContext(registerClassContext);
   const [selections, setSelections] = useState([]);
   useEffect(() => {
