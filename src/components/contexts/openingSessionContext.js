@@ -11,15 +11,20 @@ const OpeningSessionContextProvider = (props) => {
       .collection('session')
       .where('open', '==', true)
       .onSnapshot((query) => {
-        const sessions = query.docs.map((doc) => {
-          return {
-            ...doc.data(),
-            id: doc.id
-          };
-        });
-        setSession(sessions[0]);
+        const sessions =
+          query.docs.length &&
+          query.docs.map((doc) => {
+            return {
+              ...doc.data(),
+              id: doc.id,
+            };
+          });
+        if (sessions) {
+          setSession(sessions[0]);
+        }
       });
   };
+
   /**
    * Add firestore update listener
    */

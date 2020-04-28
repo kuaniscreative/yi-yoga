@@ -14,7 +14,7 @@ const CalendarContextProvider = (props) => {
   const { session } = useContext(openingSessionContext);
   const [span, setSpan] = useState([]);
   useEffect(() => {
-    if (session.hasOwnProperty('id')) {
+    if (session && session.hasOwnProperty('id')) {
       const span = deconstructSpan(session.span);
       setSpan(span);
     }
