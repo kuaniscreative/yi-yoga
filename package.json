@@ -15,6 +15,7 @@
   },
   "scripts": {
     "start": "REACT_APP_FB_CONFIG=dev react-scripts start",
+    "start-prod": "REACT_APP_FB_CONFIG=prod react-scripts start",
     "build": "REACT_APP_FB_CONFIG=prod react-scripts build",
     "build-dev": "REACT_APP_FB_CONFIG=dev react-scripts build",
     "test": "react-scripts test",
