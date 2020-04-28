@@ -86,6 +86,8 @@ const Navigation = (props) => {
   const handleTransition = () => {
     if (navIsActive) {
       setHeaderBackground('transparent');
+    } else {
+      setHeaderBackground('white');
     }
   };
 
@@ -94,48 +96,54 @@ const Navigation = (props) => {
       <Block>
         <div className="container-fluid px-0">
           <div className="row">
-            {/** Nav Column */
-            divisions.map((division) => {
-              return (
-                <div className="col-10 col-md-3" key={keyGen()}>
-                  <NavSectionTitle>{division.name}</NavSectionTitle>
-                  <NavSectionLine />
-                  {/** Nav Item */
-                  division.items.map((item) => {
-                    return (
-                      <NavItem key={keyGen()}>
-                        <Link
-                          to={item.path}
-                          onClick={handleClick}
-                          key={keyGen()}
-                        >
-                          {item.name}
-                        </Link>
-                      </NavItem>
-                    );
-                  })}
-                </div>
-              );
-            })}
-            {/** Log out section */
-            logoutSection ? (
-              <NavItemSmall
-                className={`col-10 col-md-3 offset-md-${logoutOffset}`}
-              >
-                <button onClick={signOutAndHideNav}>登出</button>
-              </NavItemSmall>
-            ) : (
-              <NavItemSmall
-                className={`col-10 col-md-3 offset-md-${logoutOffset}`}
-              >
-                <Link to="/log-in" onClick={handleClick}>
-                  登入
-                </Link>
-                <Link to="/signUp" onClick={handleClick}>
-                  註冊
-                </Link>
-              </NavItemSmall>
-            )}
+            {
+              /** Nav Column */
+              divisions.map((division) => {
+                return (
+                  <div className="col-10 col-md-3" key={keyGen()}>
+                    <NavSectionTitle>{division.name}</NavSectionTitle>
+                    <NavSectionLine />
+                    {
+                      /** Nav Item */
+                      division.items.map((item) => {
+                        return (
+                          <NavItem key={keyGen()}>
+                            <Link
+                              to={item.path}
+                              onClick={handleClick}
+                              key={keyGen()}
+                            >
+                              {item.name}
+                            </Link>
+                          </NavItem>
+                        );
+                      })
+                    }
+                  </div>
+                );
+              })
+            }
+            {
+              /** Log out section */
+              logoutSection ? (
+                <NavItemSmall
+                  className={`col-10 col-md-3 offset-md-${logoutOffset}`}
+                >
+                  <button onClick={signOutAndHideNav}>登出</button>
+                </NavItemSmall>
+              ) : (
+                <NavItemSmall
+                  className={`col-10 col-md-3 offset-md-${logoutOffset}`}
+                >
+                  <Link to="/log-in" onClick={handleClick}>
+                    登入
+                  </Link>
+                  <Link to="/signUp" onClick={handleClick}>
+                    註冊
+                  </Link>
+                </NavItemSmall>
+              )
+            }
           </div>
         </div>
       </Block>
