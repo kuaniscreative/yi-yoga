@@ -22,6 +22,7 @@ const NavIcon = styled.span`
     display: block;
     position: absolute;
     height: 2px;
+    right: 0;
     background: ${theme.colors.black};
   }
 
@@ -65,7 +66,7 @@ const Header = (props) => {
     headerBackground,
     setHeaderBackground,
     navIsActive,
-    setNavIsActive
+    setNavIsActive,
   } = props;
 
   const handleClick = () => {
