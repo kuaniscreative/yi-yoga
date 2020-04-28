@@ -17,8 +17,8 @@ A class manage system for Yi Yoga.
 ## Before Deployment
 
 - 記得切換 firebase environment。
-- `$ firebase use default` for **production**
-- `$ firebase use development` for **development**
+- `$ firebase use prod` for **production**
+- `$ firebase use dev` for **development**
 
 ## Project Information
 
@@ -36,5 +36,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## MISC
 
+- firebase 建立與切換專案，使用 `firebase use --add` 等，[文件](https://firebase.google.com/docs/cli#admin-commands)
 - 切換環境參考[此篇](https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial)
 - `create-react-app` 中關於環境變數的設定：[create-react-app 文件](https://create-react-app.dev/docs/adding-custom-environment-variables/)
