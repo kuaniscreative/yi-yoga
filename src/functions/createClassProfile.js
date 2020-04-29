@@ -3,7 +3,7 @@ import keyGen from './keyGen';
 export const createClassProfile = (startDate, endDate, regularCourses) => {
   const classes = [];
 
-  while (startDate.valueOf() !== endDate.valueOf()) {
+  while (startDate.valueOf() <= endDate.valueOf()) {
     const day = startDate.getDay();
     const match = regularCourses.filter((course) => {
       return course.dayNum === day;
@@ -26,7 +26,7 @@ export const createClassProfile = (startDate, endDate, regularCourses) => {
           capacity: course.capacity,
           name: `${yyyy}年${mm + 1}月${dd}日`,
           type: course.name,
-          id: keyGen()
+          id: keyGen(),
         });
       });
     }
