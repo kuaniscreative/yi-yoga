@@ -120,18 +120,22 @@ const Preview = () => {
    */
   const { setLoadingBarActive } = useContext(loadingContext);
   const amount = getAmount(selectedClasses.length);
+  const [isClicked, setIsClicked] = useState(false);
   const signUpToCourse = () => {
-    setLoadingBarActive(true);
-    registerToCourse(
-      selectedClasses,
-      userData,
-      session.name,
-      session.id,
-      amount
-    ).then(() => {
-      setLoadingBarActive(false);
-      toNextStep();
-    });
+    if (!isClicked) {
+      setIsClicked(true);
+      setLoadingBarActive(true);
+      registerToCourse(
+        selectedClasses,
+        userData,
+        session.name,
+        session.id,
+        amount
+      ).then(() => {
+        setLoadingBarActive(false);
+        toNextStep();
+      });
+    }
   };
 
   return (
