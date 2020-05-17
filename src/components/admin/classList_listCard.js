@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 // components
 import NameTag from '../ui/nameTag';
+import ListItem from './classList_listItem';
 
 // functions
 import keyGen from '../../functions/keyGen';
@@ -56,12 +57,6 @@ const ListTitle = styled.h6`
   margin: 0.5em 0;
 `;
 
-const ListItem = styled.li`
-  position: relative;
-  padding: 0.75em 0;
-  border-bottom: 1px solid ${theme.colors.gray1};
-`;
-
 const NoStudentMessage = styled.p`
   font-size: 0.75rem;
   color: ${theme.colors.gray3};
@@ -73,7 +68,8 @@ const ListCard = (props) => {
     subtitle,
     students,
     pendingStudents,
-    rescheduleStudents
+    rescheduleStudents,
+    classId,
   } = props;
   return (
     <CardBase>
@@ -85,9 +81,13 @@ const ListCard = (props) => {
             <ListTitle>學生</ListTitle>
             {students.map((student) => {
               return (
-                <ListItem key={keyGen()}>
-                  <NameTag name={student.name} nickName={student.nickName} />
-                </ListItem>
+                <ListItem
+                  name={student.name}
+                  studentId={student.id}
+                  classId={classId}
+                  nickName={student.nickName}
+                  key={keyGen()}
+                />
               );
             })}
           </List>

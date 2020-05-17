@@ -53,6 +53,7 @@ const ClassList = () => {
                 title={classProfile.name}
                 subtitle={classProfile.type}
                 students={classProfile.students}
+                classId={classProfile.id}
                 pendingStudents={classProfile.pendingStudents}
                 rescheduleStudents={classProfile.rescheduleStudents}
               />
