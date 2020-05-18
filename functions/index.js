@@ -210,18 +210,40 @@ exports.movePendingStudnet = functions.firestore
     const after = change.after.data();
     const isAvailable =
       after.opacity > after.students.length + after.rescheduleStudents.length;
+
     const hasPendingStudent = !!after.pendingStudents.length;
+
     if (isAvailable && hasPendingStudent) {
       const currentTime = new Date();
       const classTime = after.date.toDate();
       const classStartWithinTwoHour = classTime - currentTime < 7200000;
       const pendingStudent = after.pendingStudents[0];
       if (classStartWithinTwoHour) {
-        return functions.firestore.sendQueryMail({
-          studentId: pendingStudent.id,
-          classId: classId,
-          dateString: after.name,
-          startAt: after.type,
+        const email = new Email({
+          message: {
+            from: '芝伊瑜珈 <yiyoga.official@gmail.com>',
+          },
+          transport: {
+            service: 'gmail',
+            auth: {
+              user: account,
+              pass: password,
+            },
+          },
+        });
+
+        return email.send({
+          template: 'rescheduleQuery',
+          message: {
+            to: pendingStudent.email,
+          },
+          locals: {
+            name: pendingStudent.name,
+            date: after.name,
+            time: after.type,
+            acceptLink: `https://class-manage-80e60.firebaseapp.com/rescheduleQuery/accept/${pendingStudent.id}/${classId}`,
+            declineLink: `https://class-manage-80e60.firebaseapp.com/rescheduleQuery/decline/${pendingStudent.id}/${classId}`,
+          },
         });
       } else {
         const tasks = [
@@ -238,8 +260,6 @@ exports.movePendingStudnet = functions.firestore
             message: {
               from: '芝伊瑜珈 <yiyoga.official@gmail.com>',
             },
-            // uncomment below to send emails in development/test env:
-            // send: true,
             transport: {
               service: 'gmail',
               auth: {
@@ -263,5 +283,5 @@ exports.movePendingStudnet = functions.firestore
         });
       }
     }
-    return;
+    return true;
   });
