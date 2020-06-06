@@ -10,6 +10,9 @@ import RemoveStudentModal from '../modals/removeStudentModal';
 import theme from '../../json/theme.json';
 
 const ListItemWrapper = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   padding: 0.75em 0;
   border-bottom: 1px solid ${theme.colors.gray1};
