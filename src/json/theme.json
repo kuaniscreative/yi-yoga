@@ -10,6 +10,7 @@
         "gray0": "#f2f2f2",
         "orange": "#ff9a57",
         "green": "#50C5B7",
-        "yellowWhite": "#FCFCF6"
+        "yellowWhite": "#FCFCF6",
+        "error": " #D7263D"
     }
 }
