@@ -18,7 +18,7 @@ const ListItemWrapper = styled.li`
   border-bottom: 1px solid ${theme.colors.gray1};
 `;
 
-function ListItem({ name, nickName, studentId, classId }) {
+function ListItem({ name, nickName, studentId, classId, date, time }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const closeModal = useCallback(() => {
     setModalIsOpen(false);
@@ -38,6 +38,8 @@ function ListItem({ name, nickName, studentId, classId }) {
         closeModal={closeModal}
         studentId={studentId}
         classId={classId}
+        date={date}
+        time={time}
       />
     </ListItemWrapper>
   );

@@ -22,14 +22,18 @@ const modalStyle = {
   },
 };
 
-function RemoveStudentModal({ isOpen, closeModal, studentId, classId }) {
+function RemoveStudentModal({ isOpen, closeModal, studentId, classId, date, time }) {
   const onConfirm = useCallback(() => {
     return removeStudentFromClass(studentId, classId, false).then(() => {
       console.log('success');
     });
   }, [classId, studentId]);
   return (
-    <Modal isOpen={isOpen} style={modalStyle}>
+    <Modal 
+      isOpen={isOpen} 
+      style={modalStyle}
+      onRequestClose={closeModal}
+      shouldCloseOnOverlayClick>
       <h3>將學生從課堂移除</h3>
       <p>在刪除之前請設定是否給予學生免費課堂</p>
       <button onClick={closeModal}>取消</button>

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
-import NameTag from '../ui/nameTag';
 import ListItem from './classList_listItem';
 
 // functions
@@ -86,6 +85,8 @@ const ListCard = (props) => {
                   studentId={student.id}
                   classId={classId}
                   nickName={student.nickName}
+                  date={title}
+                  time={subtitle}
                   key={keyGen()}
                 />
               );
@@ -104,6 +105,8 @@ const ListCard = (props) => {
                   studentId={student.id}
                   classId={classId}
                   nickName={student.nickName}
+                  date={title}
+                  time={subtitle}
                   key={keyGen()}
                 />
               );
@@ -120,6 +123,8 @@ const ListCard = (props) => {
                   studentId={student.id}
                   classId={classId}
                   nickName={student.nickName}
+                  date={title}
+                  time={subtitle}
                   key={keyGen()}
                 />
               );
