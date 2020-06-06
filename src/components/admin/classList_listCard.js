@@ -99,9 +99,13 @@ const ListCard = (props) => {
             <ListTitle>補課學生</ListTitle>
             {rescheduleStudents.map((student) => {
               return (
-                <ListItem key={keyGen()}>
-                  <NameTag name={student.name} nickName={student.nickName} />
-                </ListItem>
+                <ListItem
+                  name={student.name}
+                  studentId={student.id}
+                  classId={classId}
+                  nickName={student.nickName}
+                  key={keyGen()}
+                />
               );
             })}
           </List>
@@ -111,9 +115,13 @@ const ListCard = (props) => {
             <ListTitle>候補學生</ListTitle>
             {pendingStudents.map((student) => {
               return (
-                <ListItem key={keyGen()}>
-                  <NameTag name={student.name} nickName={student.nickName} />
-                </ListItem>
+                <ListItem
+                  name={student.name}
+                  studentId={student.id}
+                  classId={classId}
+                  nickName={student.nickName}
+                  key={keyGen()}
+                />
               );
             })}
           </List>
