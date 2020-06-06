@@ -38,6 +38,7 @@ function ListItem({ name, nickName, studentId, classId, date, time }) {
         closeModal={closeModal}
         studentId={studentId}
         classId={classId}
+        studentName={name}
         date={date}
         time={time}
       />
