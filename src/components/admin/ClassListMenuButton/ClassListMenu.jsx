@@ -4,6 +4,8 @@ import { jsx, css } from '@emotion/core';
 import theme from '../../../json/theme.json';
 import { Fragment } from 'react';
 import { POP_UP, POP_UP_OVERLAY } from '../../../constants/zIndex';
+import { useState } from 'react';
+import AddStudentModal from '../../modals/AddStudentModal';
 
 const styles = {
   container: css`
@@ -42,12 +44,16 @@ const styles = {
 };
 
 function ClassListMenu({ onClose }) {
+  const [studentModalIsOn, setStudentModalIsOn] = useState(false);
   return (
     <Fragment>
       <div css={styles.overlay} onClick={onClose} />
       <div css={styles.container}>
-        <button css={styles.listItem}>加入學生</button>
+        <button type="button" css={styles.listItem} onClick={() => {setStudentModalIsOn(true)}}>
+          加入學生
+        </button>
       </div>
+      <AddStudentModal isOpen={studentModalIsOn} closeModal={() => {setStudentModalIsOn(false)}}/>
     </Fragment>
   );
 }
