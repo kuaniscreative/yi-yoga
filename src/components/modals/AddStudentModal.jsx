@@ -14,6 +14,8 @@ import { useContext } from 'react';
 import { loadingContext } from '../contexts/loadingContext';
 import { allUserContext } from '../contexts/allUserContext';
 import NameTag from '../ui/nameTag';
+import addStudentsToClass from '../../actions/addStudentsToClass';
+import { useState } from 'react';
 
 Modal.setAppElement('#root');
 
@@ -96,16 +98,16 @@ const styles = {
   `,
 };
 
-const CheckMark = ({ inputAnchor, selected }) => {
+const CheckMark = ({ inputAnchor, selected, checked }) => {
   return (
     <div className="checkboxContainer" css={styles.checkbox}>
+      <input type="checkbox" id={inputAnchor} checked={checked} onChange={() => {}}/>
       <div className="checkmark" />
-      <input type="checkbox" id={inputAnchor} defaultChecked={selected} />
     </div>
   );
 };
 
-function StudentList({ students }) {
+function StudentList({ students, selected, onClick }) {
   if (!students || !students.length) {
     return '尚無學生';
   }
@@ -113,8 +115,17 @@ function StudentList({ students }) {
     <ul>
       {students.map((student) => {
         return (
-          <li css={styles.listItem}>
-            <CheckMark />
+          <li
+            key={student.id}
+            css={styles.listItem}
+            onClick={() => {
+              onClick(student.id);
+            }}
+          >
+            <CheckMark
+              checked={~selected.indexOf(student.id)}
+              inputAnchor={student.id}
+            />
             <NameTag name={student.name} nickName={student.nickName} />
           </li>
         );
@@ -135,17 +146,36 @@ function AddStudentModal({
   /** Get all Students */
   const { students } = useContext(allUserContext);
 
+  /** Select Handler */
+  const [selected, setSelected] = useState([]);
+  const selectHalder = useCallback(
+    (id) => {
+      console.log(id, 'id')
+      if (~selected.indexOf(id)) {
+        setSelected(
+          selected.filter((selection) => {
+            return selection !== id;
+          })
+        );
+      } else {
+        setSelected([...selected, id]);
+      }
+      
+    },
+    [selected]
+  );
+  console.log(selected)
   /** Remove Handler */
   const { setLoadingBarActive } = useContext(loadingContext);
 
   const onConfirm = useCallback(() => {
     setLoadingBarActive(true);
 
-    return removeStudentFromClass(studentId, classId, false).then(() => {
-      setLoadingBarActive(false);
-      closeModal();
-    });
-  }, [classId, closeModal, setLoadingBarActive, studentId]);
+    // return addStudentsToClass(studentId, classId, false).then(() => {
+    //   setLoadingBarActive(false);
+    //   closeModal();
+    // });
+  }, [setLoadingBarActive]);
 
   return (
     <Modal
@@ -159,7 +189,11 @@ function AddStudentModal({
       <div css={styles.container}>
         <div css={styles.header}>新增學生至課堂</div>
         <div css={styles.content}>
-          <StudentList students={students} />
+          <StudentList
+            students={students}
+            onClick={selectHalder}
+            selected={selected}
+          />
         </div>
         <div css={styles.btnGroup}>
           <OutlineButton
