@@ -29,31 +29,49 @@ function returnReschedulable(userId, pendingClassId) {
       const newPending = currentPending.filter((profile) => {
         return profile.pendingClassId !== pendingClassId;
       });
-      const leaveDate = currentPending.find((profile) => {
+      const leaveTarget = currentPending.find((profile) => {
         return profile.pendingClassId === pendingClassId;
-      }).leaveDate;
+      });
 
-      return firestore
-        .collection('leaveRecord')
-        .doc(userId)
-        .update({
-          reschedulePending: newPending,
-          reschedulable: firebase.firestore.FieldValue.arrayUnion(leaveDate),
-        });
+      const { leaveDate } = leaveTarget ? leaveTarget : {};
+
+      if (leaveDate) {
+        return firestore
+          .collection('leaveRecord')
+          .doc(userId)
+          .update({
+            reschedulePending: newPending,
+            reschedulable: firebase.firestore.FieldValue.arrayUnion(leaveDate),
+          });
+      }
     });
+}
+
+function removePendingStudents(classIds) {
+  const tasks = classIds.map((classId) => {
+    return firestore.collection('classProfile').doc(classId).update({
+      pendingStudents: [],
+    });
+  });
+
+  return Promise.all(tasks);
 }
 
 function restorePendingStudents(hasPendingStudentClasses) {
   const tasks = [];
+  const hasPendingStudentClassIds = [];
   hasPendingStudentClasses.forEach((classInfo) => {
     const pendingClassId = classInfo.id;
     const pendingStudents = classInfo.pendingStudents;
+    hasPendingStudentClassIds.push(pendingClassId);
     pendingStudents.forEach((studentInfo) => {
       tasks.push(returnReschedulable(studentInfo.id, pendingClassId));
     });
   });
 
-  return Promise.all(tasks);
+  return Promise.all(tasks).then(() => {
+    removePendingStudents(hasPendingStudentClassIds);
+  });
 }
 
 /** 功能： 從 classProfile 移除 && 新增到 classHistory */
@@ -102,7 +120,7 @@ export default function removeExpireClassOrRestorePendingStudents() {
       const shouldBeRemovedClasses = classProfile.filter((classInfo) => {
         const date = classInfo.date.toDate();
         return shouldRemoveClass(date);
-      })
+      });
       const hasPendingStudentClasses = dueClasses.filter((classInfo) => {
         return classInfo.pendingStudents.length > 0;
       });
@@ -118,7 +136,7 @@ export default function removeExpireClassOrRestorePendingStudents() {
 
             return Promise.all(tasks);
           }
-        })
+        });
       } else {
         if (shouldBeRemovedClasses.length) {
           const tasks = [
