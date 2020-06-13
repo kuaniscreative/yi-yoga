@@ -181,9 +181,8 @@ function AddStudentModal({
     
     return addStudentsToClass(studentInfos, classId).then(() => {
       setLoadingBarActive(false);
-      closeModal();
     });
-  }, [classId, closeModal, selected, setLoadingBarActive, students]);
+  }, [classId, selected, setLoadingBarActive, students]);
 
   return (
     <Modal
