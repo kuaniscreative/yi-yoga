@@ -127,6 +127,7 @@ const ListCard = (props) => {
                   nickName={student.nickName}
                   date={title}
                   time={subtitle}
+                  noDeleteButton
                   key={keyGen()}
                 />
               );

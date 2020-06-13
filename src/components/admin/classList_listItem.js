@@ -18,7 +18,15 @@ const ListItemWrapper = styled.li`
   border-bottom: 1px solid ${theme.colors.gray1};
 `;
 
-function ListItem({ name, nickName, studentId, classId, date, time }) {
+function ListItem({
+  name,
+  nickName,
+  studentId,
+  classId,
+  date,
+  time,
+  noDeleteButton,
+}) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const closeModal = useCallback(() => {
     setModalIsOpen(false);
@@ -33,15 +41,17 @@ function ListItem({ name, nickName, studentId, classId, date, time }) {
       <button onClick={openModal}>
         <DeleteIcon />
       </button>
-      <RemoveStudentModal
-        isOpen={modalIsOpen}
-        closeModal={closeModal}
-        studentId={studentId}
-        classId={classId}
-        studentName={name}
-        date={date}
-        time={time}
-      />
+      {noDeleteButton ? null : (
+        <RemoveStudentModal
+          isOpen={modalIsOpen}
+          closeModal={closeModal}
+          studentId={studentId}
+          classId={classId}
+          studentName={name}
+          date={date}
+          time={time}
+        />
+      )}
     </ListItemWrapper>
   );
 }
