@@ -6,6 +6,14 @@ function timeIsDue(date) {
     return false;
   }
   const currentTime = new Date();
+  return !(currentTime - date < 0);
+}
+
+function shouldRemoveClass(date) {
+  if (!date) {
+    return false;
+  }
+  const currentTime = new Date();
   return !(currentTime - date < 5529600000); // 64 days;
 }
 
@@ -35,9 +43,9 @@ function returnReschedulable(userId, pendingClassId) {
     });
 }
 
-function restorePendingStudents(hasPendingStudent) {
+function restorePendingStudents(hasPendingStudentClasses) {
   const tasks = [];
-  hasPendingStudent.forEach((classInfo) => {
+  hasPendingStudentClasses.forEach((classInfo) => {
     const pendingClassId = classInfo.id;
     const pendingStudents = classInfo.pendingStudents;
     pendingStudents.forEach((studentInfo) => {
@@ -75,7 +83,7 @@ function createClassHistory(dueClasses) {
   return Promise.all(tasks);
 }
 
-export default function removeExpireClassProfile() {
+export default function removeExpireClassOrRestorePendingStudents() {
   /** 第一步：取得classProfile並找出過期課堂 */
   return firestore
     .collection('classProfile')
@@ -91,22 +99,33 @@ export default function removeExpireClassProfile() {
         const date = classInfo.date.toDate();
         return timeIsDue(date);
       });
-      const hasPendingStudent = dueClasses.filter((classInfo) => {
+      const shouldBeRemovedClasses = classProfile.filter((classInfo) => {
+        const date = classInfo.date.toDate();
+        return shouldRemoveClass(date);
+      })
+      const hasPendingStudentClasses = dueClasses.filter((classInfo) => {
         return classInfo.pendingStudents.length > 0;
       });
 
       /** 第二步：如果有候補中學生，先退還補課機會再移除過期課程 */
-      if (dueClasses.length) {
-        const tasks = [
-          removeFromClassProfile(dueClasses),
-          createClassHistory(dueClasses),
-        ];
+      if (dueClasses.length && hasPendingStudentClasses.length) {
+        return restorePendingStudents(hasPendingStudentClasses).then(() => {
+          if (shouldBeRemovedClasses.length) {
+            const tasks = [
+              removeFromClassProfile(dueClasses),
+              createClassHistory(dueClasses),
+            ];
 
-        if (hasPendingStudent.length) {
-          return restorePendingStudents(hasPendingStudent).then(() => {
             return Promise.all(tasks);
-          });
-        } else {
+          }
+        })
+      } else {
+        if (shouldBeRemovedClasses.length) {
+          const tasks = [
+            removeFromClassProfile(dueClasses),
+            createClassHistory(dueClasses),
+          ];
+
           return Promise.all(tasks);
         }
       }

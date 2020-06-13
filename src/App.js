@@ -14,15 +14,16 @@ import LoadingContextProvider from './components/contexts/loadingContext';
 import NavContextProvider from './components/contexts/navContext';
 
 // actions
-import removeExpireClassProfile from './actions/removeExpireClassProfile';
+import removeExpireClassOrRestorePendingStudents from './actions/removeExpireClassOrRestorePendingStudents';
 
 const App = () => {
   const { uid, isAdmin } = useContext(userContext);
 
   /** remove expired classes when first render */
   useEffect(() => {
-    removeExpireClassProfile();
+    removeExpireClassOrRestorePendingStudents();
   }, []);
+
 
   return (
     <div className="App">
