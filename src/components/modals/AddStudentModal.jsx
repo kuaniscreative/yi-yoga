@@ -5,7 +5,6 @@ import { useCallback } from 'react';
 import Modal from 'react-modal';
 
 // actions
-import removeStudentFromClass from '../../actions/removeStudentFromClass';
 import OutlineButton from '../ui/OutlineButton';
 
 // data

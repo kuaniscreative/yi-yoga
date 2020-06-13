@@ -9,7 +9,6 @@ import keyGen from '../../functions/keyGen';
 
 // data
 import theme from '../../json/theme.json';
-import MenuButton from '../ui/MenuButton';
 import ClassListMenuButton from './ClassListMenuButton/ClassListMenuButton';
 
 const CardBase = styled.div`
