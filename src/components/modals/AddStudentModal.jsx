@@ -15,6 +15,8 @@ import { allUserContext } from '../contexts/allUserContext';
 import NameTag from '../ui/nameTag';
 import addStudentsToClass from '../../actions/addStudentsToClass';
 import { useState } from 'react';
+import { allClassContext } from '../contexts/allClassContext';
+import { useMemo } from 'react';
 
 Modal.setAppElement('#root');
 
@@ -141,6 +143,14 @@ function AddStudentModal({
   /** Get all Students */
   const { students } = useContext(allUserContext);
 
+  /** Get class profile */
+  const { classes } = useContext(allClassContext);
+  const classProfile = useMemo(() => {
+    return classes.find((currentClass) => {
+      return currentClass.id === classId
+    })
+  }, [classId, classes])
+
   /** Select Handler */
   const [selected, setSelected] = useState([]);
   const selectHalder = useCallback(
@@ -163,6 +173,13 @@ function AddStudentModal({
   const { setLoadingBarActive } = useContext(loadingContext);
 
   const onConfirm = useCallback(() => {
+    const { students: classStudents, rescheduleStudents, capacity } = classProfile;
+    const currentStudentCount = classStudents.length + rescheduleStudents.length;
+    if (currentStudentCount + selected.length > capacity) {
+      window.alert('無法完成此操作，學生人數將超過上限')
+      return;
+    }
+
     setLoadingBarActive(true);
 
     const studentInfos = selected.map((selectedId) => {
@@ -181,7 +198,7 @@ function AddStudentModal({
     return addStudentsToClass(studentInfos, classId).then(() => {
       setLoadingBarActive(false);
     });
-  }, [classId, selected, setLoadingBarActive, students]);
+  }, [classId, classProfile, selected, setLoadingBarActive, students]);
 
   return (
     <Modal
