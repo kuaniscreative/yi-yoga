@@ -1,9 +1,10 @@
 import firebase from '../fbConfig';
-import uniqBy from 'lodash';
+import { uniqBy } from 'lodash';
 const firestore = firebase.firestore();
 
 function addStudentsToClassProfile(studentInfos, classId) {
   const classProfile = firestore.collection('classProfile').doc(classId);
+
   return classProfile.get().then((res) => {
     const data = res.data();
     const { students: currentStudents } = data;

@@ -137,11 +137,7 @@ function StudentList({ students, selected, onClick }) {
 function AddStudentModal({
   isOpen,
   closeModal,
-  studentId,
   classId,
-  date,
-  time,
-  studentName,
 }) {
   /** Get all Students */
   const { students } = useContext(allUserContext);
@@ -150,7 +146,6 @@ function AddStudentModal({
   const [selected, setSelected] = useState([]);
   const selectHalder = useCallback(
     (id) => {
-      console.log(id, 'id')
       if (~selected.indexOf(id)) {
         setSelected(
           selected.filter((selection) => {
@@ -164,18 +159,31 @@ function AddStudentModal({
     },
     [selected]
   );
-  console.log(selected)
-  /** Remove Handler */
+
+  /** Confirm Handler */
   const { setLoadingBarActive } = useContext(loadingContext);
 
   const onConfirm = useCallback(() => {
     setLoadingBarActive(true);
 
-    // return addStudentsToClass(studentId, classId, false).then(() => {
-    //   setLoadingBarActive(false);
-    //   closeModal();
-    // });
-  }, [setLoadingBarActive]);
+    const studentInfos = selected.map((selectedId) => {
+      const student = students.find((student) => {
+        return student.id === selectedId
+      })
+
+      return {
+        id: student.id,
+        email: student.email,
+        name: student.name,
+        nickName: student.nickName
+      }
+    })
+    
+    return addStudentsToClass(studentInfos, classId).then(() => {
+      setLoadingBarActive(false);
+      closeModal();
+    });
+  }, [classId, closeModal, selected, setLoadingBarActive, students]);
 
   return (
     <Modal
@@ -203,7 +211,7 @@ function AddStudentModal({
           />
           <OutlineButton
             text="確認"
-            color={theme.colors.error}
+            color={theme.colors.green}
             onClick={onConfirm}
           />
         </div>

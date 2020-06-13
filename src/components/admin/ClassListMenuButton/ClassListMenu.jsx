@@ -43,7 +43,7 @@ const styles = {
   `,
 };
 
-function ClassListMenu({ onClose }) {
+function ClassListMenu({ onClose, classId, closeMenu }) {
   const [studentModalIsOn, setStudentModalIsOn] = useState(false);
   return (
     <Fragment>
@@ -53,7 +53,10 @@ function ClassListMenu({ onClose }) {
           加入學生
         </button>
       </div>
-      <AddStudentModal isOpen={studentModalIsOn} closeModal={() => {setStudentModalIsOn(false)}}/>
+      <AddStudentModal 
+        isOpen={studentModalIsOn} 
+        closeModal={() => {setStudentModalIsOn(false)}} 
+        classId={classId}/>
     </Fragment>
   );
 }

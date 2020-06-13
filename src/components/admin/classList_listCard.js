@@ -74,7 +74,7 @@ const ListCard = (props) => {
   } = props;
   return (
     <CardBase>
-      <ClassListMenuButton />
+      <ClassListMenuButton classId={classId}/>
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
       <ListWrapper>

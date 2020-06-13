@@ -23,7 +23,7 @@ const styles = {
   `,
 };
 
-function ClassListMenuButton() {
+function ClassListMenuButton({classId}) {
   const [menuIsShown, setMenuIsShown] = useState(false);
 
   return (
@@ -31,6 +31,7 @@ function ClassListMenuButton() {
       {menuIsShown ? (
         <div css={styles.menuWrapper}>
           <ClassListMenu
+            classId={classId}
             onClose={() => {
               setMenuIsShown(false);
             }}
