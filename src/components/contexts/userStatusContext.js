@@ -3,7 +3,7 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useMemo
+  useMemo,
 } from 'react';
 import firebase from '../../fbConfig';
 
@@ -78,7 +78,7 @@ const UserStatusContextProvider = (props) => {
         const payments = snapshot.docs.map((doc) => {
           return {
             ...doc.data(),
-            id: doc.id
+            id: doc.id,
           };
         });
         setPayments(payments);
@@ -119,23 +119,36 @@ const UserStatusContextProvider = (props) => {
       return [];
     }
 
-    return leaveRecord.rescheduled.map((rescheduledInfo) => {
+    return leaveRecord.rescheduled.reduce((list, rescheduledInfo) => {
       const { leaveDate, rescheduleClassId } = rescheduledInfo;
       const leaveDateValue = leaveDate.hasOwnProperty('seconds')
         ? leaveDate.toDate().valueOf()
         : leaveDate.valueOf();
+      const leaveClass = classes.find((classInfo) => {
+        return classInfo.date.valueOf() === leaveDateValue;
+      });
+      const rescheduleClass = classes.find((classInfo) => {
+        return classInfo.id === rescheduleClassId;
+      });
 
-      return {
-        leaveDate: leaveDate.toDate(),
-        rescheduleClassId,
-        leaveClass: classes.find((classInfo) => {
-          return classInfo.date.valueOf() === leaveDateValue;
-        }),
-        rescheduleClass: classes.find((classInfo) => {
-          return classInfo.id === rescheduleClassId;
-        })
-      };
-    });
+      if (!leaveClass || !rescheduleClass) {
+        return list;
+      }
+
+      return [
+        ...list,
+        {
+          leaveDate: leaveDate.toDate(),
+          rescheduleClassId,
+          leaveClass: classes.find((classInfo) => {
+            return classInfo.date.valueOf() === leaveDateValue;
+          }),
+          rescheduleClass: classes.find((classInfo) => {
+            return classInfo.id === rescheduleClassId;
+          }),
+        },
+      ];
+    }, []);
   }, [leaveRecord, classes]);
 
   /** Get reschedule pending classes */
@@ -162,7 +175,7 @@ const UserStatusContextProvider = (props) => {
         }),
         pendingClass: classes.find((classInfo) => {
           return classInfo.id === pendingClassId;
-        })
+        }),
       };
     });
   }, [leaveRecord, classes]);
@@ -178,7 +191,7 @@ const UserStatusContextProvider = (props) => {
         payments,
         reschedulableClasses,
         rescheduledInfos,
-        reschedulePending
+        reschedulePending,
       }}
     >
       {props.children}
