@@ -125,6 +125,7 @@ function updateClassProfile(userInfo, classId, data) {
 function updateLeaveRecord(userId, classInfo) {
   const date = classInfo.date.toDate();
   const stamp = `${date.getFullYear()}/${date.getMonth() + 1}`;
+
   return firestore
     .collection('leaveRecord')
     .doc(userId)

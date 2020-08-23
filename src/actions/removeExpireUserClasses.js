@@ -85,13 +85,14 @@ function updateLeaveRecord(uid) {
       const reschedulable = data.reschedulable;
       const currentTime = new Date();
       const due = reschedulable.filter((timestamp) => {
+        const today = new Date();
         const currentMonth = currentTime.getMonth();
         const classDate = timestamp.toDate();
         const available = [
           classDate.getMonth(),
           (classDate.getMonth() + 1) % 12,
         ];
-        return available.indexOf(currentMonth) < 0;
+        return today.valueOf() > classDate.valueOf() && available.indexOf(currentMonth) < 0;
       });
 
       if (due.length) {
