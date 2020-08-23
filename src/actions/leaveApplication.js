@@ -93,7 +93,7 @@ function updateClassProfile(userInfo, classId, data) {
     return updateClassProfileSimple(requiredUserData, newStudents, classId);
   } else {
     sendNotification({
-      studentId: data.pendingStudents[0],
+      studentId: data.pendingStudents[0].id,
       dateString: dateString,
       startAt: startAt
     });

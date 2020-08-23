@@ -159,7 +159,7 @@ export const leaveApplication = (userId, classInfo) => {
                 .functions()
                 .httpsCallable('rescheduleQuery');
               sendQueryMail({
-                studentId: thePendingStudent,
+                studentId: thePendingStudent.id,
                 classId: res.id,
                 dateString: dateString,
                 startAt: startAt
@@ -177,7 +177,7 @@ export const leaveApplication = (userId, classInfo) => {
                 .functions()
                 .httpsCallable('rescheduleSuccessNotification');
               sendNotification({
-                studentId: thePendingStudent,
+                studentId: thePendingStudent.id,
                 dateString: dateString,
                 startAt: startAt
               });
