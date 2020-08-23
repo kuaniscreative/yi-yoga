@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -74,11 +74,17 @@ function checkAvailable(stamps, date) {
 
 const ClassListItem = ({ classInfo }) => {
   /** checked logic */
-  const { leaveTargetId, setLeaveTargetId } = useContext(leaveContext);
+  const { leaveTarget, setLeaveTarget } = useContext(leaveContext);
   const selectTarget = () => {
-    setLeaveTargetId(classInfo.id);
+    setLeaveTarget(classInfo);
   };
-  const isSelected = leaveTargetId === classInfo.id;
+
+  const isSelected = useMemo(() => {
+    if (!leaveTarget || !classInfo) return false
+
+    return leaveTarget.id === classInfo.id;
+  }, [classInfo, leaveTarget])
+  
 
   /** disabled logic */
   const { leaveRecord } = useContext(userStatusContext);
