@@ -103,15 +103,13 @@ const ClassListItem = ({ classInfo }) => {
       <ListWrapper>
         <CheckmarkWrapper>
           <Checkmark
-            changeHandler={isAvailable ? selectTarget : () => {}}
+            changeHandler={selectTarget}
             checked={isSelected}
-            disabled={!isAvailable}
           />
         </CheckmarkWrapper>
         <DateWrapper>
-          <DateSingle date={classInfo.date} disabled={!isAvailable} />
+          <DateSingle date={classInfo.date} />
         </DateWrapper>
-        {isAvailable ? null : <DisableHint>無法請假</DisableHint>}
       </ListWrapper>
     </ListItem>
   );
