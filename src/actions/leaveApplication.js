@@ -22,7 +22,7 @@ function updateUserData(userId, classId) {
     .doc(userId)
     .update({
       allClasses: firebase.firestore.FieldValue.arrayRemove(classId),
-      leave: firebase.firestore.FieldValue.arrayUnion(classId)
+      leave: firebase.firestore.FieldValue.arrayUnion(classId),
     });
 }
 
@@ -32,7 +32,7 @@ function updateClassProfileSimple(requiredUserData, newStudents, classId) {
     .doc(classId)
     .update({
       students: newStudents,
-      absence: firebase.firestore.FieldValue.arrayUnion(requiredUserData)
+      absence: firebase.firestore.FieldValue.arrayUnion(requiredUserData),
     });
 }
 
@@ -50,7 +50,37 @@ function rearrangeAllTypesOfStudents(
       pendingStudents: newPendingStudents,
       rescheduleStudents: newRescheduleStudents,
       students: newStudents,
-      absence: firebase.firestore.FieldValue.arrayUnion(requiredUserData)
+      absence: firebase.firestore.FieldValue.arrayUnion(requiredUserData),
+    });
+}
+
+
+function updateLeaveRecordForRescheduletudent(userId, classId) {
+  return firestore
+    .collection('leaveRecord')
+    .doc(userId)
+    .get()
+    .then((res) => {
+      const data = res.data();
+
+      const target = data.reschedulePending.find((info) => {
+        return info.pendingClassId === classId;
+      });
+
+      const newReschedulePending = data.reschedulePending.filter((info) => {
+        return info.pendingClassId !== classId;
+      });
+
+      return firestore
+        .collection('leaveRecord')
+        .doc(userId)
+        .update({
+          reschedulePending: newReschedulePending,
+          rescheduled: firebase.firestore.FieldValue.arrayUnion({
+            leaveDate: target.leaveDate,
+            rescheduleClassId: classId,
+          }),
+        });
     });
 }
 
@@ -63,7 +93,7 @@ function updateClassProfile(userInfo, classId, data) {
     name: userInfo.name,
     nickName: userInfo.nickName,
     email: userInfo.email,
-    id: userInfo.uid
+    id: userInfo.uid,
   };
 
   if (noPendingStudent) {
@@ -84,7 +114,7 @@ function updateClassProfile(userInfo, classId, data) {
       studentId: data.pendingStudents[0],
       classId: classId,
       dateString: dateString,
-      startAt: startAt
+      startAt: startAt,
     });
     const newStudents = data.students.filter((studentInfo) => {
       return studentInfo.id !== userInfo.uid;
@@ -95,7 +125,7 @@ function updateClassProfile(userInfo, classId, data) {
     sendNotification({
       studentId: data.pendingStudents[0].id,
       dateString: dateString,
-      startAt: startAt
+      startAt: startAt,
     });
 
     const newStudents = data.students.filter((studentInfo) => {
@@ -112,13 +142,21 @@ function updateClassProfile(userInfo, classId, data) {
       }
     );
 
-    return rearrangeAllTypesOfStudents(
-      requiredUserData,
-      newStudents,
-      newPendingStudents,
-      newRescheduleStudents,
-      classId
-    );
+    const tasks = [
+      rearrangeAllTypesOfStudents(
+        requiredUserData,
+        newStudents,
+        newPendingStudents,
+        newRescheduleStudents,
+        classId
+      ),
+      updateLeaveRecordForRescheduletudent(
+        data.pendingStudents[0].id,
+        classId,
+      )
+    ]
+
+    return Promise.all(tasks)
   }
 }
 
@@ -132,15 +170,12 @@ function updateLeaveRecord(userId, classInfo) {
     .update({
       reschedulable: firebase.firestore.FieldValue.arrayUnion(date),
       records: firebase.firestore.FieldValue.arrayUnion(date),
-      stamps: firebase.firestore.FieldValue.arrayUnion(stamp)
+      stamps: firebase.firestore.FieldValue.arrayUnion(stamp),
     });
 }
 
 function getClassProfile(classId) {
-  return firestore
-    .collection('classProfile')
-    .doc(classId)
-    .get();
+  return firestore.collection('classProfile').doc(classId).get();
 }
 
 export function leaveApplication(userInfo, classId) {
@@ -149,7 +184,7 @@ export function leaveApplication(userInfo, classId) {
     const tasks = [
       updateUserData(userInfo.uid, classId),
       updateLeaveRecord(userInfo.uid, data),
-      updateClassProfile(userInfo, classId, data)
+      updateClassProfile(userInfo, classId, data),
     ];
 
     return Promise.all(tasks);
