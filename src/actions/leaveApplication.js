@@ -160,15 +160,25 @@ function updateClassProfile(userInfo, classId, data) {
   }
 }
 
-function updateLeaveRecord(userId, classInfo) {
+function updateLeaveRecord(userId, classInfo, reschedulable) {
   const date = classInfo.date.toDate();
   const stamp = `${date.getFullYear()}/${date.getMonth() + 1}`;
+
+  if (reschedulable) {
+    return firestore
+    .collection('leaveRecord')
+    .doc(userId)
+    .update({
+      reschedulable: firebase.firestore.FieldValue.arrayUnion(date),
+      records: firebase.firestore.FieldValue.arrayUnion(date),
+      stamps: firebase.firestore.FieldValue.arrayUnion(stamp),
+    });
+  }
 
   return firestore
     .collection('leaveRecord')
     .doc(userId)
     .update({
-      reschedulable: firebase.firestore.FieldValue.arrayUnion(date),
       records: firebase.firestore.FieldValue.arrayUnion(date),
       stamps: firebase.firestore.FieldValue.arrayUnion(stamp),
     });
@@ -178,12 +188,12 @@ function getClassProfile(classId) {
   return firestore.collection('classProfile').doc(classId).get();
 }
 
-export function leaveApplication(userInfo, classId) {
+export function leaveApplication(userInfo, classId, reschedulable) {
   return getClassProfile(classId).then((res) => {
     const data = res.data();
     const tasks = [
       updateUserData(userInfo.uid, classId),
-      updateLeaveRecord(userInfo.uid, data),
+      updateLeaveRecord(userInfo.uid, data, reschedulable),
       updateClassProfile(userInfo, classId, data),
     ];
 

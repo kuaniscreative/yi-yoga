@@ -114,7 +114,21 @@ function ArrangementSingle({ leaveDate, leaveClass, classInfo, status }) {
       );
 
     default:
-      return null;
+      return (
+        <Container>
+          <DateSingle
+            date={leaveClass.date}
+            time={leaveClass ? leaveClass.type : null}
+          />
+          <ul className="comfyList" style={listWrapperStyle}>
+            <li
+              style={listStyle}
+            >
+              本月已請假，無法補課
+            </li>
+          </ul>
+        </Container>
+      );;
   }
 }
 

@@ -60,14 +60,14 @@ const Selector = ({ history }) => {
     });
 
   const [modalIsOn, setModalIsOn] = useState(false);
-  const leaveApplicate = () => {
+  const leaveApplicate = (reschedulable) => {
     setLoadingBarActive(true);
 
     if (modalIsOn) {
       setModalIsOn(false)
     }
 
-    return leaveApplication(userInfo, leaveTarget.id).then(() => {
+    return leaveApplication(userInfo, leaveTarget.id, reschedulable).then(() => {
       setLoadingBarActive(false);
       history.push('/leave-application/success');
     });
@@ -76,7 +76,7 @@ const Selector = ({ history }) => {
     const isAvailable = checkAvailable(stamps, leaveTarget.date);
 
     if (isAvailable) {
-      return leaveApplicate();
+      return leaveApplicate(true);
     } else {
       setModalIsOn(true);
     }
@@ -111,7 +111,7 @@ const Selector = ({ history }) => {
         content="本月份已請過假，本次請假將無法補課，是否繼續？"
         confirmText="是"
         cancelText="否"
-        onConfirm={leaveApplicate}
+        onConfirm={() => leaveApplicate(false)}
       />
     </Fragment>
   );
