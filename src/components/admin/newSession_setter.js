@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 // components
 import Block from '../ui/block';
@@ -86,10 +87,13 @@ const Setter = () => {
     const eMonth = span.end.month;
     const sYear = span.start.year;
     const eYear = span.end.year;
-    const validYear = eYear >= sYear;
-    const validPeriod = validYear && eMonth >= sMonth;
 
-    if (validPeriod) {
+    const sMoment = moment([sYear, sMonth - 1]);
+    const eMoment = moment([eYear, eMonth - 1]);
+
+    const isValid = eMoment.isAfter(sMoment);
+
+    if (isValid) {
       setSessionSpan(span);
       toNextStep();
     } else {

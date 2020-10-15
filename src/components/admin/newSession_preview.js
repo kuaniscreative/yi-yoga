@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 // components
 import Block from '../ui/block';
@@ -24,11 +25,14 @@ const Nav = styled.div`
   margin: 3rem 0;
 `;
 
-const getMonths = (startMonth, endMonth) => {
+const getMonths = (startMonth, endMonth, startYear, endYear) => {
   const total = [];
-  while (endMonth >= startMonth) {
-    total.push(startMonth % 12);
-    startMonth = (startMonth + 1) % 12;
+  const starter = moment([startYear, startMonth - 1]);
+  const endPoint = moment([endYear, endMonth - 1]);
+
+  while (endPoint.diff(starter, 'month') > -1) {
+    total.push(starter.month() + 1);
+    starter.add(1, 'month')
   }
   return total;
 };
@@ -43,7 +47,12 @@ const Preview = (props) => {
   } = useContext(newSessionContext);
   const { setLoadingBarActive } = useContext(loadingContext);
 
-  const totalMonths = getMonths(sessionSpan.start.month, sessionSpan.end.month);
+  const totalMonths = getMonths(
+    sessionSpan.start.month, 
+    sessionSpan.end.month,
+    sessionSpan.start.year, 
+    sessionSpan.end.year,
+  );
 
   const removeClass = (id) => {
     const newClasses = classes.filter((classInfo) => {
